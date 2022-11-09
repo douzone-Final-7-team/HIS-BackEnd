@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!--특정 환자 입원 정보 READ-->
+<mapper namespace="com.douzone.HISservice.repository.PatientInfoDAO">
+    <select id="getPatientInfo" parameterType="HashMap" resultType="HashMap">
+        SELECT ADMISSION_DATE, ADMISSION_DUEDATE, PATIENT_NAME, GENDER, PATIENT_ADDR, PATIENT_TEL, DIAGNOSTIC_NAME, EMP_NAME, SPECIALITY_NAME,PROTECTOR_NAME,PROTECTOR_TEL
+        FROM admission_tb AS a
+                 LEFT JOIN treatment_info_tb AS b ON a.TREATMENT_NUM_PK = b.TREATMENT_NUM_PK
+                 LEFT JOIN patient_tb AS c ON b.PATIENT_ID_FK = c.PATIENT_ID_PK
+                 LEFT JOIN emp_info_tb AS d ON b.EMP_ID_FK = d.EMP_ID_PK
+                 LEFT JOIN speciality_tb AS e ON d.SPECIALITY_ID_FK= e.SPECIALITY_ID_PK
+                 LEFT JOIN admission_status AS f ON a.ADMISSION_STATUS_CODE = f.ADMISSION_STATUS_CODE
+        WHERE c.PATIENT_NAME = #{name} AND f.AD_CODE_NAME = #{adCodeName} AND a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum} AND a.BED_NUM= #{bedNum};
+    </select>
+</mapper>
