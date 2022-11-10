@@ -1,14 +1,21 @@
 package com.douzone.HISservice.controller;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.douzone.HISservice.config.auth.PrincipalDetails;
 import com.douzone.HISservice.entity.User;
 import com.douzone.HISservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -22,9 +29,19 @@ public class LoginController {
 
     private final UserRepository userRepository;
 
-    @PostMapping("/doctor/treatment")
-    public String treatment() {
-        return "<h1>의사 진료 view 입니다.</h1>";
+    @GetMapping("/mypage")
+    public User treatment(Authentication authentication) {
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("principal Pk : " + principal.getUser().getEmp_id_pk());
+        System.out.println("principal username : " + principal.getUser().getUsername());
+        System.out.println(principal);
+        return principal.getUser();
+    }
+
+    @GetMapping("/mypage2")
+    public String treatment3() {
+
+        return "나야 엑시오스";
     }
 
     @PostMapping("/inNurse/ward")
