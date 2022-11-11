@@ -12,7 +12,9 @@ import java.util.Map;
 public interface PatientInfoDAO {
 
     // 특정 환자 입원 정보 READ
-    List<Map<String, Object>> getPatientInfo (Map<String, Object> outInfoElement);
+    Map<String, Object> getPatientInfo (Map<String, Object> outInfoElement);
 
+    // 특정 환자 퇴원예정일 UPDATE
+    void changeDischargeDueDate (Map<String, Object> newDischargeDate);
 
 }
