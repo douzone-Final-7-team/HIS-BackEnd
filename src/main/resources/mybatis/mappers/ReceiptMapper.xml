@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 입원환자 수납 정보 READ-->
+<mapper namespace="com.douzone.HISservice.repository.ReceiptDAO">
+
+    <select id="getAdReceipt"  parameterType="String" resultType="HashMap">
+        select
+            a.ADMISSION_ID_PK ,
+            ADMISSION_DATE ,
+            DISCHARGE_DUEDATE ,
+            TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE) as ADMISSION_TOTAL_DAY ,
+            a.TREATMENT_NUM_PK, (TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE))*30000 as ADMISSION_COST ,
+            CASE
+                WHEN (INSURANCE = 1) THEN truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*30000)*0.25,0)
+                WHEN (INSURANCE = 0) THEN 0
+            END AS INSURANCE_COST ,
+            CASE
+                WHEN (INSURANCE = 1) THEN ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE))*30000) - truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*30000)*0.25,0)
+                WHEN (INSURANCE = 0) THEN (TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*30000)
+            END AS TOTAL_COST
+        from
+            ADMISSION_TB as a
+            left join
+                TREATMENT_INFO_TB as b on a.TREATMENT_NUM_PK = b.TREATMENT_NUM_PK
+            left join
+                PATIENT_TB as c on b.PATIENT_ID_FK = c.PATIENT_ID_PK
+        where
+            ADMISSION_ID_PK = #{ADMISSION_ID_FK};
+    </select>
+
+    <!--입원환자 수납 완료 정보 CREATE-->
+    <insert id="setAdReceipt" parameterType="HashMap">
+        INSERT INTO
+            INPATIENT_RECEIPT_TB
+                                (
+                                    INRECEIPT_ID_PK,
+                                    ADMISSION_ID_FK,
+                                    TREATMENT_NUM_FK,
+                                    ADMISSION_COST,
+                                    INSURANCE_COST,
+                                    TOTAL_COST
+                                )
+            VALUES
+                                (
+                                    (SELECT CONCAT('IR',SUBSTR(NOW(),3,2)*1000000 + 1 + (SELECT COUNT(*) FROM INPATIENT_RECEIPT_TB AS a))),
+                                    #{ADMISSION_ID_FK},
+                                    #{TREATMENT_NUM_FK},
+                                    #{ADMISSION_COST},
+                                    #{INSURANCE_COST},
+                                    #{TOTAL_COST}
+                                );
+    </insert>
+</mapper>
