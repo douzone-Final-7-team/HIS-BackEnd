@@ -16,10 +16,22 @@ public class PatientInfoController {
     private final PatientInfoService patientInfoService;
 
     // 특정 환자 입원 정보 READ
-    @GetMapping("/outInfo")
-    public List<Map<String, Object>>getInpatientInfo(@RequestBody Map<String, Object> outInfoElement) {
+    @PostMapping("/outInfo")
+    public Map<String, Object> getInpatientInfo(@RequestBody Map<String, Object> outInfoElement) {
 
         return (patientInfoService.getPatientInfo(outInfoElement));
     }
+
+    // 특정 환자 퇴원예정일 UPDATE
+    @PutMapping("/dischargeDueDate")
+    public void changeDischargeDueDate (@RequestBody Map<String, Object> newDischargeDate){
+
+        patientInfoService.changeDischargeDueDate(newDischargeDate);
+    }
+
+
+
+
+
 
 }

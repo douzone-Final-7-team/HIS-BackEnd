@@ -8,5 +8,8 @@ import java.util.Map;
 public interface PatientInfoService {
 
     // 특정 환자 입원 정보 READ
-    public List<Map<String, Object>> getPatientInfo (Map<String, Object> outInfoElement);
+    public Map<String, Object> getPatientInfo (Map<String, Object> outInfoElement);
+
+    // 특정 환자 퇴원예정일 UPDATE
+    public void changeDischargeDueDate (Map<String, Object> newDischargeDate);
 }
