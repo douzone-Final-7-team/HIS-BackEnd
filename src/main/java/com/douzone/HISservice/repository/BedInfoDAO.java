@@ -14,5 +14,12 @@ public interface BedInfoDAO {
     // 병동 and 호실 기준 병상 현황 정보 불러오기 READ
     List<Map<String, Object>> getOccupiedBedInfoList(Map<String, Object> roominfo);
 
+    // 병동 기준 병상 현황 정보 불러오기
+    List<Map<String, Object>> getAllWardList(Map<String, Object> roominfo);
+
+    // 전체 병상 현황 정보 불러오기
+    List<Map<String, Object>> getAllBedList(Map<String, Object> roominfo);
+
+
 
 }
