@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 병동 and 호실 기준 병상 현황 정보 불러오기 READ-->
+<mapper namespace="com.douzone.HISservice.repository.AdmissionFrontPageDAO">
+    <select id="getTest" resultType="HashMap">
+        <!-- 데이터 맞을때 반영 -->
+        <!-- select count(*) as totalBed, count(CASE WHEN bed_status = 1 THEN 1 END) as usingBed , count(CASE WHEN bed_status = 0 THEN 1 END) as unusingBed , count(CASE WHEN DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') THEN 1 END) as outDuePatient-->
+        select count(*) as totalBed, count(CASE WHEN bed_status = 1 THEN 1 END) as usingBed , count(CASE WHEN bed_status = 0 THEN 1 END) as unusingBed , count(CASE WHEN DISCHARGE_DUEDATE = date_format(date_sub(now(), interval 1 day),'%Y-%m-%d') THEN 1 END) as outDuePatient
+        from bed_tb as a LEFT JOIN admission_tb AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM ;
+    </select>
+
+    <select id="getDisChargeList" resultType="HashMap">
+        SELECT C.PATIENT_NAME , if(SUBSTR(PATIENT_SSN,8,1)=1 or substr(PATIENT_SSN,8,1)=3 , 'M' ,'W') AS GENDER , (date_format(now(),'%Y')- concat('19',substr(PATIENT_SSN,1,2)))+1 AS AGE , C.PATIENT_SSN, A.WARD+A.ROOM_NUM AS WARDROOM , A.BED_NUM
+        FROM ADMISSION_TB as a
+        LEFT JOIN TREATMENT_INFO_TB as b on a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
+        LEFT JOIN PATIENT_TB as c on b.PATIENT_ID_FK = c.PATIENT_ID_PK
+        where DISCHARGE_DUEDATE = date_format(date_add(now(), interval 1 day),'%Y-%m-%d');
+    </select>
+
+    <update id="putDisChargeList" parameterType="HashMap">
+        UPDATE ADMISSION_TB
+        SET DISCHARGE_DATE = now()
+        WHERE ADMISSION_ID_PK = #{admissionIdPk};
+
+    </update>
+</mapper>

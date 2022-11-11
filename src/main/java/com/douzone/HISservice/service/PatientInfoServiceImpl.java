@@ -18,4 +18,5 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     public List<Map<String, Object>> getPatientInfo (Map<String, Object> outInfoElement){
         return patientInfoDAO.getPatientInfo(outInfoElement);
     }
+
 }

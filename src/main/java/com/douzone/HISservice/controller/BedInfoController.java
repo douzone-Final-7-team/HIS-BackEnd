@@ -18,7 +18,7 @@ public class BedInfoController {
 
     // 병동 and 호실 기준 병상 현황 정보 불러오기 READ
     @GetMapping("/roominfos")
-    public List<Map<String, Object>> getBedInfos(@RequestBody Map<String, Object> roominfo) {
+    public List<Map<String, Object>> getBedInfos(@RequestParam Map<String, Object> roominfo) {
 
         return(bedInfoService.getOccupiedBedInfoList(roominfo));
 

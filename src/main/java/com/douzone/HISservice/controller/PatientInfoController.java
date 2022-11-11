@@ -22,4 +22,8 @@ public class PatientInfoController {
         return (patientInfoService.getPatientInfo(outInfoElement));
     }
 
+
+
+
+
 }
