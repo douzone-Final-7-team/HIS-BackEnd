@@ -5,6 +5,7 @@ import com.douzone.HISservice.repository.PatientInfoDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -21,5 +22,10 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     public void changeDischargeDueDate (Map<String, Object> newDischargeDate){
 
       patientInfoDAO.changeDischargeDueDate(newDischargeDate);
+    }
+
+    @Override
+    public List<Map<String, Object>> getPastTreatment() {
+        return patientInfoDAO.getPastTreatment();
     }
 }

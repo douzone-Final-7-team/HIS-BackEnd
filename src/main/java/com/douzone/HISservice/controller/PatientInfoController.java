@@ -29,9 +29,12 @@ public class PatientInfoController {
         patientInfoService.changeDischargeDueDate(newDischargeDate);
     }
 
+    // 진료환자 과거 병력 조회
+    @GetMapping("/pastTreatment")
+    public List<Map<String, Object>> getPastTreatment() {
 
-
-
+        return patientInfoService.getPastTreatment();
+    }
 
 
 }

@@ -22,6 +22,12 @@
         WHERE ADMISSION_ID_PK = #{admissionIdPk};
     </update>
 
+    <select id="getPastTreatment" resultType="HashMap">
+        SELECT TREATMENT_DATE, DIAGNOSTIC_NAME
+        FROM TREATMENT_INFO_TB
+        WHERE PATIENT_ID_FK = '22110004';
+    </select>
+
 
 
 </mapper>
