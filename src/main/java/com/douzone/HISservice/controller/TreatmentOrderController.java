@@ -19,7 +19,9 @@ public class TreatmentOrderController {
     @PostMapping("/treatmentDone")
     public String setMedicalCharts(@RequestBody Map<String, Object> data){
         System.out.println(data);
-//        treatmentOrderService.setMedicalCharts(diagnosis, treatmentMemo, treatmentOrder, medicineOrder, admissionOrder);
+        System.out.println(data.get("admissionOrder"));
+        System.out.println(data.get("admissionCheck"));
+        treatmentOrderService.setMedicalCharts(data);
         return "데이터 받음";
     }
 }

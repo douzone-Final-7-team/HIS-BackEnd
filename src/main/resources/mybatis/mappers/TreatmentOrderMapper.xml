@@ -4,6 +4,4 @@
 
 <mapper namespace="com.douzone.HISservice.repository.TreatmentOrderDAO">
 
-
-
 </mapper>
