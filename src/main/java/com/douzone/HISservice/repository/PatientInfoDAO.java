@@ -21,4 +21,6 @@ public interface PatientInfoDAO {
 
     List<Map<String, Object>> getPastTreatmentDetail();
 
+    List<Map<String, Object>> getTreatmentPatientInfo();
+
 }

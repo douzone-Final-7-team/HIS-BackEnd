@@ -16,4 +16,6 @@ public interface PatientInfoService {
     List<Map<String, Object>> getPastTreatmentList();
 
     List<Map<String, Object>> getPastTreatmentDetail();
+
+    List<Map<String, Object>> getTreatmentPatientInfo();
 }

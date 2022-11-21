@@ -26,6 +26,7 @@
 
     </update>
 
+<!-- 내 입원환자 리스트 가져오기 -->
     <select id="getMyInPatient" resultType="HashMap">
         SELECT a.PATIENT_ID_FK, b.ADMISSION_DATE, b.ROOM_NUM, c.PATIENT_NAME,  c.PATIENT_AGE, if(SUBSTR(PATIENT_SSN,8,1)=1 or substr(PATIENT_SSN,8,1)=3 , 'M' ,'W') AS GENDER , d.EMP_NAME
         FROM TREATMENT_INFO_TB AS a

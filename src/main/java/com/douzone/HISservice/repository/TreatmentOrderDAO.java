@@ -11,4 +11,5 @@ public interface TreatmentOrderDAO {
 
     void setMedicalCharts(Map<String, Object> data);
 
+    void setAdmissionDueDate(Map<String, Object> data);
 }

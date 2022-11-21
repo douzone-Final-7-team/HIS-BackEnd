@@ -33,4 +33,9 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     public List<Map<String, Object>> getPastTreatmentDetail() {
         return patientInfoDAO.getPastTreatmentDetail();
     }
+
+    @Override
+    public List<Map<String, Object>> getTreatmentPatientInfo() {
+        return patientInfoDAO.getTreatmentPatientInfo();
+    }
 }
