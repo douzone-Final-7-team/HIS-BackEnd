@@ -75,7 +75,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // RSA방식X Hash 암호 방식
         String jwtToken = JWT.create()
                 .withSubject("cos 토큰")
-                .withExpiresAt(new Date(System.currentTimeMillis()+(60000*10)))
+                .withExpiresAt(new Date(System.currentTimeMillis()+(60000*1440)))
                 .withClaim("id", principalDetails.getUser().getEmp_id_pk())
                 .withClaim("username", principalDetails.getUser().getUsername())
                 .sign(Algorithm.HMAC512("cos"));
