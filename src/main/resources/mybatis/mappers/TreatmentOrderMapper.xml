@@ -3,7 +3,7 @@
 
 
 <mapper namespace="com.douzone.HISservice.repository.TreatmentOrderDAO">
-    <select id="setMedicalCharts" parameterType="HashMap" resultType="HashMap">
+    <select id="setMedicalCharts" parameterType="HashMap">
         UPDATE TREATMENT_INFO_TB
         SET TREATMENT_ORDER = #{treatmentOrder}, PRESCRIPTION = #{medicineOrder}, DIAGNOSTIC_NAME = #{diagnosis},
             TREATMENT_MEMO= #{treatmentMemo}, TREATMENT_DATE = now(), ADMISSION = #{admissionCheck}

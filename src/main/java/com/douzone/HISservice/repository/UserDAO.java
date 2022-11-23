@@ -10,6 +10,9 @@ import java.util.Map;
 @Repository
 public interface UserDAO {
 
-    List<Map<String, Object>> getMyInfo(String username);
+    List<Map<String, Object>> getMyInfo(String pk);
 
+    void changePwd(String newPwd, String pk);
+
+    void changeAddr(String newAddr, String pk);
 }

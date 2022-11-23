@@ -5,6 +5,10 @@ import java.util.Map;
 
 public interface UserService {
 
-    List<Map<String, Object>> getMyInfo(String username);
+    List<Map<String, Object>> getMyInfo(String pk);
+
+    String changePwd(String newPwd, String pk);
+
+    String changeAddr(String newAddr, String pk);
 
 }

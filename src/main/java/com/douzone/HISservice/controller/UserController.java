@@ -23,7 +23,6 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private final UserService userService;
 
     @PostMapping("/join")
@@ -48,9 +47,34 @@ public class UserController {
     @PostMapping("/myPage")
     public List<Map<String, Object>> getMyInfo(Authentication authentication) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        String username = principal.getUser().getUsername();
-        System.out.println("Controller 에서 username : " + username);
-        return userService.getMyInfo(username);
+        String pk = principal.getUser().getEmp_id_pk();
+        System.out.println("Controller 에서 Pk : " + pk);
+        return userService.getMyInfo(pk);
+    }
+
+    @PostMapping("/changePwd")
+    public String changePwd(@RequestBody Map<String, Object> pwd, Authentication authentication) {
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String pk = principal.getUser().getEmp_id_pk();
+        String userPwd = principal.getUser().getPw();
+        String newPwd = bCryptPasswordEncoder.encode((String) pwd.get("newPwd"));
+
+        if(bCryptPasswordEncoder.matches((CharSequence) pwd.get("presentPwd"), userPwd) == false) {
+            return "현재 비밀번호와 일치하지 않습니다.";
+        } else {
+            System.out.println("비밀번호가 일치합니다!");
+        }
+
+        return userService.changePwd(newPwd, pk);
+    }
+
+    @PostMapping("/changeAddr")
+    public String changeAddr(@RequestBody Map<String, Object> addr, Authentication authentication) {
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String pk = principal.getUser().getEmp_id_pk();
+        String newAddr = (String) addr.get("newAddr");
+        System.out.println(newAddr);
+        return userService.changeAddr(newAddr, pk);
     }
 
 

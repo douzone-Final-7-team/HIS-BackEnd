@@ -4,8 +4,32 @@
 
 <mapper namespace="com.douzone.HISservice.repository.UserDAO">
     <select id="getMyInfo" parameterType="HashMap" resultType="HashMap">
-        SELECT *
+        SELECT *,
+               CASE
+                   WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'D') THEN '의사'
+                   WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'I') THEN '외래간호사'
+                   WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'O') THEN '병동간호사'
+                   WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'R') THEN '원무'
+                   END AS JOB_NAME,
+               CASE
+                   WHEN(SPECIALITY_ID_FK = 'N') THEN '내과'
+                   WHEN(SPECIALITY_ID_FK = 'E') THEN '이비인후과'
+                   WHEN(SPECIALITY_ID_FK = 'J') THEN '정형외과'
+                   WHEN(SPECIALITY_ID_FK = 'O') THEN '원무과'
+                   END AS SPECIALITY_NAME
         FROM EMP_INFO_TB
-        WHERE USERNAME = #{username};
+        WHERE EMP_ID_PK = #{pk};
+    </select>
+
+    <select id="changePwd">
+        UPDATE EMP_INFO_TB
+        SET PW = #{newPwd}
+        WHERE EMP_ID_PK = #{pk}
+    </select>
+
+    <select id="changeAddr">
+        UPDATE EMP_INFO_TB
+        SET EMP_ADDR = #{newAddr}
+        WHERE EMP_ID_PK = #{pk}
     </select>
 </mapper>
