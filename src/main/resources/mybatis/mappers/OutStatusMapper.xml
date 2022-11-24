@@ -13,7 +13,7 @@
                  left join OUTPATIENT_STATUS as d on d.OUTPATIENT_STATUS_CODE = a.OUTPATIENT_STATUS_CODE
         where b.EMP_ID_PK = #{EMP_ID_PK}
 
-          and (d.OUTPATIENT_STATUS_CODE = 'OA' or d.OUTPATIENT_STATUS_CODE = 'OB' or d.OUTPATIENT_STATUS_CODE = 'OE')
+          and (d.OUTPATIENT_STATUS_CODE = 'OA' or d.OUTPATIENT_STATUS_CODE = 'OB' or d.OUTPATIENT_STATUS_CODE = 'OC' or d.OUTPATIENT_STATUS_CODE = 'OE')
           and DATE_FORMAT(a.REGISTRATION_TIME, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d');
     </select>
 
