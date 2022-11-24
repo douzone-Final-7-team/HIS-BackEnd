@@ -33,11 +33,3 @@
         WHERE EMP_ID_PK = #{pk}
     </select>
 </mapper>
-
-<mapper namespace="com.douzone.HISservice.repository.UserDAO">
-    <select id="getMyInfo" parameterType="HashMap" resultType="HashMap">
-        SELECT * FROM EMP_INFO_TB AS a
-        LEFT JOIN SPECIALITY_TB AS b ON b.SPECIALITY_ID_PK = a.SPECIALITY_ID_FK
-        WHERE USERNAME = #{username};;
-    </select>
-</mapper>
