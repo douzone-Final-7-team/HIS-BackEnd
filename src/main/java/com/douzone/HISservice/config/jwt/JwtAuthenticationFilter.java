@@ -78,6 +78,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis()+(60000*1440)))
                 .withClaim("id", principalDetails.getUser().getEmp_id_pk())
                 .withClaim("username", principalDetails.getUser().getUsername())
+                .withClaim("role", principalDetails.getUser().getRole())
                 .sign(Algorithm.HMAC512("cos"));
         response.setHeader("Authorization", "Bearer "+jwtToken);
     }

@@ -161,7 +161,6 @@
               (SELECT EMP_ID_PK FROM EMP_INFO_TB WHERE USERNAME = #{userName}), now() ,
               (SELECT EMP_NAME FROM EMP_INFO_TB WHERE EMP_NAME = #{handOverTarget}),
               #{handOverContent});
-
     </insert>
 
     <!--내가 작성한 인계사항 UPDATE-->

@@ -14,6 +14,42 @@
                  LEFT JOIN ADMISSION_STATUS AS f ON a.ADMISSION_STATUS_CODE = f.ADMISSION_STATUS_CODE
         WHERE c.PATIENT_NAME = #{name} AND f.AD_CODE_NAME = '입원완료' AND a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum} AND a.BED_NUM= #{bedNum};
     </select>
+
+    <!-- 환자 등록 정보 READ -->
+    <select id="getPatientRegistrationInfo" parameterType="HashMap" resultType="HashMap">
+        SELECT PATIENT_ID_PK, PATIENT_ADDR, PATIENT_NAME, GENDER, PATIENT_SSN, PATIENT_TEL, PATIENT_AGE, INSURANCE
+        FROM PATIENT_TB
+        WHERE PATIENT_NAME = #{PATIENT_NAME} AND PATIENT_SSN = #{PATIENT_SSN}
+    </select>
+
+    <!-- 환자 과거 병력 READ -->
+    <select id="getTreatmentInfo" parameterType="HashMap" resultType="HashMap">
+        SELECT TREATMENT_NUM_PK, RECEIVE_ID_FK, PATIENT_ID_FK, EMP_ID_FK, TREATMENT_ORDER, PRESCRIPTION, DIAGNOSTIC_NAME, TREATMENT_MEMO, DATE_FORMAT(TREATMENT_DATE, '%Y-%m-%d') AS 'TREATMENT_DATE', ADMISSION
+        FROM TREATMENT_INFO_TB
+        WHERE PATIENT_ID_FK = #{PATIENT_ID_PK}
+    </select>
+
+
+    <!--  해당년월 마지막 환자 쿼리로직 READ  -->
+    <!--  환자등록할 때 쓸 예정  -->
+    <select id="getRecentPK" parameterType="String" resultType="String">
+        SELECT PATIENT_ID_PK
+        FROM PATIENT_TB
+        WHERE PATIENT_ID_PK
+        LIKE '${currYrMnth}%'
+        ORDER BY PATIENT_ID_PK
+        DESC LIMIT 1;
+    </select>
+
+
+    <!--  환자 등록 INSERT -->
+    <insert id="insertPatientInfo" parameterType="HashMap">
+        INSERT INTO PATIENT_TB
+        (PATIENT_ID_PK, PATIENT_ADDR, PATIENT_NAME, GENDER, PATIENT_SSN, PATIENT_TEL, PATIENT_AGE, INSURANCE)
+        VALUES
+            (#{PATIENT_ID_PK}, #{PATIENT_ADDR}, #{PATIENT_NAME}, #{GENDER}, #{PATIENT_SSN}, #{PATIENT_TEL}, #{PATIENT_AGE}, #{INSURANCE})
+    </insert>
+
     <!--퇴원 예정일 UPDATE -->
     <update id="changeDischargeDueDate" parameterType="HashMap">
         UPDATE
