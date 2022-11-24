@@ -15,7 +15,7 @@
                    WHEN(SPECIALITY_ID_FK = 'N') THEN '내과'
                    WHEN(SPECIALITY_ID_FK = 'E') THEN '이비인후과'
                    WHEN(SPECIALITY_ID_FK = 'J') THEN '정형외과'
-                   WHEN(SPECIALITY_ID_FK = 'O') THEN '원무과'
+                   WHEN(SPECIALITY_ID_FK = 'R') THEN '원무과'
                    END AS SPECIALITY_NAME
         FROM EMP_INFO_TB
         WHERE EMP_ID_PK = #{pk};
