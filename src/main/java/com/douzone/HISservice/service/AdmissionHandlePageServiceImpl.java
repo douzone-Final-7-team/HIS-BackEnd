@@ -5,6 +5,7 @@ import com.douzone.HISservice.repository.AdmissionHandlePageDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
     // 특정 환자 간호기록 READ
     @Override
     public List<Map<String, Object>>  getCareInfos (Map<String, Object> careInfosElements){
+
         return admissionHandlePageDAO.getCareInfos(careInfosElements);
     }
 
@@ -64,6 +66,10 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
     // 해당 병동 전체 환자 일정 READ
     @Override
     public List<Map<String, Object>>  getInpatientSchedules (Map<String, Object> inpatientSchedulesElements){
+        LocalDate now = LocalDate.now();
+        if(inpatientSchedulesElements.get("searchDate") == null) {
+            inpatientSchedulesElements.put("searchDate", now);
+        }
         return admissionHandlePageDAO.getInpatientSchedules(inpatientSchedulesElements);
     }
     // 해당 병동 전체 환자 일정 CREATE
