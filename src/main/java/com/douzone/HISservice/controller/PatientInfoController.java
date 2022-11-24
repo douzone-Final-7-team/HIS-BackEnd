@@ -18,8 +18,21 @@ public class PatientInfoController {
     // 특정 환자 입원 정보 READ
     @PostMapping("/outInfo")
     public Map<String, Object> getInpatientInfo(@RequestBody Map<String, Object> outInfoElement) {
-
         return (patientInfoService.getPatientInfo(outInfoElement));
+    }
+
+    // 환자 등록 정보 READ
+    @PostMapping("/regInfo")
+    public Map<String, Object> getPatientRegistrationInfo(@RequestBody Map<String, Object> regInfoElement) {
+        System.out.println(regInfoElement);
+        return (patientInfoService.getPatientRegistrationInfo(regInfoElement));
+    }
+
+
+    // 환자 등록 INSERT
+    @PostMapping("/insert")
+    public int insertPatientInfo (@RequestBody Map<String, Object> params){
+        return patientInfoService.insertPatientInfo(params);
     }
 
     // 특정 환자 퇴원예정일 UPDATE
@@ -29,9 +42,24 @@ public class PatientInfoController {
         patientInfoService.changeDischargeDueDate(newDischargeDate);
     }
 
+    // 진료중 상태의 환자 클릭시 정보 조회
+    @GetMapping("/treatmentPatientInfo")
+    public List<Map<String, Object>> getTreatmentPatientInfo() {
+        return patientInfoService.getTreatmentPatientInfo();
+    }
 
+    // 진료환자 과거 병력 리스트 조회
+    @GetMapping("/pastTreatmentList")
+    public List<Map<String, Object>> getPastTreatmentList() {
 
+        return patientInfoService.getPastTreatmentList();
+    }
 
+    // 진료환자 과거 병력 상세 조회
+    @GetMapping("/pastTreatmentDetail")
+    public List<Map<String, Object>> getPastTreatmentDetail() {
 
+        return patientInfoService.getPastTreatmentDetail();
+    }
 
 }

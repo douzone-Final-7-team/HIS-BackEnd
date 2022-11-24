@@ -1,7 +1,5 @@
 package com.douzone.HISservice.controller;
 
-
-
 import com.douzone.HISservice.service.BedInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +21,4 @@ public class BedInfoController {
         return(bedInfoService.getOccupiedBedInfoList(roominfo));
 
     }
-
-
 }

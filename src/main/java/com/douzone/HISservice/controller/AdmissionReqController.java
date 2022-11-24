@@ -37,6 +37,7 @@ public class AdmissionReqController {
         return (admissionReqService.getAdmissionDueList());
     }
 
+    // 입원 완료
     @PutMapping("/admissionComplete")
     public String putAdmissionComplete(@RequestBody Map<String, Object> admissionId) {
         admissionReqService.putAdmissionComplete(admissionId);

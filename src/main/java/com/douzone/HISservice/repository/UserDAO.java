@@ -8,11 +8,11 @@ import java.util.Map;
 
 @Mapper
 @Repository
-public interface AdmissionFrontPageDAO {
+public interface UserDAO {
 
-    List<Map<String, Object>> getTest();
+    List<Map<String, Object>> getMyInfo(String pk);
 
-    List<Map<String, Object>> getDisChargeList();
+    void changePwd(String newPwd, String pk);
 
-    void putDisCharged(Map<String, Object> admissionId);
+    void changeAddr(String newAddr, String pk);
 }

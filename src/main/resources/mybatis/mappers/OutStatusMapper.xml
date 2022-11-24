@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.douzone.HISservice.repository.OutStatusDAO">
+    <!--환자 현황 READ-->
+    <select id="getOutStatus" parameterType="HashMap" resultType="HashMap">
+        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId'
+        from RECEIVE_TB as a
+                 left join EMP_INFO_TB as b on b.EMP_ID_PK = a.EMP_ID_FK
+                 left join PATIENT_TB as c on c.PATIENT_ID_PK = a.PATIENT_ID_FK
+                 left join OUTPATIENT_STATUS as d on d.OUTPATIENT_STATUS_CODE = a.OUTPATIENT_STATUS_CODE
+        where b.EMP_ID_PK = #{EMP_ID_PK}
+
+          and (d.OUTPATIENT_STATUS_CODE = 'OA' or d.OUTPATIENT_STATUS_CODE = 'OB' or d.OUTPATIENT_STATUS_CODE = 'OE')
+          and DATE_FORMAT(a.REGISTRATION_TIME, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d');
+    </select>
+
+
+    <!-- 접수 INSERT -->
+    <insert id="insertReceiveInfo" parameterType="Map">
+        INSERT INTO RECEIVE_TB
+        (RECEIVE_ID_PK,
+         PATIENT_ID_FK,
+         OUTPATIENT_STATUS_CODE,
+         EMP_ID_FK,
+         SYMPTOM,
+         REGISTRATION_TIME,
+         SPECIALITY)
+        VALUES (#{RECEIVE_ID_PK},
+                #{PATIENT_ID_PK},
+                'OA',
+                #{EMP_ID_PK},
+                #{SYMPTOM},
+                NOW(),
+                #{SPECIALITY});
+    </insert>
+
+
+    <!-- 접수번호 id(R22~~) 찾기 -->
+    <select id="getRecentSeq" parameterType="String" resultType="String">
+        SELECT RECEIVE_ID_PK
+        FROM RECEIVE_TB
+        WHERE RECEIVE_ID_PK
+                  LIKE
+              '${currYr}%'
+        ORDER BY RECEIVE_ID_PK
+                DESC LIMIT 1;
+    </select>
+
+
+    <!-- 과 별 의사 리스트와 해당 의사들의 환자 현황 SELECT -->
+    <select id="getDoctorList" parameterType="HashMap" resultType="HashMap">
+        SELECT EMP_NAME, EMP_ID_PK
+        FROM EMP_INFO_TB AS a
+                 LEFT JOIN SPECIALITY_TB AS b ON b.SPECIALITY_ID_PK = a.SPECIALITY_ID_FK
+        WHERE SPECIALITY_ID_FK = #{SPECIALITY_ID_FK}
+          AND EMP_ID_PK LIKE 'D%';
+    </select>
+
+
+    <!-- 수납 금액 SELECT -->
+
+</mapper>

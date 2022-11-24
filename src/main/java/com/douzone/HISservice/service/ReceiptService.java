@@ -9,4 +9,7 @@ public interface ReceiptService {
 
     public void setAdReceipt(Map<String, Object> test);
 
+    List<Map<String, Object>> getAdReceiptList(Map<String, Object> filterFlag);
+
+    void getChangeStateList();
 }

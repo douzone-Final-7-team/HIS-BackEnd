@@ -15,17 +15,32 @@ import java.util.Map;
 public class ReceiptController {
     private final ReceiptService receiptService;
 
-    @GetMapping("/AdReceipt")
-    public List<Map<String, Object>> getAdReceipt(@RequestBody Map<String, Object> test) {
-        String admissionId = test.get("ADMISSION_ID_FK").toString();
-        return(receiptService.getAdReceipt(admissionId));
-
+    @PostMapping("/AdReceiptList")
+    public List<Map<String, Object>> getAdReceiptList(@RequestBody Map<String, Object> filterFlag) {
+        return(receiptService.getAdReceiptList(filterFlag));
     }
 
+    @PutMapping("/changeStateList")
+    public void getChangeStateList() {
+        receiptService.getChangeStateList();
+    }
+
+
+
+    //입원수납정보
+    @PostMapping("/AdReceipt")
+    public List<Map<String, Object>> getAdReceipt(@RequestBody Map<String, Object> test) {
+        String admissionId = test.get("ADMISSION_ID_PK").toString();
+        System.out.println(receiptService.getAdReceipt(admissionId));
+        return (receiptService.getAdReceipt(admissionId));
+    }
+
+
+    //입원환자 수납완료
     @PostMapping("/AdReceiptComplete")
     public void setAdReceipt(@RequestBody Map<String, Object> test) {
 
-        String q = test.get("ADMISSION_ID_FK").toString();
+        String q = test.get("ADMISSION_ID_PK").toString();
         System.out.println(q);
         receiptService.setAdReceipt(test);
 //        return(receiptService.setAdReceipt(test));
