@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.douzone.HISservice.repository.UserDAO">
+    <select id="getMyInfo" parameterType="HashMap" resultType="HashMap">
+        SELECT * FROM EMP_INFO_TB AS a
+        LEFT JOIN SPECIALITY_TB AS b ON b.SPECIALITY_ID_PK = a.SPECIALITY_ID_FK
+        WHERE USERNAME = #{username};;
+    </select>
+</mapper>
