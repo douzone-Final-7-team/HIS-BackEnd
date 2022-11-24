@@ -17,4 +17,10 @@ public interface PatientInfoDAO {
     // 특정 환자 퇴원예정일 UPDATE
     void changeDischargeDueDate (Map<String, Object> newDischargeDate);
 
+    List<Map<String, Object>> getPastTreatmentList();
+
+    List<Map<String, Object>> getPastTreatmentDetail();
+
+    List<Map<String, Object>> getTreatmentPatientInfo();
+
 }

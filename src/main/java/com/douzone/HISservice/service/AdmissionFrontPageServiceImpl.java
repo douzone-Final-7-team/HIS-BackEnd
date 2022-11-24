@@ -37,5 +37,10 @@ public class AdmissionFrontPageServiceImpl implements AdmissionFrontPageService{
         admissionFrontPageDAO.putDisChargeList(admissionId);
     }
 
+    @Override
+    public List<Map<String, Object>> getMyInPatient() {
+        return admissionFrontPageDAO.getMyInPatient();
+    }
+
 
 }

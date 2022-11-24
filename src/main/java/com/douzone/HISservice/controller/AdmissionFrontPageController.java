@@ -36,6 +36,14 @@ public class AdmissionFrontPageController {
 
     }
 
+    // 내 입원환자 정보
+    @GetMapping("/myInPatient")
+    public List<Map<String, Object>> getMyInPatient() {
+
+        return adFrontService.getMyInPatient();
+
+    }
+
 
 
 }
