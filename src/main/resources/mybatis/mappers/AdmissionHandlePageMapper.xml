@@ -97,8 +97,8 @@
                  LEFT JOIN PATIENT_TB AS d ON d.PATIENT_ID_PK = c.PATIENT_ID_FK
                  LEFT JOIN ADMISSION_STATUS AS e on b.ADMISSION_STATUS_CODE = e.ADMISSION_STATUS_CODE
                  LEFT JOIN PATIENT_SCHEDULE_STATUS AS f ON a.SCHEDULE_STATUS = f.SCHEDULE_STATUS
-        WHERE b.WARD = #{ward} AND e.AD_CODE_NAME = '입원완료' AND substr(a.SCHEDULE_DATE,1,10) = #{searchDate}
-        ORDER BY SCHEDULE_ID_PK DESC;
+        WHERE b.WARD = (SELECT WARD FROM SPECIALITY_TB AS g WHERE g.SPECIALITY_NAME = #{specialityName}) AND e.AD_CODE_NAME = '입원완료' AND substr(a.SCHEDULE_DATE,1,10) = #{searchDate}
+        ORDER BY SCHEDULE_DATE DESC;
     </select>
 
     <!--해당 병동 전체 환자 일정 CREATE-->
@@ -111,7 +111,7 @@
                                                LEFT JOIN TREATMENT_INFO_TB AS d ON b.TREATMENT_NUM_FK = d.TREATMENT_NUM_PK
                                                LEFT JOIN PATIENT_TB AS e ON d.PATIENT_ID_FK = e.PATIENT_ID_PK
                WHERE e.PATIENT_NAME = #{name} AND c.AD_CODE_NAME = '입원완료' AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
-              #{scheduleStat} ,#{scheduleDate},#{schedulePlace}, #{scheduleContent});
+              'SA' ,#{scheduleDate},#{schedulePlace}, #{scheduleContent});
     </insert>
 
     <!--해당 병동 전체 환자 일정 UPDATE-->
@@ -138,7 +138,7 @@
         FROM HANDOVER_TB AS a
                  LEFT JOIN EMP_INFO_TB AS b ON a.EMP_ID_FK = b.EMP_ID_PK
                  LEFT JOIN SPECIALITY_TB AS c ON b.SPECIALITY_ID_FK = c.SPECIALITY_ID_PK
-        WHERE a.HANDOVER_DATE BETWEEN date(now()) - 1 and DATE(now())+ 1
+        WHERE a.HANDOVER_DATE BETWEEN date(now()) - 2 and DATE(now())+ 1
           AND a.HANDOVER_TARGET = (SELECT EMP_NAME FROM EMP_INFO_TB WHERE USERNAME = #{userName})
         ORDER BY HANDOVER_ID_PK DESC;
     </select>
@@ -149,7 +149,7 @@
         FROM HANDOVER_TB AS a
                  LEFT JOIN EMP_INFO_TB AS b ON a.EMP_ID_FK = b.EMP_ID_PK
                  LEFT JOIN SPECIALITY_TB AS c ON b.SPECIALITY_ID_FK = c.SPECIALITY_ID_PK
-        WHERE EMP_NAME = (SELECT EMP_NAME FROM EMP_INFO_TB WHERE USERNAME = #{userName}) AND a.HANDOVER_DATE BETWEEN date(now()) - 1 and DATE(now())+ 1
+        WHERE EMP_NAME = (SELECT EMP_NAME FROM EMP_INFO_TB WHERE USERNAME = #{userName}) AND a.HANDOVER_DATE BETWEEN date(now()) - 2 and DATE(now())+ 1
         ORDER BY HANDOVER_ID_PK DESC;
     </select>
 
