@@ -30,9 +30,17 @@ public class AdmissionFrontPageController {
     }
 
     @PutMapping("/discharged")
-    public void putDisChargeList(@RequestBody Map<String, Object> admissionId) {
+    public void putDisCharged(@RequestBody Map<String, Object> admissionId) {
 
-        adFrontService.putDisChargeList(admissionId);
+        adFrontService.putDisCharged(admissionId);
+
+    }
+
+    // 내 입원환자 정보
+    @GetMapping("/myInPatient")
+    public List<Map<String, Object>> getMyInPatient() {
+
+        return adFrontService.getMyInPatient();
 
     }
 

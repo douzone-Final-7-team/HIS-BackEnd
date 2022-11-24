@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.douzone.HISservice.repository.TreatmentOrderDAO">
+    <select id="setMedicalCharts" parameterType="HashMap">
+        UPDATE TREATMENT_INFO_TB
+        SET TREATMENT_ORDER = #{treatmentOrder}, PRESCRIPTION = #{medicineOrder}, DIAGNOSTIC_NAME = #{diagnosis},
+            TREATMENT_MEMO= #{treatmentMemo}, TREATMENT_DATE = now(), ADMISSION = #{admissionCheck}
+        WHERE TREATMENT_NUM_PK = 'T22000045';
+    </select>
+
+    <select id="setAdmissionDueDate" parameterType="HashMap" resultType="HashMap">
+        INSERT INTO ADMISSION_TB
+        VALUES ('A22000021', #{treatmentNumPk}, 'IA', null, null, null, #{admissionOrder}, null, null, null, null, null, null);
+    </select>
+</mapper>
