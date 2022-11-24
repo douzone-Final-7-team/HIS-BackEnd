@@ -151,8 +151,17 @@ public class AdmissionHandlePageController {
     // 내가 작성한 인계사항 UPDATE
     @PutMapping("/myHandOver")
     public List<Map<String, Object>> changeHandover(@RequestBody Map<String, Object> upDateHandOverElements){
-        admissionHandlePageService.changeHandover(upDateHandOverElements);
-        return admissionHandlePageService.getSendHandOver(upDateHandOverElements);
+        try {
+            admissionHandlePageService.changeHandover(upDateHandOverElements);
+            return admissionHandlePageService.getSendHandOver(upDateHandOverElements);
+
+        }catch (DataIntegrityViolationException e){
+            Map<String,Object> map1 = new HashMap<String, Object>();
+            map1.put("errorCode","잘못된 직원명 입니다. 인계자를 확인하세요");
+            List list = new ArrayList<Object>();
+            list.add(map1);
+            return list;
+        }
     };
 
     // 환자 호출

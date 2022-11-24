@@ -7,12 +7,12 @@
     <!-- 병동 and 호실 기준 병상 현황 정보 불러오기 READ-->
     <select id="getOccupiedBedInfoList"  parameterType="HashMap" resultType="HashMap">
         SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM, d.PATIENT_NAME, e.EMP_NAME
-        FROM bed_tb as a
-                 LEFT JOIN admission_tb AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
-                 LEFT JOIN treatment_info_tb AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
-                 LEFT JOIN patient_tb AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
-                 LEFT JOIN emp_info_tb AS e ON c.EMP_ID_FK = e.EMP_ID_PK
-                 LEFT JOIN admission_status AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
+        FROM BED_TB as a
+                 LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
+                 LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
+                 LEFT JOIN PATIENT_TB AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
+                 LEFT JOIN EMP_INFO_TB AS e ON c.EMP_ID_FK = e.EMP_ID_PK
+                 LEFT JOIN ADMISSION_STATUS AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
         WHERE a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum}
         ORDER BY BED_NUM ASC;
     </select>
@@ -20,12 +20,12 @@
     <!-- 병동 기준 병상 현황 정보 불러오기 READ-->
     <select id="getAllWardList"  parameterType="HashMap" resultType="HashMap">
         SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM, d.PATIENT_NAME, e.EMP_NAME
-        FROM bed_tb as a
-                LEFT JOIN admission_tb AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
-                LEFT JOIN treatment_info_tb AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
-                LEFT JOIN patient_tb AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
-                LEFT JOIN emp_info_tb AS e ON c.EMP_ID_FK = e.EMP_ID_PK
-                LEFT JOIN admission_status AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
+        FROM BED_TB as a
+                 LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
+                 LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
+                 LEFT JOIN PATIENT_TB AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
+                 LEFT JOIN EMP_INFO_TB AS e ON c.EMP_ID_FK = e.EMP_ID_PK
+                 LEFT JOIN ADMISSION_STATUS AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
         WHERE a.WARD = #{ward}
         ORDER BY WARDROOM ASC, BED_NUM;
     </select>
@@ -33,12 +33,12 @@
     <!-- 전체 병상 현황 정보 불러오기 READ-->
     <select id="getAllBedList"  parameterType="HashMap" resultType="HashMap">
         SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM, d.PATIENT_NAME, e.EMP_NAME
-        FROM bed_tb as a
-                LEFT JOIN admission_tb AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
-                LEFT JOIN treatment_info_tb AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
-                LEFT JOIN patient_tb AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
-                LEFT JOIN emp_info_tb AS e ON c.EMP_ID_FK = e.EMP_ID_PK
-                LEFT JOIN admission_status AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
+        FROM BED_TB as a
+                 LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
+                 LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
+                 LEFT JOIN PATIENT_TB AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
+                 LEFT JOIN EMP_INFO_TB AS e ON c.EMP_ID_FK = e.EMP_ID_PK
+                 LEFT JOIN ADMISSION_STATUS AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
         ORDER BY WARDROOM ASC, BED_NUM;
     </select>
 
