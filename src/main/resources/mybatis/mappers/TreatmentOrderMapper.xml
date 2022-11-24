@@ -7,11 +7,11 @@
         UPDATE TREATMENT_INFO_TB
         SET TREATMENT_ORDER = #{treatmentOrder}, PRESCRIPTION = #{medicineOrder}, DIAGNOSTIC_NAME = #{diagnosis},
             TREATMENT_MEMO= #{treatmentMemo}, TREATMENT_DATE = now(), ADMISSION = #{admissionCheck}
-        WHERE TREATMENT_NUM_PK = 'T22000045';
+        WHERE TREATMENT_NUM_PK = 'T22000095';
     </select>
 
     <select id="setAdmissionDueDate" parameterType="HashMap" resultType="HashMap">
         INSERT INTO ADMISSION_TB
-        VALUES ('A22000021', #{treatmentNumPk}, 'IA', null, null, null, #{admissionOrder}, null, null, null, null, null, null);
+        VALUES ('A22000043', #{treatmentNumPk}, 'IA', null, null, null, #{admissionOrder}, null, null, null, null, null, null, null);
     </select>
 </mapper>
