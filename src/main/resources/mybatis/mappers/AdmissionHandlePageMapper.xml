@@ -111,14 +111,14 @@
                                                LEFT JOIN TREATMENT_INFO_TB AS d ON b.TREATMENT_NUM_FK = d.TREATMENT_NUM_PK
                                                LEFT JOIN PATIENT_TB AS e ON d.PATIENT_ID_FK = e.PATIENT_ID_PK
                WHERE e.PATIENT_NAME = #{name} AND c.AD_CODE_NAME = '입원완료' AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
-              'SA' ,#{scheduleDate},#{schedulePlace}, #{scheduleContent}, #{LastModifier});
+              'SA' ,#{scheduleDate},#{schedulePlace}, #{scheduleContent});
     </insert>
 
     <!--해당 병동 전체 환자 일정 UPDATE-->
     <update id="changeSchedule" parameterType="HashMap">
         UPDATE
             PATIENT_SCHEDULE_TB AS a
-        SET a.SCHEDULE_DATE = #{scheduleDate}, a.SCHEDULE_CONTENT = #{scheduleContent} , a.SCHEDULE_PLACE = #{schedulePlace}, a.LAST_MODIFIER = #{LastModifier}
+        SET a.SCHEDULE_DATE = #{scheduleDate}, a.SCHEDULE_CONTENT = #{scheduleContent} , a.SCHEDULE_PLACE = #{schedulePlace}
         WHERE SCHEDULE_ID_PK = #{scheduleIdPk};
     </update>
 
@@ -138,7 +138,7 @@
         FROM HANDOVER_TB AS a
                  LEFT JOIN EMP_INFO_TB AS b ON a.EMP_ID_FK = b.EMP_ID_PK
                  LEFT JOIN SPECIALITY_TB AS c ON b.SPECIALITY_ID_FK = c.SPECIALITY_ID_PK
-        WHERE DATE(a.HANDOVER_DATE) BETWEEN date(now()) - 2 and DATE(now())+ 1
+        WHERE a.HANDOVER_DATE BETWEEN date(now()) - 2 and DATE(now())+ 1
           AND a.HANDOVER_TARGET = (SELECT EMP_NAME FROM EMP_INFO_TB WHERE USERNAME = #{userName})
         ORDER BY HANDOVER_ID_PK DESC;
     </select>
@@ -149,7 +149,7 @@
         FROM HANDOVER_TB AS a
                  LEFT JOIN EMP_INFO_TB AS b ON a.EMP_ID_FK = b.EMP_ID_PK
                  LEFT JOIN SPECIALITY_TB AS c ON b.SPECIALITY_ID_FK = c.SPECIALITY_ID_PK
-        WHERE EMP_NAME = (SELECT EMP_NAME FROM EMP_INFO_TB WHERE USERNAME = #{userName}) AND DATE(a.HANDOVER_DATE) BETWEEN DATE(now()) - 2 and DATE(now())+ 1
+        WHERE EMP_NAME = (SELECT EMP_NAME FROM EMP_INFO_TB WHERE USERNAME = #{userName}) AND a.HANDOVER_DATE BETWEEN date(now()) - 2 and DATE(now())+ 1
         ORDER BY HANDOVER_ID_PK DESC;
     </select>
 
