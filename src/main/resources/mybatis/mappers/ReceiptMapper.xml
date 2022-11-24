@@ -31,17 +31,17 @@
 
     <select id="getAdReceiptListToday" parameterType="String" resultType="HashMap">
         SELECT ADMISSION_ID_PK, ADMISSION_STATUS_CODE ,C.PATIENT_NAME , if(SUBSTR(PATIENT_SSN,8,1)=1 or substr(PATIENT_SSN,8,1)=3 , 'M' ,'W') AS GENDER , (date_format(now(),'%Y')- concat('19',substr(PATIENT_SSN,1,2)))+1 AS AGE , A.WARD+A.ROOM_NUM AS WARDROOM , A.BED_NUM
-        from ADMISSION_TB as a
-        LEFT JOIN TREATMENT_INFO_TB as b on a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
-        LEFT JOIN PATIENT_TB as c on b.PATIENT_ID_FK = c.PATIENT_ID_PK
+        from ADMISSION_TB as A
+        LEFT JOIN TREATMENT_INFO_TB as B on A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
+        LEFT JOIN PATIENT_TB as C on B.PATIENT_ID_FK = C.PATIENT_ID_PK
         WHERE DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') AND ADMISSION_STATUS_CODE = 'ID';
     </select>
 
     <select id="getMiddlePaymentList" parameterType="String" resultType="HashMap">
         SELECT ADMISSION_ID_PK, ADMISSION_STATUS_CODE ,C.PATIENT_NAME , if(SUBSTR(PATIENT_SSN,8,1)=1 or substr(PATIENT_SSN,8,1)=3 , 'M' ,'W') AS GENDER , (date_format(now(),'%Y')- concat('19',substr(PATIENT_SSN,1,2)))+1 AS AGE , A.WARD+A.ROOM_NUM AS WARDROOM , A.BED_NUM
-        from ADMISSION_TB as a
-        LEFT JOIN TREATMENT_INFO_TB as b on a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
-        LEFT JOIN PATIENT_TB as c on b.PATIENT_ID_FK = c.PATIENT_ID_PK
+        from ADMISSION_TB as A
+        LEFT JOIN TREATMENT_INFO_TB as B on A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
+        LEFT JOIN PATIENT_TB as C on B.PATIENT_ID_FK = C.PATIENT_ID_PK
         where (TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 125000 and ADMISSION_STATUS_CODE = 'IC';
     </select>
 
@@ -53,9 +53,9 @@
             (date_format(now(),'%Y')- concat('19',substr(PATIENT_SSN,1,2)))+1 AS AGE ,
             A.WARD+A.ROOM_NUM AS WARDROOM , A.BED_NUM
         from
-            ADMISSION_TB as a
-                LEFT JOIN TREATMENT_INFO_TB as b on a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
-                LEFT JOIN PATIENT_TB as c on b.PATIENT_ID_FK = c.PATIENT_ID_PK
+            ADMISSION_TB as A
+                LEFT JOIN TREATMENT_INFO_TB as B on A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
+                LEFT JOIN PATIENT_TB as C on B.PATIENT_ID_FK = C.PATIENT_ID_PK
         WHERE
             (DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') AND ADMISSION_STATUS_CODE = 'ID') OR ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 1250000 and ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is null) OR ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , now()))*50000 >= 1250000 and ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is not null);
     </select>

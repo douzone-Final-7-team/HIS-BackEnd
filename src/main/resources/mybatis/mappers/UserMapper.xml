@@ -33,4 +33,3 @@
         WHERE EMP_ID_PK = #{pk}
     </select>
 </mapper>
-
