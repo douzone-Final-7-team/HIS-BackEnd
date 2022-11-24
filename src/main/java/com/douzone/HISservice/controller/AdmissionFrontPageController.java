@@ -30,9 +30,9 @@ public class AdmissionFrontPageController {
     }
 
     @PutMapping("/discharged")
-    public void putDisChargeList(@RequestBody Map<String, Object> admissionId) {
+    public void putDisCharged(@RequestBody Map<String, Object> admissionId) {
 
-        adFrontService.putDisChargeList(admissionId);
+        adFrontService.putDisCharged(admissionId);
 
     }
 
