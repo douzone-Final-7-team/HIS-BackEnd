@@ -3,9 +3,12 @@ package com.douzone.HISservice.controller;
 
 import com.douzone.HISservice.service.AdmissionHandlePageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admission")
 @RequiredArgsConstructor
-
+@Slf4j
 
 public class AdmissionHandlePageController {
     private final AdmissionHandlePageService admissionHandlePageService;
@@ -30,17 +33,17 @@ public class AdmissionHandlePageController {
 
     // 특정 환자 간호기록 CREATE
     @PostMapping("/createdCareInfo")
-    public String setCareInfo(@RequestBody Map<String, Object> careInfoElements) {
+    public List<Map<String, Object>> setCareInfo(@RequestBody Map<String, Object> careInfoElements) {
 
         admissionHandlePageService.setCareInfo(careInfoElements);
-        return "간호 기록 인서트 성공";
+        return (admissionHandlePageService.getCareInfos(careInfoElements));
     }
     // 특정 환자 간호기록 UPADTE
     @PutMapping("/changedCareInfo")
-    public String changeCareInfo (@RequestBody Map<String, Object> upDateCareInfoElements){
+    public List<Map<String, Object>> changeCareInfo (@RequestBody Map<String, Object> upDateCareInfoElements){
         admissionHandlePageService.changeCareInfo(upDateCareInfoElements);
 
-        return "간호 기록 업데이트 성공";
+        return (admissionHandlePageService.getCareInfos(upDateCareInfoElements));
     };
 
 // 처방기록
@@ -54,27 +57,25 @@ public class AdmissionHandlePageController {
 
     }
 
-
     //특정 환자별 처방기록 CREATE
     @PostMapping("/createdMediRecord")
-    public String setMediRecord(@RequestBody Map<String, Object> mediRecordElements) {
+    public List<Map<String, Object>> setMediRecord(@RequestBody Map<String, Object> mediRecordElements) {
 
         admissionHandlePageService.setMediRecord(mediRecordElements);
-        return "처방기록 인서트 성공";
+        return (admissionHandlePageService.getMediRecords(mediRecordElements));
     }
     // 특정 환자별 처방기록 UPDATE
     @PutMapping("/changedMediRecord")
-    public String changeMediRecord (@RequestBody Map<String, Object> upDateMediRecordElements){
+    public List<Map<String, Object>> changeMediRecord (@RequestBody Map<String, Object> upDateMediRecordElements){
         admissionHandlePageService.changeMediRecord(upDateMediRecordElements);
-
-        return  "특정 환자별 처방기록 UPDATE";
+        return  admissionHandlePageService.getMediRecords(upDateMediRecordElements);
     };
 
     // 복약 체크 시 상태 업데이트 UPDATE
     @PutMapping("/changedMediRecord/status")
-    public String changeTakeMediStatus (@RequestBody Map<String, Object> upDateTakeMediStatusElements){
+    public List<Map<String, Object>> changeTakeMediStatus (@RequestBody Map<String, Object> upDateTakeMediStatusElements){
         admissionHandlePageService.changeTakeMediStatus(upDateTakeMediStatusElements);
-        return "복약 체크 시 상태 업데이트 UPDATE";
+        return  admissionHandlePageService.getMediRecords(upDateTakeMediStatusElements);
     };
 
 // 환자 일정
@@ -83,20 +84,29 @@ public class AdmissionHandlePageController {
     // 해당 병동 전체 환자 일정 READ
     @PostMapping("/schedules")
     public List<Map<String, Object>> getInpatientSchedules(@RequestBody Map<String, Object> inpatientSchedulesElements){
+
         return admissionHandlePageService.getInpatientSchedules(inpatientSchedulesElements);
     }
     // 해당 병동 전체 환자 일정 CREATE
     @PostMapping("/createdSchedule")
-    public String setInpatientSchedule(@RequestBody Map<String, Object> inpatientScheduleElements) {
-        admissionHandlePageService.setInpatientSchedule(inpatientScheduleElements);
+    public List<Map<String, Object>> setInpatientSchedule(@RequestBody Map<String, Object> inpatientScheduleElements) {
+        try {
+            admissionHandlePageService.setInpatientSchedule(inpatientScheduleElements);
+            return admissionHandlePageService.getInpatientSchedules(inpatientScheduleElements);
+        }catch (DataIntegrityViolationException e){
 
-        return "환자 일정 인서트 성공";
+            Map<String,Object> map1 = new HashMap<String, Object>();
+            map1.put("errorCode","잘못된 일정 등록입니다. 인계자를 확인하세요");
+            List list = new ArrayList<Object>();
+            list.add(map1);
+            return list;
+        }
     }
     // 해당 병동 전체 환자 일정 UPDATE
     @PutMapping("/changedSchedule")
-    public String changeSchedule (@RequestBody Map<String, Object> upDateScheduleElements){
+    public List<Map<String, Object>> changeSchedule (@RequestBody Map<String, Object> upDateScheduleElements){
         admissionHandlePageService.changeSchedule(upDateScheduleElements);
-        return "해당 병동 전체 환자 일정 UPDATE";
+        return admissionHandlePageService.getInpatientSchedules(upDateScheduleElements);
     };
 
     // 해당 병동 전체 환자 일정 상태 UPDATE
@@ -124,22 +134,25 @@ public class AdmissionHandlePageController {
 
     // 인계 사항 CREATE
     @PostMapping("/handOver")
-    public String setHandOver(@RequestBody Map<String, Object> handOverElements){
+    public List<Map<String, Object>> setHandOver(@RequestBody Map<String, Object> handOverElements){
 
             try {
                 admissionHandlePageService.setHandOver(handOverElements);
-                return "인계 사항  인서트 성공";
+                return admissionHandlePageService.getSendHandOver(handOverElements);
+
             }catch (DataIntegrityViolationException e){
-                return "잘못 입력 된 직원명입니다";
+                Map<String,Object> map1 = new HashMap<String, Object>();
+                map1.put("errorCode","잘못된 직원명 입니다. 인계자를 확인하세요");
+                List list = new ArrayList<Object>();
+                list.add(map1);
+                return list;
             }
-
     };
-
     // 내가 작성한 인계사항 UPDATE
     @PutMapping("/myHandOver")
-    public String changeHandover(@RequestBody Map<String, Object> upDateHandOverElements){
+    public List<Map<String, Object>> changeHandover(@RequestBody Map<String, Object> upDateHandOverElements){
         admissionHandlePageService.changeHandover(upDateHandOverElements);
-        return "인계 사항 업데이트 성공";
+        return admissionHandlePageService.getSendHandOver(upDateHandOverElements);
     };
 
     // 환자 호출

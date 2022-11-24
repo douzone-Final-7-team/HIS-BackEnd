@@ -15,14 +15,14 @@ import java.util.Map;
 public class ReceiptController {
     private final ReceiptService receiptService;
 
-    @GetMapping("/AdReceipt")
+    @PostMapping("/AdReceipt")
     public List<Map<String, Object>> getAdReceipt(@RequestBody Map<String, Object> test) {
         String admissionId = test.get("ADMISSION_ID_FK").toString();
         return(receiptService.getAdReceipt(admissionId));
 
     }
 
-    @PostMapping("/AdReceiptComplete")
+    @PutMapping("/AdReceiptComplete")
     public void setAdReceipt(@RequestBody Map<String, Object> test) {
 
         String q = test.get("ADMISSION_ID_FK").toString();
