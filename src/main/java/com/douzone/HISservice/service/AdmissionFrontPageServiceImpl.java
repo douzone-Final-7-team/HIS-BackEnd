@@ -32,9 +32,9 @@ public class AdmissionFrontPageServiceImpl implements AdmissionFrontPageService{
 //        return adFrontDAO.putDisChargeList(admissionId);
 //    }
     @Override
-    public void putDisChargeList(Map<String, Object> admissionId) {
+    public void putDisCharged(Map<String, Object> admissionId) {
 
-        admissionFrontPageDAO.putDisChargeList(admissionId);
+        admissionFrontPageDAO.putDisCharged(admissionId);
     }
 
     @Override

@@ -4,16 +4,6 @@
 
 <!--특정 환자 입원 정보 READ-->
 <mapper namespace="com.douzone.HISservice.repository.AdmissionReqDAO">
-    <select id="getPatientInfo" parameterType="HashMap" resultType="HashMap">
-        SELECT ADMISSION_DATE, ADMISSION_DUEDATE, PATIENT_NAME, GENDER, PATIENT_ADDR, PATIENT_TEL, DIAGNOSTIC_NAME, EMP_NAME, SPECIALITY_NAME,PROTECTOR_NAME,PROTECTOR_TEL
-        FROM admission_tb AS a
-                 LEFT JOIN treatment_info_tb AS b ON a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
-                 LEFT JOIN patient_tb AS c ON b.PATIENT_ID_FK = c.PATIENT_ID_PK
-                 LEFT JOIN emp_info_tb AS d ON b.EMP_ID_FK = d.EMP_ID_PK
-                 LEFT JOIN speciality_tb AS e ON d.SPECIALITY_ID_FK= e.SPECIALITY_ID_PK
-                 LEFT JOIN admission_status AS f ON a.ADMISSION_STATUS_CODE = f.ADMISSION_STATUS_CODE
-        WHERE c.PATIENT_NAME = #{name} AND f.AD_CODE_NAME = #{adCodeName} AND a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum} AND a.BED_NUM= #{bedNum};
-    </select>
 
     <!--입원오더리스트-->
     <select id="getAdmissionOrder" resultType="HashMap">
@@ -29,13 +19,17 @@
 
     <!-- 입원승인 -->
     <update id="putAdmissionAccept" parameterType="HashMap">
-                UPDATE ADMISSION_TB SET ward = #{ward} , room_num = #{roomNum} , bed_num = #{bedNum} , ADMISSION_STATUS_CODE = "IB"
-                WHERE ADMISSION_ID_PK = #{admissionIdPk};
+        UPDATE ADMISSION_TB
+        SET
+            ward = #{ward} , room_num = #{roomNum} , bed_num = #{bedNum} , ADMISSION_STATUS_CODE = "IB"
+        WHERE ADMISSION_ID_PK = #{admissionIdPk};
     </update>
 
     <!-- 배드상태변경 -->
     <update id="putBedStatusIn" parameterType="HashMap">
-        UPDATE BED_TB SET BED_STATUS = 1
+        UPDATE BED_TB
+        SET
+            BED_STATUS = 1
         WHERE ward = #{ward} AND room_num = #{roomNum} AND bed_num = #{bedNum};
     </update>
 
@@ -44,7 +38,7 @@
     <update id="putAdmissionNotAccept" parameterType="HashMap">
         UPDATE ADMISSION_TB
         SET
-            ADMISSION_STATUS_CODE = #{admissionStatusCode},
+            ADMISSION_STATUS_CODE = 'IF',
             REJECT_REASON = #{rejectReason}
         WHERE ADMISSION_ID_PK = #{admissionIdPk};
     </update>
@@ -53,10 +47,10 @@
     <select id="getAdmissionDueList" resultType="HashMap">
         SELECT A.ADMISSION_ID_PK ,PATIENT_NAME , if(substr(PATIENT_SSN,8,1)=1 or substr(PATIENT_SSN,8,1)=3 , 'M' ,'W') as GENDER , (date_format(now(),'%Y')- concat('19',substr(PATIENT_SSN,1,2)))+1 as AGE, PATIENT_SSN, A.WARD+A.ROOM_NUM as WARDROOM, A.BED_NUM
         FROM ADMISSION_TB AS A
-        LEFT JOIN TREATMENT_INFO_TB AS B ON A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
-        LEFT JOIN PATIENT_TB AS C ON B.PATIENT_ID_FK = C.PATIENT_ID_PK
-        LEFT JOIN EMP_INFO_TB AS D ON B.EMP_ID_FK = D.EMP_ID_PK
-        LEFT JOIN SPECIALITY_TB AS E ON D.SPECIALITY_ID_FK = E.SPECIALITY_ID_PK
+            LEFT JOIN TREATMENT_INFO_TB AS B ON A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
+            LEFT JOIN PATIENT_TB AS C ON B.PATIENT_ID_FK = C.PATIENT_ID_PK
+            LEFT JOIN EMP_INFO_TB AS D ON B.EMP_ID_FK = D.EMP_ID_PK
+            LEFT JOIN SPECIALITY_TB AS E ON D.SPECIALITY_ID_FK = E.SPECIALITY_ID_PK
         WHERE ADMISSION_STATUS_CODE = 'IB';
     </select>
 
