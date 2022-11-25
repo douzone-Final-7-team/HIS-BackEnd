@@ -59,7 +59,7 @@
     </update>
 
 
-<!-- 진료중의 상태의 환자 클릭시 정보 불러오기 -->
+<!-- 진료중 상태의 환자 클릭시 정보 불러오기 -->
     <select id="getTreatmentPatientInfo" resultType="HashMap">
         SELECT if(COUNT(*) > 1 , '재진', '초진') AS VISITCOUNT, b.*, a.TREATMENT_NUM_PK, c.SPECIALITY, c.SYMPTOM, IF(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK
         FROM TREATMENT_INFO_TB AS a
