@@ -65,7 +65,7 @@
         FROM TREATMENT_INFO_TB AS a
                  LEFT JOIN PATIENT_TB AS b ON a.PATIENT_ID_FK = b.PATIENT_ID_PK
                  LEFT JOIN RECEIVE_TB AS c ON a.RECEIVE_ID_FK = c.RECEIVE_ID_PK
-        WHERE PATIENT_ID_PK = '22110131';
+        WHERE PATIENT_ID_PK = '22110151';
     </select>
 
 <!-- 환자 과거 병력 가져오기 -->

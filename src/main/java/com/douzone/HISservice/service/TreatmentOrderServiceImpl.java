@@ -4,6 +4,7 @@ import com.douzone.HISservice.repository.TreatmentOrderDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -19,5 +20,15 @@ public class TreatmentOrderServiceImpl implements TreatmentOrderService {
         if(Integer.parseInt(data.get("admissionCheck").toString()) == 1) {
             treatmentOrderDAO.setAdmissionDueDate(data); // 입원 오더가 내려지면 입원 테이블에 insert
         }
+    }
+
+    @Override
+    public List<Map<String, Object>> getDiagnosisList(String specialityId) {
+        return treatmentOrderDAO.getDiagnosisList(specialityId);
+    }
+
+    @Override
+    public List<Map<String, Object>> getMedicineList(String diagnosis) {
+        return treatmentOrderDAO.getMedicineList(diagnosis);
     }
 }
