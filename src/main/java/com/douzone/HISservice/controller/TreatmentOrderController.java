@@ -22,13 +22,11 @@ public class TreatmentOrderController {
     public List<Map<String, Object>> getDiagnosisList(Authentication authentication) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String specialityId = principal.getUser().getSpeciality_ID_FK();
-        System.out.println(specialityId);
         return treatmentOrderService.getDiagnosisList(specialityId);
     }
 
     @GetMapping("/getMedicineList")
     public List<Map<String, Object>> getMedicineList(@RequestParam String diagnosis) {
-        System.out.println(diagnosis);
         return treatmentOrderService.getMedicineList(diagnosis);
     }
 

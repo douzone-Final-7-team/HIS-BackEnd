@@ -72,6 +72,12 @@ public class OutStatusServiceImpl implements OutStatusService{
         return outStatusDAO.getDoctorList(params);
     }
 
+    // 의사 개인 환자 현황 리스트
+    @Override
+    public List<Map<String, Object>> getMyPatient() {
+        return outStatusDAO.getMyPatient();
+    }
+
 
     // 수납 금액
 }

@@ -24,5 +24,8 @@ public interface OutStatusDAO {
     // 과 별 의사 리스트와 해당 의사들의 환자 현황 SELECT
     List<Map<String, Object>> getDoctorList (Map<String, Object> params);
 
+    // 의사 개인 환자 현황 리스트
+    List<Map<String, Object>> getMyPatient();
+
 }
 
