@@ -11,4 +11,6 @@ public interface UserService {
 
     String changeAddr(String newAddr, String pk);
 
+    List<Map<String, Object>> getHeaderInfo(String pk);
+
 }

@@ -42,6 +42,12 @@ public class OutStatusController {
         return paramsList;
     }
 
+    // 의사 개인 환자 현황 리스트
+    @GetMapping("/MyPatient")
+    public List<Map<String, Object>> getMyPatient() {
+        return outStatusService.getMyPatient();
+    }
+
     // 필터
     @PostMapping("/getdocpatCon")
     public Object getDocPatCon(@RequestBody Map<String, Object> params) {
