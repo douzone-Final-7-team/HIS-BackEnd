@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface AdmissionFrontPageService {
 
-    List<Map<String, Object>> getTest ();
+    List<Map<String, Object>> getBedInfo ();
 
 
     List<Map<String, Object>> getDisChargeList ();
@@ -13,4 +13,6 @@ public interface AdmissionFrontPageService {
     void putDisCharged (Map<String, Object> admissionId);
 
     List<Map<String, Object>> getMyInPatient();
+
+    List<Map<String, Object>> getAvailable();
 }

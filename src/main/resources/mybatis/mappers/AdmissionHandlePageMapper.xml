@@ -177,22 +177,22 @@
 
     <!-- 로딩 시 호출 현황 READ -->
 
-    <select id="getOutPatientReq" parameterType="HashMap" resultType="HashMap">
-        SELECT PATIENT_NAME, PR_CODE_NAME, REQUEST_TIME,  (a.WARD + a.ROOM_NUM) AS ROOM , a.BED_NUM FROM BED_TB AS a
-                                                                                                             LEFT JOIN PATIENT_REQUEST_STATUS AS b ON  b.REQUEST_STATUS = a.REQUEST_STATUS
-                                                                                                             LEFT JOIN ADMISSION_TB AS c ON  c.WARD = a.WARD  and c.ROOM_NUM = a.ROOM_NUM and c.BED_NUM = a.BED_NUM
-                                                                                                             LEFT JOIN ADMISSION_STATUS AS d ON d.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
-                                                                                                             LEFT JOIN TREATMENT_INFO_TB AS e ON e.TREATMENT_NUM_PK = c.TREATMENT_NUM_FK
-                                                                                                             LEFT JOIN PATIENT_TB AS f ON f.PATIENT_ID_PK = e.PATIENT_ID_FK
-        WHERE AD_CODE_NAME = "입원완료" AND PR_CODE_NAME = "호출" AND a.WARD = #{ward}
-        ORDER BY (a.WARD + a.ROOM_NUM) ;
+    <select id="getInPatientReq" parameterType="HashMap" resultType="HashMap">
+        SELECT PATIENT_NAME AS patientName , PR_CODE_NAME AS callStatus, SUBSTR(REQUEST_TIME,12) AS callTime , a.WARD AS ward, a.ROOM_NUM AS roomNum, a.BED_NUM AS bedNum FROM BED_TB AS a
+        LEFT JOIN PATIENT_REQUEST_STATUS AS b ON  b.REQUEST_STATUS = a.REQUEST_STATUS
+        LEFT JOIN ADMISSION_TB AS c ON  c.WARD = a.WARD  and c.ROOM_NUM = a.ROOM_NUM and c.BED_NUM = a.BED_NUM
+        LEFT JOIN ADMISSION_STATUS AS d ON d.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
+        LEFT JOIN TREATMENT_INFO_TB AS e ON e.TREATMENT_NUM_PK = c.TREATMENT_NUM_FK
+        LEFT JOIN PATIENT_TB AS f ON f.PATIENT_ID_PK = e.PATIENT_ID_FK
+        WHERE AD_CODE_NAME = "입원완료" AND PR_CODE_NAME = "호출" AND a.WARD = (SELECT WARD from SPECIALITY_TB where SPECIALITY_NAME = #{specialityName})
+        ORDER BY REQUEST_TIME DESC;
     </select>
-
     <!--환자, 간호사 소켓 요청 시 UPDATE-->
-    <update id="changeOutPatientReq" parameterType="HashMap">
+    <update id="changeInPatientReq" parameterType="HashMap">
         UPDATE
-            BED_TB AS a
-        SET REQUEST_STATUS = (SELECT REQUEST_STATUS FROM PATIENT_REQUEST_STATUS WHERE PR_CODE_NAME = "완료")
+        BED_TB AS a
+        SET REQUEST_STATUS = (SELECT REQUEST_STATUS FROM PATIENT_REQUEST_STATUS WHERE PR_CODE_NAME = #{callStatus}),
+        REQUEST_TIME = #{callTime}
         WHERE a.WARD = #{ward} AND a.ROOM_NUM= #{roomNum} AND a.BED_NUM = #{bedNum};
     </update>
 

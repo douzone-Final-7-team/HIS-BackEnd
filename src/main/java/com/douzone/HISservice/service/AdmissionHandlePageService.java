@@ -63,11 +63,11 @@ public interface AdmissionHandlePageService {
     public void changeHandover (Map<String, Object> upDateHandOverElements);
 
     // 로딩 시 호출 현황 READ
-    public List<Map<String, Object>>  getOutPatientReq (Map<String, Object> outPatientReqElements);
+    public List<Map<String, Object>>  getInPatientReq (Map<String, Object> outPatientReqElements);
 
 
     // 환자, 간호사 소켓 요청 시 UPDATE
-    public  void changeOutPatientReq (Map<String, Object> sendPatientReqElements);
+    public  void changeInPatientReq (Map<String, Object> sendPatientReqElements);
 
 
 }

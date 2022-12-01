@@ -42,7 +42,7 @@
         from ADMISSION_TB as A
         LEFT JOIN TREATMENT_INFO_TB as B on A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
         LEFT JOIN PATIENT_TB as C on B.PATIENT_ID_FK = C.PATIENT_ID_PK
-        where (TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 125000 and ADMISSION_STATUS_CODE = 'IC';
+        where ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 1250000 and ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is null) OR ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , now()))*50000 >= 1250000 and ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is not null);
     </select>
 
     <select id="getAdReceiptListAll" parameterType="String" resultType="HashMap">
