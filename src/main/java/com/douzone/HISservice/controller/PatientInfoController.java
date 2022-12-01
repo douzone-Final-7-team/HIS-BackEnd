@@ -37,8 +37,10 @@ public class PatientInfoController {
 
     // 특정 환자 퇴원예정일 UPDATE
     @PutMapping("/dischargeDueDate")
-    public void changeDischargeDueDate (@RequestBody Map<String, Object> newDischargeDate){
+    public Map<String, Object>changeDischargeDueDate (@RequestBody Map<String, Object> newDischargeDate){
+
         patientInfoService.changeDischargeDueDate(newDischargeDate);
+        return (patientInfoService.getPatientInfo(newDischargeDate));
     }
 
     // 진료중 상태의 환자 클릭시 정보 조회

@@ -97,7 +97,7 @@
                  LEFT JOIN PATIENT_TB AS d ON d.PATIENT_ID_PK = c.PATIENT_ID_FK
                  LEFT JOIN ADMISSION_STATUS AS e on b.ADMISSION_STATUS_CODE = e.ADMISSION_STATUS_CODE
                  LEFT JOIN PATIENT_SCHEDULE_STATUS AS f ON a.SCHEDULE_STATUS = f.SCHEDULE_STATUS
-        WHERE b.WARD = (SELECT WARD FROM SPECIALITY_TB AS g WHERE g.SPECIALITY_NAME = #{specialityName}) AND e.AD_CODE_NAME = '입원완료' AND substr(a.SCHEDULE_DATE,1,10) = #{searchDate}
+        WHERE b.WARD = (SELECT WARD FROM SPECIALITY_TB AS g WHERE g.SPECIALITY_NAME = #{specialityName}) AND e.AD_CODE_NAME = '입원완료' AND substr(a.SCHEDULE_DATE,1,10) = substr(#{scheduleDate},1,10)
         ORDER BY SCHEDULE_DATE DESC;
     </select>
 
@@ -126,8 +126,8 @@
     <update id="changeScheduleStatus" parameterType="HashMap">
         UPDATE
             PATIENT_SCHEDULE_TB AS a
-        SET a.SCHEDULE_STATUS = #{scheduleStatus}
-        WHERE SCHEDULE_ID_PK = #{scheduleIdPk};
+        SET a.SCHEDULE_STATUS =(SELECT SCHEDULE_STATUS from patient_schedule_status WHERE PS_CODE_NAME = #{scheduleStatus})
+        WHERE a.SCHEDULE_ID_PK = #{scheduleIdPk};
     </update>
 
     <!-- 인계 사항 -->
@@ -153,15 +153,24 @@
         ORDER BY HANDOVER_ID_PK DESC;
     </select>
 
+    <!--인계 사항 작성 하기 위한 직원 검색-->
+    <select id="getInNurseList" resultType="HashMap">
+        SELECT EMP_NAME, substr(ROLE,6) AS ROLE , USERNAME, SPECIALITY_NAME, EMP_EMAIL FROM EMP_INFO_TB AS a
+            LEFT JOIN SPECIALITY_TB AS b ON a.SPECIALITY_ID_FK = b.SPECIALITY_ID_PK
+        WHERE substr(ROLE,6) = 'INNURSE';
+    </select>
+
     <!--인계 사항 CREATE-->
     <insert id="setHandOver" parameterType="HashMap">
         INSERT INTO HANDOVER_TB
         VALUES
             ( (SELECT concat('H',substr(now(),3,2)*1000000 + 1 + (SELECT COUNT(*) FROM HANDOVER_TB AS a))),
               (SELECT EMP_ID_PK FROM EMP_INFO_TB WHERE USERNAME = #{userName}), now() ,
-              (SELECT EMP_NAME FROM EMP_INFO_TB WHERE EMP_NAME = #{handOverTarget}),
+              (SELECT EMP_NAME FROM EMP_INFO_TB WHERE USERNAME = #{handOverTarget}),
               #{handOverContent});
     </insert>
+
+
 
     <!--내가 작성한 인계사항 UPDATE-->
     <update id="changeHandover" parameterType="HashMap">
@@ -173,29 +182,30 @@
         WHERE HANDOVER_ID_PK = #{handOverPK};
     </update>
 
+
+
     <!-- 소켓 환자 호출 현황 -->
 
     <!-- 로딩 시 호출 현황 READ -->
 
     <select id="getInPatientReq" parameterType="HashMap" resultType="HashMap">
         SELECT PATIENT_NAME AS patientName , PR_CODE_NAME AS callStatus, SUBSTR(REQUEST_TIME,12) AS callTime , a.WARD AS ward, a.ROOM_NUM AS roomNum, a.BED_NUM AS bedNum FROM BED_TB AS a
-        LEFT JOIN PATIENT_REQUEST_STATUS AS b ON  b.REQUEST_STATUS = a.REQUEST_STATUS
-        LEFT JOIN ADMISSION_TB AS c ON  c.WARD = a.WARD  and c.ROOM_NUM = a.ROOM_NUM and c.BED_NUM = a.BED_NUM
-        LEFT JOIN ADMISSION_STATUS AS d ON d.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
-        LEFT JOIN TREATMENT_INFO_TB AS e ON e.TREATMENT_NUM_PK = c.TREATMENT_NUM_FK
-        LEFT JOIN PATIENT_TB AS f ON f.PATIENT_ID_PK = e.PATIENT_ID_FK
-        WHERE AD_CODE_NAME = "입원완료" AND PR_CODE_NAME = "호출" AND a.WARD = (SELECT WARD from SPECIALITY_TB where SPECIALITY_NAME = #{specialityName})
+                LEFT JOIN PATIENT_REQUEST_STATUS AS b ON  b.REQUEST_STATUS = a.REQUEST_STATUS
+                LEFT JOIN ADMISSION_TB AS c ON  c.WARD = a.WARD  and c.ROOM_NUM = a.ROOM_NUM and c.BED_NUM = a.BED_NUM
+                LEFT JOIN ADMISSION_STATUS AS d ON d.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
+                LEFT JOIN TREATMENT_INFO_TB AS e ON e.TREATMENT_NUM_PK = c.TREATMENT_NUM_FK
+                LEFT JOIN PATIENT_TB AS f ON f.PATIENT_ID_PK = e.PATIENT_ID_FK
+        WHERE AD_CODE_NAME = "입원완료" AND (PR_CODE_NAME = "호출" OR PR_CODE_NAME = "확인") AND a.WARD = (SELECT WARD from SPECIALITY_TB where SPECIALITY_NAME = #{specialityName})
         ORDER BY REQUEST_TIME DESC;
     </select>
     <!--환자, 간호사 소켓 요청 시 UPDATE-->
     <update id="changeInPatientReq" parameterType="HashMap">
         UPDATE
-        BED_TB AS a
+            BED_TB AS a
         SET REQUEST_STATUS = (SELECT REQUEST_STATUS FROM PATIENT_REQUEST_STATUS WHERE PR_CODE_NAME = #{callStatus}),
-        REQUEST_TIME = #{callTime}
+            REQUEST_TIME = #{callTime}
         WHERE a.WARD = #{ward} AND a.ROOM_NUM= #{roomNum} AND a.BED_NUM = #{bedNum};
     </update>
-
 
 </mapper>
 

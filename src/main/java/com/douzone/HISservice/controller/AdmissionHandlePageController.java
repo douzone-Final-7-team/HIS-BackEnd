@@ -92,6 +92,7 @@ public class AdmissionHandlePageController {
     public List<Map<String, Object>> setInpatientSchedule(@RequestBody Map<String, Object> inpatientScheduleElements) {
         try {
             admissionHandlePageService.setInpatientSchedule(inpatientScheduleElements);
+            System.out.println(admissionHandlePageService.getInpatientSchedules(inpatientScheduleElements));
             return admissionHandlePageService.getInpatientSchedules(inpatientScheduleElements);
         }catch (DataIntegrityViolationException e){
 
@@ -111,9 +112,10 @@ public class AdmissionHandlePageController {
 
     // 해당 병동 전체 환자 일정 상태 UPDATE
     @PutMapping("/changedSchedule/status")
-    public String changeScheduleStatus (@RequestBody Map<String, Object> upDateScheduleStatusElements){
+    public List<Map<String, Object>> changeScheduleStatus (@RequestBody Map<String, Object> upDateScheduleStatusElements){
         admissionHandlePageService.changeScheduleStatus(upDateScheduleStatusElements);
-        return "해당 병동 전체 환자 일정 상태 UPDATE";
+        System.out.println(upDateScheduleStatusElements);
+        return admissionHandlePageService.getInpatientSchedules(upDateScheduleStatusElements);
     };
 
 // 인계 사항
@@ -129,6 +131,11 @@ public class AdmissionHandlePageController {
     @PostMapping("/fromMyHandOvers")
     public List<Map<String, Object>> getSendHandOver(@RequestBody Map<String, Object> userName){
         return admissionHandlePageService.getSendHandOver(userName);
+    };
+
+    @PostMapping("/inNurseList")
+    public List<Map<String, Object>> getInNurseList(){
+        return admissionHandlePageService.getInNurseList();
     };
 
 
@@ -151,8 +158,19 @@ public class AdmissionHandlePageController {
     // 내가 작성한 인계사항 UPDATE
     @PutMapping("/myHandOver")
     public List<Map<String, Object>> changeHandover(@RequestBody Map<String, Object> upDateHandOverElements){
-        admissionHandlePageService.changeHandover(upDateHandOverElements);
-        return admissionHandlePageService.getSendHandOver(upDateHandOverElements);
+
+        try {
+            admissionHandlePageService.changeHandover(upDateHandOverElements);
+            return admissionHandlePageService.getSendHandOver(upDateHandOverElements);
+
+        }catch (DataIntegrityViolationException e){
+            Map<String,Object> map1 = new HashMap<String, Object>();
+            map1.put("errorCode","잘못된 직원명 입니다. 인계자를 확인하세요");
+            List list = new ArrayList<Object>();
+            list.add(map1);
+            return list;
+        }
+
     };
 
     // 환자 호출
@@ -168,8 +186,7 @@ public class AdmissionHandlePageController {
     @PutMapping("/InPatientReq")
     public  List<Map<String, Object>>changeInPatientReq (@RequestBody Map<String, Object> sendPatientReqElements){
         admissionHandlePageService.changeInPatientReq(sendPatientReqElements);
-//        System.out.println(sendPatientReqElements);
-//        System.out.println(admissionHandlePageService.getInPatientReq(sendPatientReqElements));
+
         return admissionHandlePageService.getInPatientReq(sendPatientReqElements);
     };
 

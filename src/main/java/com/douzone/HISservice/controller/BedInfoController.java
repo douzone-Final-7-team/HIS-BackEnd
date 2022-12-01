@@ -21,4 +21,9 @@ public class BedInfoController {
         return(bedInfoService.getOccupiedBedInfoList(roominfo));
 
     }
+    @GetMapping("/ocuupiedList")
+    public List<Map<String, Object>> getOccupiedWardList(@RequestParam Map<String, Object> roominfo){
+        System.out.println(roominfo);
+        return bedInfoService.getOccupiedWardList(roominfo);
+    }
 }

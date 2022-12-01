@@ -42,4 +42,9 @@ public class BedInfoServiceImpl implements BedInfoService {
             return listMap;
         }
     }
+
+    @Override
+    public List<Map<String, Object>> getOccupiedWardList(Map<String, Object> roominfo){
+        return bedInfoDAO.getOccupiedWardList(roominfo);
+    }
 }

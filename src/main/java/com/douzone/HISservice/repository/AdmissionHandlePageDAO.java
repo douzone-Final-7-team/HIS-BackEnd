@@ -57,6 +57,8 @@ public interface AdmissionHandlePageDAO {
     // 내가 작성한 인계사항 READ
     List<Map<String, Object>>  getSendHandOver (Map<String, Object> userName);
 
+    //인계 사항 작성 하기 위한 직원 검색
+    List<Map<String, Object>>  getInNurseList ();
 
     // 인계사항 CREATE
     void setHandOver (Map<String, Object> handOverElements);

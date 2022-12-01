@@ -16,6 +16,14 @@
         WHERE c.PATIENT_NAME = #{name} AND f.AD_CODE_NAME = '입원완료' AND a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum} AND a.BED_NUM= #{bedNum};
     </select>
 
+    <!--퇴원 예정일 UPDATE -->
+    <update id="changeDischargeDueDate" parameterType="HashMap">
+        UPDATE
+            ADMISSION_TB AS a
+        SET a.DISCHARGE_DUEDATE = #{dischargeDueDate}
+        WHERE ADMISSION_ID_PK = #{admissionIdPk};
+    </update>
+
     <!-- 환자 등록 정보 READ -->
     <select id="getPatientRegistrationInfo" parameterType="HashMap" resultType="HashMap">
         SELECT PATIENT_ID_PK, PATIENT_ADDR, PATIENT_NAME, GENDER, PATIENT_SSN, PATIENT_TEL, PATIENT_AGE, INSURANCE
@@ -51,17 +59,8 @@
             (#{PATIENT_ID_PK}, #{PATIENT_ADDR}, #{PATIENT_NAME}, #{GENDER}, #{PATIENT_SSN}, #{PATIENT_TEL}, #{PATIENT_AGE}, #{INSURANCE})
     </insert>
 
-    <!--퇴원 예정일 UPDATE -->
-    <update id="changeDischargeDueDate" parameterType="HashMap">
-        UPDATE
-            ADMISSION_TB AS a
-        SET a.DISCHARGE_DUEDATE = #{dischargeDueDate}
-        WHERE ADMISSION_ID_PK = #{admissionIdPk};
-    </update>
-
-
-<!-- 진료중 상태의 환자 클릭시 정보 불러오기 -->
-    <select id="getTreatmentPatientInfo" parameterType="String" resultType="HashMap">
+<!-- 진료중의 상태의 환자 클릭시 정보 불러오기 -->
+    <select id="getTreatmentPatientInfo" resultType="HashMap">
         SELECT if(COUNT(*) > 1 , '재진', '초진') AS VISITCOUNT, b.*, a.TREATMENT_NUM_PK, c.SPECIALITY, c.SYMPTOM, IF(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK
         FROM TREATMENT_INFO_TB AS a
                  LEFT JOIN PATIENT_TB AS b ON a.PATIENT_ID_FK = b.PATIENT_ID_PK

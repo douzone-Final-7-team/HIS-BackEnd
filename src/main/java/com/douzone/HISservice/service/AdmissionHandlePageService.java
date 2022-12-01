@@ -54,6 +54,8 @@ public interface AdmissionHandlePageService {
     // 내가 작성한 인계사항 READ
     public List<Map<String, Object>>  getSendHandOver (Map<String, Object> userName);
 
+    //인계 사항 작성 하기 위한 직원 검색
+    public List<Map<String, Object>>  getInNurseList();
 
     // 인계 사항 CREATE
     public void setHandOver (Map<String, Object> handOverElements);
@@ -63,7 +65,7 @@ public interface AdmissionHandlePageService {
     public void changeHandover (Map<String, Object> upDateHandOverElements);
 
     // 로딩 시 호출 현황 READ
-    public List<Map<String, Object>>  getInPatientReq (Map<String, Object> outPatientReqElements);
+    public List<Map<String, Object>>  getInPatientReq (Map<String, Object> inPatientReqElements);
 
 
     // 환자, 간호사 소켓 요청 시 UPDATE
