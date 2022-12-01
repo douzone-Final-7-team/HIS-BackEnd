@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.HISservice.repository.OutStatusDAO">
+    <!--환자 현황 READ-->
+    <select id="getOutStatus" parameterType="HashMap" resultType="HashMap">
+        select c.patient_name 'patName', DATE_FORMAT(a.registration_time,'%H : %i') 'regTime', d.outpatient_status_code 'status', a.RECEIVE_ID_PK 'receiveId'
+        from receive_tb as a
+                 left join emp_info_tb as b on b.emp_id_pk = a.emp_id_fk
+                 left join patient_tb as c on c. patient_id_pk = a.patient_id_fk
+                 left join outpatient_status as d on d.outpatient_status_code = a.outpatient_status_code
+        where b.EMP_ID_PK = #{EMP_ID_PK}
+
+          and (d.outpatient_status_code = 'OA' or d.outpatient_status_code = 'OB' or d.outpatient_status_code = 'OE')
+          and DATE_FORMAT(a.registration_time, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d');
+    </select>
+
+    <!-- 의사 찾기 SELECT-->
+    <select id="selectEmpInfo" parameterType="String" resultType="Map">
+        SELECT EMP_ID_PK, SPECIALITY_ID_FK, EMP_NAME, USERNAME, role, EMP_TEL, HIREDATE FROM EMP_INFO_TB WHERE EMP_NAME = #{userName} and EMP_STATUS = '재직';
+    </select>
+
+    <!-- 동명이인 의사 찾기 SELECT-->
+    <select id="selectEmpInfoByKey" parameterType="String" resultType="Map">
+        SELECT EMP_ID_PK, SPECIALITY_ID_FK, EMP_NAME, USERNAME, role, EMP_TEL, HIREDATE FROM EMP_INFO_TB WHERE EMP_ID_PK = #{userKey} and EMP_STATUS = '재직';
+    </select>
+
+    <!-- 수납 금액 SELECT -->
+    <select id="selectReceiptInfo" parameterType="String" resultType="Map">
+        select
+            a.RECEIVE_ID_PK, d.INSURANCE hasInsurance, c.TREAT_COST treat, c.INSURANCE_COST insurance, c.CARE_COST care, c.TIME_COST time, c.PRESCRIPTION_COST med, c.TOTAL_COST total
+        from
+            RECEIVE_TB a
+                left join treatment_info_tb b on
+                b.RECEIVE_ID_FK = a.RECEIVE_ID_PK
+                left join outpatient_receipt_tb c on
+                c.TREATMENT_NUM_FK  = b.TREATMENT_NUM_PK
+                left join patient_tb d on
+                d.patient_id_pk = a.PATIENT_ID_FK
+        where
+            a.RECEIVE_ID_PK = #{receiptId}
+    </select>
+
+    <!-- 접수 INSERT -->
+    <insert id="insertReceiveInfo" parameterType="Map">
+        INSERT INTO RECEIVE_TB
+        (RECEIVE_ID_PK,
+         PATIENT_ID_FK,
+         OUTPATIENT_STATUS_CODE,
+         EMP_ID_FK,
+         SYMPTOM,
+         REGISTRATION_TIME,
+         SPECIALITY)
+        values(#{RECEIVE_ID_PK},
+               #{PATIENT_ID_PK},
+               'OA',
+               #{EMP_ID_PK},
+               #{SYMPTOM},
+               now(),
+               #{SPECIALITY});
+    </insert>
+
+    <!-- 접수번호 id(R22~~) 찾기 -->
+    <select id="getRecentSeq" parameterType="String" resultType="String">
+        SELECT RECEIVE_ID_PK FROM receive_tb WHERE RECEIVE_ID_PK like '${currYr}%' ORDER BY REGISTRATION_TIME DESC LIMIT 1
+    </select>
+
+
+</mapper>

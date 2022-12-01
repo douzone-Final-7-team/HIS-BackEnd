@@ -10,8 +10,13 @@ import java.util.Map;
 @Repository
 public interface OutStatusDAO {
 
-    // 환자 현황 READ
+    // 환자 현황 전체 SELECT
     List<Map<String, Object>> getOutStatus (Map<String, Object> outStatusElement);
+
+
+    // 환자 현황 필터 SELECT
+    List<Map<String, Object>> getOutStatusCon (Map<String, Object> outStatusElement);
+
 
 
     // 접수 INSERT
@@ -27,5 +32,18 @@ public interface OutStatusDAO {
     // 의사 개인 환자 현황 리스트
     List<Map<String, Object>> getMyPatient();
 
+
+    // 수납 대기 환자 SELECT
+    List<Map<String, Object>> getWaiting4Receipt (Map<String, Object> params);
+
+    // 수납 SELECT
+    List<Map<String, Object>> getAcceptance (Map<String, Object> params);
+
+    // 수납 금액 INSERT
+    void insertReceipt(Map<String, Object> params);
+
+
+    // 수납 후 환자 상태 UPDATE
+    void putOutStatus(Map<String, Object> params);
 }
 
