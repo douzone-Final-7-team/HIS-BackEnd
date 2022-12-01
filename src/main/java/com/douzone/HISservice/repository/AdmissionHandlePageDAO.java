@@ -57,6 +57,8 @@ public interface AdmissionHandlePageDAO {
     // 내가 작성한 인계사항 READ
     List<Map<String, Object>>  getSendHandOver (Map<String, Object> userName);
 
+    //인계 사항 작성 하기 위한 직원 검색
+    List<Map<String, Object>>  getInNurseList ();
 
     // 인계사항 CREATE
     void setHandOver (Map<String, Object> handOverElements);
@@ -66,10 +68,10 @@ public interface AdmissionHandlePageDAO {
 
 
     // 로딩 시 요청 사항 READ
-    List<Map<String, Object>>  getOutPatientReq (Map<String, Object> outPatientReqElements);
+    List<Map<String, Object>>  getInPatientReq (Map<String, Object> outPatientReqElements);
 
 
     // 환자, 간호사 소켓 요청 시 UPDATE
-    void changeOutPatientReq (Map<String, Object> sendPatientReqElements) ;
+    void changeInPatientReq (Map<String, Object> sendPatientReqElements) ;
 
 }

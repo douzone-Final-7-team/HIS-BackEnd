@@ -2,15 +2,17 @@ package com.douzone.HISservice.controller;
 
 import com.douzone.HISservice.entity.User;
 import com.douzone.HISservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class JoinController {
 
     @Autowired

@@ -23,9 +23,9 @@ public class AdmissionReqController {
     }
 
     // 입원 승인 , 반려
-    @PutMapping("/admissionAccept")
+    @PostMapping("/admissionAccept")
     public void putAdmissionAccept(@RequestBody Map<String, Object> admissionElement) {
-
+//        System.out.println(admissionElement);
         admissionReqService.putAdmissionAccept(admissionElement);
 
     }

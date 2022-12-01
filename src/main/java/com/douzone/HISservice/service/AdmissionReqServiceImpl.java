@@ -22,10 +22,9 @@ public class AdmissionReqServiceImpl implements AdmissionReqService {
     // 입원 승인
     @Override
     public void putAdmissionAccept (Map<String, Object> admissionElement){
-        String admissionResult = admissionElement.get("admissionStatusCode").toString();
-        System.out.println(admissionResult);
-        if(admissionResult.equals("IA")){
-            System.out.println("999999969");
+        String admissionResult = admissionElement.get("BTN_STATE").toString();
+//        System.out.println(admissionResult);
+        if(admissionResult.equals("assign")){
             admissionReqDAO.putAdmissionAccept(admissionElement);
             admissionReqDAO.putBedStatusIn(admissionElement);
         }else{
