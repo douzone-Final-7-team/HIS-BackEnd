@@ -68,7 +68,7 @@
 
     <!-- 과 별 의사 리스트와 해당 의사들의 환자 현황 SELECT -->
     <select id="getDoctorList" parameterType="HashMap" resultType="HashMap">
-        SELECT EMP_NAME, EMP_ID_PK, #{OUTPATIENT_STATUS_CODE} OUTPATIENT_STATUS_CODE
+        SELECT EMP_NAME, EMP_ID_PK, SPECIALITY_ID_PK, #{OUTPATIENT_STATUS_CODE} OUTPATIENT_STATUS_CODE
         FROM EMP_INFO_TB AS a
                  LEFT JOIN SPECIALITY_TB AS b ON b.SPECIALITY_ID_PK = a.SPECIALITY_ID_FK
         WHERE SPECIALITY_ID_FK = #{SPECIALITY_ID_FK}
