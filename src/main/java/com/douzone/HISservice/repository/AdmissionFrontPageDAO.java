@@ -10,9 +10,17 @@ import java.util.Map;
 @Repository
 public interface AdmissionFrontPageDAO {
 
-    List<Map<String, Object>> getTest();
+    Map<String, Object> getBedInfo();
 
     List<Map<String, Object>> getDisChargeList();
 
-    void putDisChargeList(Map<String, Object> admissionId);
+    void putDisCharged(Map<String, Object> admissionId);
+
+    List<Map<String, Object>> getMyInPatient();
+
+    void putChangeBedState(Map<String, Object> admissionId);
+
+    Map<String, Object> getDisChargeCount();
+
+    List<Map<String, Object>> getAvailable();
 }

@@ -19,6 +19,7 @@ public class BedInfoServiceImpl implements BedInfoService {
     @Override
     public List<Map<String, Object>> getOccupiedBedInfoList(Map<String, Object> roominfo) {
         int paramCount = roominfo.size();
+        System.out.println("파람카운트 : "+paramCount);
         String empno = roominfo.get("empIdPk").toString();
 
         //paramCount => 3:병동and호실 기준 병상 list
@@ -40,5 +41,10 @@ public class BedInfoServiceImpl implements BedInfoService {
 
             return listMap;
         }
+    }
+
+    @Override
+    public List<Map<String, Object>> getOccupiedWardList(Map<String, Object> roominfo){
+        return bedInfoDAO.getOccupiedWardList(roominfo);
     }
 }

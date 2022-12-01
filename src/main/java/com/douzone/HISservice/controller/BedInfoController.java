@@ -1,7 +1,5 @@
 package com.douzone.HISservice.controller;
 
-
-
 import com.douzone.HISservice.service.BedInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admission")
+@RequestMapping("/wardCheck")
 @RequiredArgsConstructor
 public class BedInfoController {
     private final BedInfoService bedInfoService;
@@ -23,6 +21,9 @@ public class BedInfoController {
         return(bedInfoService.getOccupiedBedInfoList(roominfo));
 
     }
-
-
+    @GetMapping("/ocuupiedList")
+    public List<Map<String, Object>> getOccupiedWardList(@RequestParam Map<String, Object> roominfo){
+        System.out.println(roominfo);
+        return bedInfoService.getOccupiedWardList(roominfo);
+    }
 }

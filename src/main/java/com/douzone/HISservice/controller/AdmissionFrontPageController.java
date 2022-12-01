@@ -15,10 +15,10 @@ public class AdmissionFrontPageController {
     private final AdmissionFrontPageService adFrontService;
 
     // 병동 원무 병상 정보
-    @GetMapping("/test")
-    public List<Map<String, Object>> getTest() {
+    @GetMapping("/bedInfo")
+    public List<Map<String, Object>> getBedInfo() {
 
-        return(adFrontService.getTest());
+        return(adFrontService.getBedInfo());
 
     }
 
@@ -30,9 +30,23 @@ public class AdmissionFrontPageController {
     }
 
     @PutMapping("/discharged")
-    public void putDisChargeList(@RequestBody Map<String, Object> admissionId) {
+    public void putDisCharged(@RequestBody Map<String, Object> admissionId) {
+        adFrontService.putDisCharged(admissionId);
 
-        adFrontService.putDisChargeList(admissionId);
+    }
+
+    // 내 입원환자 정보
+    @GetMapping("/myInPatient")
+    public List<Map<String, Object>> getMyInPatient() {
+
+        return adFrontService.getMyInPatient();
+
+    }
+
+    @GetMapping("/available_room")
+    public List<Map<String, Object>> getAvailable() {
+        System.out.println("구구구구구구 : " +adFrontService.getAvailable());
+        return adFrontService.getAvailable();
 
     }
 
