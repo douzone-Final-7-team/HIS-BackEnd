@@ -45,21 +45,19 @@ public class PatientInfoController {
 
     // 진료중 상태의 환자 클릭시 정보 조회
     @GetMapping("/treatmentPatientInfo")
-    public List<Map<String, Object>> getTreatmentPatientInfo() {
-        return patientInfoService.getTreatmentPatientInfo();
+    public List<Map<String, Object>> getTreatmentPatientInfo(@RequestParam String receivePk) {
+        return patientInfoService.getTreatmentPatientInfo(receivePk);
     }
 
     // 진료환자 과거 병력 리스트 조회
     @GetMapping("/pastTreatmentList")
-    public List<Map<String, Object>> getPastTreatmentList() {
-
-        return patientInfoService.getPastTreatmentList();
+    public List<Map<String, Object>> getPastTreatmentList(@RequestParam String patientPk) {
+        return patientInfoService.getPastTreatmentList(patientPk);
     }
 
     // 진료환자 과거 병력 상세 조회
     @GetMapping("/pastTreatmentDetail")
     public List<Map<String, Object>> getPastTreatmentDetail() {
-
         return patientInfoService.getPastTreatmentDetail();
     }
 

@@ -21,15 +21,15 @@ public class ReceiptServiceImpl implements ReceiptService{
         String flag = filterFlag.get("filter").toString();
         System.out.println("여기까지왔다");
         System.out.println(flag);
-        if(flag.equals("today")) {
+        if(flag.equals("[today]")) {
             System.out.println("fffff");
             return receiptDAO.getAdReceiptListToday();
-        }else if(flag.equals("middlePayment")){
+        }else if(flag.equals("[middlePayment]")){
             System.out.println("qqqqqq");
             return receiptDAO.getMiddlePaymentList();
         }else{
             System.out.println("pppppp");
-            System.out.println("tlqkftlqkf : "+receiptDAO.getAdReceiptListAll());
+            System.out.println("lsitCount : "+receiptDAO.getAdReceiptListAll().size());
             return receiptDAO.getAdReceiptListAll();
         }
     }
@@ -55,25 +55,14 @@ public class ReceiptServiceImpl implements ReceiptService{
     @Override
     public List<Map<String, Object>> getAdReceipt(String admissionId) {
         System.out.println("qwerAll : "+receiptDAO.getAdReceipt(admissionId));
-        //이부분이 콘솔에 찍힐꺼야
-        // ㅇㅋ? 잠만
-//        System.out.println("qwersize : "+receiptDAO.getAdReceipt(admissionId).size());
         return receiptDAO.getAdReceipt(admissionId);
     }
 
     @Override
     public void setAdReceipt(Map<String, Object> test) {
-        System.out.println("all : " + test);
-        System.out.println("Impl : " + test.get("ADMISSION_ID_PK").toString());
-        System.out.println("Impl : " + test.get("ADMISSION_STATUS_CODE").toString());
-        System.out.println("Impl : " + test.get("MIDDLE_PAY_DATE"));
-        System.out.println("------------------------------------------------");
-        receiptDAO.setAdReceipt(test); // 입원수납정보
-        System.out.println("insert완료");
         receiptDAO.putReceiptComplete(test); //상태값 변경
         System.out.println("update완료");
-
+        receiptDAO.setAdReceipt(test); // 입원수납정보
+        System.out.println("insert완료");
     }
-
-
 }

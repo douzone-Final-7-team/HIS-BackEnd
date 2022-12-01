@@ -7,10 +7,7 @@ import com.douzone.HISservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -77,7 +74,10 @@ public class UserController {
         return userService.changeAddr(newAddr, pk);
     }
 
-
-
-
+    @GetMapping("/headerInfo")
+    public List<Map<String, Object>> getHeaderInfo(Authentication authentication){
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String pk = principal.getUser().getEmp_id_pk();
+        return userService.getHeaderInfo(pk);
+    }
 }

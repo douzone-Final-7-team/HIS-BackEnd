@@ -6,7 +6,9 @@
 <mapper namespace="com.douzone.HISservice.repository.BedInfoDAO">
     <!-- 병동 and 호실 기준 병상 현황 정보 불러오기 READ-->
     <select id="getOccupiedBedInfoList"  parameterType="HashMap" resultType="HashMap">
-        SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM, d.PATIENT_NAME, e.EMP_NAME
+        SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM,
+        IF(DISCHARGE_DATE IS NULL , d.PATIENT_NAME, NULL ) AS PATIENT_NAME,
+        IF(DISCHARGE_DATE IS NULL , e.EMP_NAME, NULL ) AS EMP_NAME
         FROM BED_TB as a
                  LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
                  LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
@@ -19,7 +21,9 @@
 
     <!-- 병동 기준 병상 현황 정보 불러오기 READ-->
     <select id="getAllWardList"  parameterType="HashMap" resultType="HashMap">
-        SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM, d.PATIENT_NAME, e.EMP_NAME
+        SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM,
+        IF(DISCHARGE_DATE IS NULL , d.PATIENT_NAME, NULL ) AS PATIENT_NAME,
+        IF(DISCHARGE_DATE IS NULL , e.EMP_NAME, NULL ) AS EMP_NAME
         FROM BED_TB as a
                 LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
                 LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
@@ -32,13 +36,15 @@
 
     <!-- 전체 병상 현황 정보 불러오기 READ-->
     <select id="getAllBedList"  parameterType="HashMap" resultType="HashMap">
-        SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM, d.PATIENT_NAME, e.EMP_NAME
+        SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM,
+        IF(DISCHARGE_DATE IS NULL , d.PATIENT_NAME, NULL ) AS PATIENT_NAME,
+        IF(DISCHARGE_DATE IS NULL , e.EMP_NAME, NULL ) AS EMP_NAME
         FROM BED_TB as a
-                LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
-                LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
-                LEFT JOIN PATIENT_TB AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
-                LEFT JOIN EMP_INFO_TB AS e ON c.EMP_ID_FK = e.EMP_ID_PK
-                LEFT JOIN ADMISSION_STATUS AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
+        LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
+        LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
+        LEFT JOIN PATIENT_TB AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
+        LEFT JOIN EMP_INFO_TB AS e ON c.EMP_ID_FK = e.EMP_ID_PK
+        LEFT JOIN ADMISSION_STATUS AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
         ORDER BY WARDROOM ASC, BED_NUM;
     </select>
 
