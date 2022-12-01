@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admission")
+@RequestMapping("/wardCheck")
 @RequiredArgsConstructor
 public class BedInfoController {
     private final BedInfoService bedInfoService;
@@ -20,5 +20,10 @@ public class BedInfoController {
 
         return(bedInfoService.getOccupiedBedInfoList(roominfo));
 
+    }
+    @GetMapping("/ocuupiedList")
+    public List<Map<String, Object>> getOccupiedWardList(@RequestParam Map<String, Object> roominfo){
+        System.out.println(roominfo);
+        return bedInfoService.getOccupiedWardList(roominfo);
     }
 }

@@ -103,6 +103,11 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
     public List<Map<String, Object>>  getSendHandOver (Map<String, Object> userName){
         return admissionHandlePageDAO.getSendHandOver(userName);
     };
+    @Override
+    public List<Map<String, Object>> getInNurseList(){
+        return admissionHandlePageDAO.getInNurseList();
+    };
+
 
 
     // 인계 사항 CREATE
@@ -121,15 +126,15 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
 
     // 로딩 시 호출 현황 READ
     @Override
-    public List<Map<String, Object>>  getOutPatientReq (Map<String, Object> outPatientReqElements){
-        return admissionHandlePageDAO.getOutPatientReq(outPatientReqElements);
+    public List<Map<String, Object>>  getInPatientReq (Map<String, Object> inPatientReqElements){
+        return admissionHandlePageDAO.getInPatientReq(inPatientReqElements);
     };
 
 
     // 환자, 간호사 소켓 요청 시 UPDATE
     @Override
-    public  void changeOutPatientReq (Map<String, Object> sendPatientReqElements) {
-        admissionHandlePageDAO.changeOutPatientReq(sendPatientReqElements);
+    public  void changeInPatientReq (Map<String, Object> sendPatientReqElements) {
+        admissionHandlePageDAO.changeInPatientReq(sendPatientReqElements);
     };
 
 }
