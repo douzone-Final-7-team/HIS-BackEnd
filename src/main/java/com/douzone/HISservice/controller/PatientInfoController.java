@@ -57,8 +57,9 @@ public class PatientInfoController {
 
     // 진료환자 과거 병력 상세 조회
     @GetMapping("/pastTreatmentDetail")
-    public List<Map<String, Object>> getPastTreatmentDetail() {
-        return patientInfoService.getPastTreatmentDetail();
+    public List<Map<String, Object>> getPastTreatmentDetail(@RequestParam String patientID, @RequestParam String treatmentDate) {
+        return patientInfoService.getPastTreatmentDetail(patientID, treatmentDate);
+
     }
 
 }

@@ -25,18 +25,18 @@ public class UserController {
     @PostMapping("/join")
     public String join(@RequestBody User user) {
         user.setPw(bCryptPasswordEncoder.encode(user.getPw()));
-        user.setEmp_id_pk("I220002");
+        user.setEmp_id_pk("D220100");
         user.setSpeciality_ID_FK("N");
-        user.setEmp_name("최정현");
-        user.setRole("ROLE_INNURSE");
-        user.setLicense("I220002");
+        user.setEmp_name("배병서");
+        user.setRole("ROLE_DOCTOR");
+        user.setLicense("D220100");
         user.setEmp_status("재직");
-        user.setEmp_ssn("980107-2512368");
+        user.setEmp_ssn("970721-1512368");
         user.setEmp_tel("010-2227-1396");
-        user.setEmp_email("wjdgus@naver.com");
+        user.setEmp_email("bbs@naver.com");
         user.setHireDate(new Date(2022-11-22));
         user.setRetireDate(null);
-        user.setEmp_addr("부산광역시 센텀시티");
+        user.setEmp_addr("부산광역시 금정구");
         userRepository.save(user);
         return "회원가입완료";
     }
