@@ -14,12 +14,19 @@ public class OutStatusServiceImpl implements OutStatusService{
 
     private final OutStatusDAO outStatusDAO;
 
-    // 환자 현황
+    // 환자 현황 전체
     @Override
     public List<Map<String, Object>> getOutStatus(Map<String, Object> outStatusElement) {
         System.out.println(outStatusElement);
         List<Map<String, Object>> outStatus = outStatusDAO.getOutStatus(outStatusElement);
+        return outStatus;
+    }
 
+    // 환자 현황 필터
+    @Override
+    public List<Map<String, Object>> getOutStatusCon(Map<String, Object> outStatusElement) {
+        System.out.println(outStatusElement);
+        List<Map<String, Object>> outStatus = outStatusDAO.getOutStatusCon(outStatusElement);
         return outStatus;
     }
 
@@ -73,5 +80,27 @@ public class OutStatusServiceImpl implements OutStatusService{
     }
 
 
-    // 수납 금액
+    // 수납 대기 환자 SELECT
+
+    @Override
+    public List<Map<String, Object>> getWaiting4Receipt(Map<String, Object> params) {
+        return outStatusDAO.getWaiting4Receipt(params);
+    }
+
+
+    // 수납 SELECT
+    @Override
+    public List<Map<String, Object>> getAcceptance(Map<String, Object> params) {
+        return outStatusDAO.getAcceptance(params);
+    }
+
+
+    // 수납 금액 INSERT
+    @Override
+    public void insertReceipt(Map<String, Object> params) {
+        System.out.println("서비스임플 params");
+        System.out.println(params);
+        outStatusDAO.insertReceipt(params);
+        outStatusDAO.putOutStatus(params);
+    }
 }
