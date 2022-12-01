@@ -33,13 +33,19 @@ public class OutStatusController {
 
 
     // // 과 별 의사 리스트와 해당 의사들의 환자 현황 SELECT
-    @PostMapping("/getdocpat")
+    @PostMapping("/getDocPat")
     public Object getDocPat(@RequestBody Map<String, Object> speciality) {
         List<Map<String, Object>> paramsList = outStatusService.getDoctorList(speciality);
         for(int i=0; i<paramsList.size(); i++) {
             paramsList.get(i).put("patInfo", outStatusService.getOutStatus(paramsList.get(i)));
         }
         return paramsList;
+    }
+
+    // 의사 개인 환자 현황 리스트
+    @GetMapping("/MyPatient")
+    public List<Map<String, Object>> getMyPatient() {
+        return outStatusService.getMyPatient();
     }
 
     // 수납 금액 SELECT

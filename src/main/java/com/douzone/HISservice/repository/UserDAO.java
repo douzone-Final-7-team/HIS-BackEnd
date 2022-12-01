@@ -15,4 +15,6 @@ public interface UserDAO {
     void changePwd(String newPwd, String pk);
 
     void changeAddr(String newAddr, String pk);
+
+    List<Map<String, Object>> getHeaderInfo(String pk);
 }

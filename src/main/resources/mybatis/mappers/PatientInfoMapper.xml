@@ -60,30 +60,31 @@
     </update>
 
 
-<!-- 진료중의 상태의 환자 클릭시 정보 불러오기 -->
-    <select id="getTreatmentPatientInfo" resultType="HashMap">
+<!-- 진료중 상태의 환자 클릭시 정보 불러오기 -->
+    <select id="getTreatmentPatientInfo" parameterType="String" resultType="HashMap">
         SELECT if(COUNT(*) > 1 , '재진', '초진') AS VISITCOUNT, b.*, a.TREATMENT_NUM_PK, c.SPECIALITY, c.SYMPTOM, IF(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK
         FROM TREATMENT_INFO_TB AS a
                  LEFT JOIN PATIENT_TB AS b ON a.PATIENT_ID_FK = b.PATIENT_ID_PK
                  LEFT JOIN RECEIVE_TB AS c ON a.RECEIVE_ID_FK = c.RECEIVE_ID_PK
-        WHERE PATIENT_ID_PK = '22110131';
+        WHERE RECEIVE_ID_FK = #{receivePk};
     </select>
 
 <!-- 환자 과거 병력 가져오기 -->
-    <select id="getPastTreatmentList" resultType="HashMap">
-        SELECT TREATMENT_DATE, DIAGNOSTIC_NAME
-        FROM TREATMENT_INFO_TB
-        WHERE PATIENT_ID_FK = '22110130' AND DIAGNOSTIC_NAME IS NOT NULL;
+    <select id="getPastTreatmentList" parameterType="String" resultType="HashMap">
+        SELECT TREATMENT_DATE, DIAGNOSIS
+        FROM TREATMENT_INFO_TB AS a
+                 LEFT JOIN DIAGNOSIS_TB AS b ON a.DIAGNOSIS_CODE = b.DIAGNOSIS_CODE
+        WHERE PATIENT_ID_FK = #{patientPk} AND a.DIAGNOSIS_CODE IS NOT NULL;
     </select>
 
 <!-- 환자 과거 병력 자세히 보기 -->
     <select id="getPastTreatmentDetail" resultType="HashMap">
-        SELECT a.*, b.SPECIALITY, b.SYMPTOM, c.*, d.EMP_NAME, e.ADMISSION_DUEDATE, if(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK, if(TREATMENT_ORDER IS NULL, 'X', 'O') AS TREATMENT_CHECK, if(PRESCRIPTION IS NULL, 'X', 'O') AS PRESCRIPTION_CHECK, if(ADMISSION=1, 'O', 'X') AS ADMISSION_CHECK
+        SELECT a.*, b.SPECIALITY, b.SYMPTOM, c.*, d.EMP_NAME, e.ADMISSION_DUEDATE, if(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK, if(TREATMENT_ORDER IS NULL, 'X', 'O') AS TREATMENT_CHECK, if(MEDICINE IS NULL, 'X', 'O') AS PRESCRIPTION_CHECK, if(ADMISSION=1, 'O', 'X') AS ADMISSION_CHECK
         FROM PATIENT_TB AS a
                  LEFT JOIN RECEIVE_TB AS b ON a.PATIENT_ID_PK = b.PATIENT_ID_FK
                  LEFT JOIN TREATMENT_INFO_TB AS c ON a.PATIENT_ID_PK = c.PATIENT_ID_FK
                  LEFT JOIN EMP_INFO_TB AS d ON d.EMP_ID_PK = c.EMP_ID_FK
                  LEFT JOIN ADMISSION_TB AS e ON TREATMENT_NUM_PK = e.TREATMENT_NUM_FK
-        WHERE c.PATIENT_ID_FK = '22110130' and c.TREATMENT_DATE = '2022-11-24 10:21:00';
+        WHERE c.PATIENT_ID_FK = '22110151' and c.TREATMENT_DATE = '2022-11-29 18:52:09';
     </select>
 </mapper>

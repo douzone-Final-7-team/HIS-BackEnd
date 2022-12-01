@@ -30,4 +30,9 @@ public class UserServiceImpl implements UserService {
         userDAO.changeAddr(newAddr, pk);
         return "주소를 변경하였습니다.";
     }
+
+    @Override
+    public List<Map<String, Object>> getHeaderInfo(String pk) {
+        return userDAO.getHeaderInfo(pk);
+    }
 }

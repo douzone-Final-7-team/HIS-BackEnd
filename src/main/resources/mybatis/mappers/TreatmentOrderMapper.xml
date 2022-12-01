@@ -5,13 +5,25 @@
 <mapper namespace="com.douzone.HISservice.repository.TreatmentOrderDAO">
     <select id="setMedicalCharts" parameterType="HashMap">
         UPDATE TREATMENT_INFO_TB
-        SET TREATMENT_ORDER = #{treatmentOrder}, PRESCRIPTION = #{medicineOrder}, DIAGNOSTIC_NAME = #{diagnosis},
+        SET TREATMENT_ORDER = #{treatmentOrder}, MEDICINE = <foreach collection="medicineOrder" item="arr" open="(" close=")">#{arr}</foreach>, DIAGNOSIS_CODE = #{diagnosis},
             TREATMENT_MEMO= #{treatmentMemo}, TREATMENT_DATE = now(), ADMISSION = #{admissionCheck}
-        WHERE TREATMENT_NUM_PK = 'T22000095';
+        WHERE TREATMENT_NUM_PK = #{treatmentNumPk};
     </select>
 
     <select id="setAdmissionDueDate" parameterType="HashMap" resultType="HashMap">
         INSERT INTO ADMISSION_TB
-        VALUES ('A22000043', #{treatmentNumPk}, 'IA', null, null, null, #{admissionOrder}, null, null, null, null, null, null, null);
+        VALUES ('A22000047', #{treatmentNumPk}, 'IA', null, null, null, #{admissionOrder}, null, null, null, null, null, null, null);
+    </select>
+
+    <select id="getDiagnosisList" parameterType="String" resultType="HashMap">
+        SELECT DIAGNOSIS_CODE, DIAGNOSIS
+        FROM DIAGNOSIS_TB
+        WHERE SPECIALITY_ID_FK = #{specialityId};
+    </select>
+
+    <select id="getMedicineList" parameterType="String" resultType="HashMap">
+        SELECT *
+        FROM MEDICINE_TB
+        WHERE DIAGNOSIS_CODE IN (SELECT DIAGNOSIS_CODE FROM DIAGNOSIS_TB WHERE DIAGNOSIS_CODE=#{diagnosis});
     </select>
 </mapper>
