@@ -6,15 +6,16 @@
 <mapper namespace="com.douzone.HISservice.repository.OutStatusDAO">
     <!--환자 현황 READ-->
     <select id="getOutStatus" parameterType="HashMap" resultType="HashMap">
-        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId'
-        from RECEIVE_TB as a
-                 left join EMP_INFO_TB as b on b.EMP_ID_PK = a.EMP_ID_FK
-                 left join PATIENT_TB as c on c.PATIENT_ID_PK = a.PATIENT_ID_FK
-                 left join OUTPATIENT_STATUS as d on d.OUTPATIENT_STATUS_CODE = a.OUTPATIENT_STATUS_CODE
-        where b.EMP_ID_PK = #{EMP_ID_PK}
+        SELECT c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN
+        FROM RECEIVE_TB AS a
+                 LEFT JOIN EMP_INFO_TB AS b ON b.EMP_ID_PK = a.EMP_ID_FK
+                 LEFT JOIN PATIENT_TB AS c ON c.PATIENT_ID_PK = a.PATIENT_ID_FK
+                 LEFT JOIN OUTPATIENT_STATUS AS d ON d.OUTPATIENT_STATUS_CODE = a.OUTPATIENT_STATUS_CODE
+        WHERE b.EMP_ID_PK = #{EMP_ID_PK}
 
-          and (d.OUTPATIENT_STATUS_CODE = 'OA' or d.OUTPATIENT_STATUS_CODE = 'OB' or d.OUTPATIENT_STATUS_CODE = 'OC' or d.OUTPATIENT_STATUS_CODE = 'OE')
-          and DATE_FORMAT(a.REGISTRATION_TIME, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d');
+          AND (d.OUTPATIENT_STATUS_CODE = 'OA' OR d.OUTPATIENT_STATUS_CODE = 'OB' OR d.OUTPATIENT_STATUS_CODE = 'OC' OR d.OUTPATIENT_STATUS_CODE = 'OE')
+          AND DATE_FORMAT(a.REGISTRATION_TIME, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
+        ORDER BY d.OUTPATIENT_STATUS_CODE;
     </select>
 
 
@@ -52,7 +53,7 @@
 
     <!-- 과 별 의사 리스트와 해당 의사들의 환자 현황 SELECT -->
     <select id="getDoctorList" parameterType="HashMap" resultType="HashMap">
-        SELECT EMP_NAME, EMP_ID_PK
+        SELECT EMP_NAME, EMP_ID_PK, SPECIALITY_ID_PK
         FROM EMP_INFO_TB AS a
                  LEFT JOIN SPECIALITY_TB AS b ON b.SPECIALITY_ID_PK = a.SPECIALITY_ID_FK
         WHERE SPECIALITY_ID_FK = #{SPECIALITY_ID_FK}
