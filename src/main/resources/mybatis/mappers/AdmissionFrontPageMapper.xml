@@ -4,12 +4,26 @@
 
 <!-- 병동 and 호실 기준 병상 현황 정보 불러오기 READ-->
 <mapper namespace="com.douzone.HISservice.repository.AdmissionFrontPageDAO">
-    <select id="getTest" resultType="HashMap">
+    <select id="getBedInfo" resultType="HashMap">
         <!-- TEST쿼리 금일퇴원자 -->
         <!--select count(*) as totalBed, count(CASE WHEN bed_status = 1 THEN 1 END) as usingBed , count(CASE WHEN bed_status = 0 THEN 1 END) as unusingBed , count(CASE WHEN DISCHARGE_DUEDATE = date_format(date_sub(now(), interval 1 day),'%Y-%m-%d') THEN 1 END) as outDuePatient-->
-        select count(*) as totalBed, count(CASE WHEN bed_status = 1 THEN 1 END) as usingBed , count(CASE WHEN bed_status = 0 THEN 1 END) as unusingBed , count(CASE WHEN DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') THEN 1 END) as outDuePatient
-        from BED_TB as a LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM ;
+<!--        select count(*) as totalBed, count(CASE WHEN bed_status = 1 THEN 1 END) as usingBed , count(CASE WHEN bed_status = 0 THEN 1 END) as unusingBed , count(CASE WHEN DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') THEN 1 END) as outDuePatient-->
+<!--        from BED_TB as a LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM ;-->
+        SELECT count(*) AS totalBed, count(CASE WHEN bed_status = 1 THEN 1 END) AS usingBed , count(CASE WHEN bed_status = 0 THEN 1 END) AS unusingBed
+        from BED_TB;
     </select>
+
+    <select id="getDisChargeCount" resultType="HashMap">
+        select count(CASE WHEN DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') and DISCHARGE_DATE is null THEN 1 END) as outDuePatient
+        from ADMISSION_TB;
+    </select>
+
+    <select id="getAvailable" resultType="HashMap">
+        select distinct(concat(ward+room_num)) as available_room
+        from BED_TB
+        where bed_status = 0 order by available_room;
+    </select>
+
 
     <!-- 퇴원예정 LIST -->
     <select id="getDisChargeList" resultType="HashMap">
@@ -17,15 +31,20 @@
         FROM ADMISSION_TB as A
         LEFT JOIN TREATMENT_INFO_TB as B on A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
         LEFT JOIN PATIENT_TB as C on B.PATIENT_ID_FK = C.PATIENT_ID_PK
-        WHERE DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d')
+        WHERE DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') and DISCHARGE_DATE is null
         ORDER BY C.PATIENT_NAME ASC;
     </select>
+
+    <update id="putChangeBedState" parameterType="HashMap">
+        UPDATE BED_TB
+        SET BED_STATUS = 0
+        WHERE BED_NUM = #{BED_NUM} AND ROOM_NUM=#{ROOM_NUM} AND WARD=#{WARD};
+    </update>
 
     <update id="putDisCharged" parameterType="HashMap">
         UPDATE ADMISSION_TB
         SET DISCHARGE_DATE = now()
-        WHERE ADMISSION_ID_PK = #{admissionIdPk};
-
+        WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK};
     </update>
 
 <!-- 내 입원환자 리스트 가져오기 -->

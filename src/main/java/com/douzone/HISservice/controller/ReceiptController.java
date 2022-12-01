@@ -30,8 +30,8 @@ public class ReceiptController {
     //입원수납정보
     @PostMapping("/AdReceipt")
     public List<Map<String, Object>> getAdReceipt(@RequestBody Map<String, Object> test) {
+
         String admissionId = test.get("ADMISSION_ID_PK").toString();
-        System.out.println(receiptService.getAdReceipt(admissionId));
         return (receiptService.getAdReceipt(admissionId));
     }
 
@@ -40,8 +40,6 @@ public class ReceiptController {
     @PostMapping("/AdReceiptComplete")
     public void setAdReceipt(@RequestBody Map<String, Object> test) {
 
-        String q = test.get("ADMISSION_ID_PK").toString();
-        System.out.println(q);
         receiptService.setAdReceipt(test);
 //        return(receiptService.setAdReceipt(test));
 

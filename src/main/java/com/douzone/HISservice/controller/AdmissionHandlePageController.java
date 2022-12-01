@@ -158,17 +158,19 @@ public class AdmissionHandlePageController {
     // 환자 호출
 
     // 로딩 시 호출 현황 READ
-    @PostMapping("/allOutPatientReqs")
-    public List<Map<String, Object>>  getOutPatientReq (@RequestBody Map<String, Object> outPatientReqElements){
-        return admissionHandlePageService.getOutPatientReq(outPatientReqElements);
+    @PostMapping("/allInPatientReqs")
+    public List<Map<String, Object>>  getInPatientReq (@RequestBody Map<String, Object> inPatientReqElements){
+        return admissionHandlePageService.getInPatientReq(inPatientReqElements);
     };
 
 
     // 환자, 간호사 소켓 요청 시 UPDATE
-    @PutMapping("/OutPatientReq")
-    public  String changeOutPatientReq (@RequestBody Map<String, Object> sendPatientReqElements){
-        admissionHandlePageService.changeOutPatientReq(sendPatientReqElements);
-        return "업데이트 성공";
+    @PutMapping("/InPatientReq")
+    public  List<Map<String, Object>>changeInPatientReq (@RequestBody Map<String, Object> sendPatientReqElements){
+        admissionHandlePageService.changeInPatientReq(sendPatientReqElements);
+//        System.out.println(sendPatientReqElements);
+//        System.out.println(admissionHandlePageService.getInPatientReq(sendPatientReqElements));
+        return admissionHandlePageService.getInPatientReq(sendPatientReqElements);
     };
 
 }

@@ -66,10 +66,10 @@ public interface AdmissionHandlePageDAO {
 
 
     // 로딩 시 요청 사항 READ
-    List<Map<String, Object>>  getOutPatientReq (Map<String, Object> outPatientReqElements);
+    List<Map<String, Object>>  getInPatientReq (Map<String, Object> outPatientReqElements);
 
 
     // 환자, 간호사 소켓 요청 시 UPDATE
-    void changeOutPatientReq (Map<String, Object> sendPatientReqElements) ;
+    void changeInPatientReq (Map<String, Object> sendPatientReqElements) ;
 
 }
