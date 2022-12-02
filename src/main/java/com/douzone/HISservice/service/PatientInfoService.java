@@ -23,5 +23,7 @@ public interface PatientInfoService {
 
     List<Map<String, Object>> getPastTreatmentDetail(String patientID, String treatmentDate);
 
+    List<Map<String, Object>> getTreatmentHistoryDetail(String patientID, String treatmentDate, String regTimeString patientID, String treatmentDate);
+
     List<Map<String, Object>> getTreatmentPatientInfo(String receivePk);
 }
