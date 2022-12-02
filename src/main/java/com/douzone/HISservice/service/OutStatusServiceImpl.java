@@ -17,7 +17,7 @@ public class OutStatusServiceImpl implements OutStatusService{
     // 환자 현황 전체
     @Override
     public List<Map<String, Object>> getOutStatus(Map<String, Object> outStatusElement) {
-        System.out.println(outStatusElement);
+//        System.out.println(outStatusElement);
         List<Map<String, Object>> outStatus = outStatusDAO.getOutStatus(outStatusElement);
         return outStatus;
     }
@@ -25,7 +25,7 @@ public class OutStatusServiceImpl implements OutStatusService{
     // 환자 현황 필터
     @Override
     public List<Map<String, Object>> getOutStatusCon(Map<String, Object> outStatusElement) {
-        System.out.println(outStatusElement);
+//        System.out.println(outStatusElement);
         List<Map<String, Object>> outStatus = outStatusDAO.getOutStatusCon(outStatusElement);
         return outStatus;
     }
