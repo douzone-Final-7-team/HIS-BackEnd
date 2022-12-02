@@ -20,18 +20,18 @@
     </select>
 
 <!-- 비밀번호 변경-->
-    <select id="changePwd">
+    <update id="changePwd">
         UPDATE EMP_INFO_TB
         SET PW = #{newPwd}
         WHERE EMP_ID_PK = #{pk}
-    </select>
+    </update>
 
 <!-- 주소 변경-->
-    <select id="changeAddr">
+    <update id="changeAddr">
         UPDATE EMP_INFO_TB
         SET EMP_ADDR = #{newAddr}
         WHERE EMP_ID_PK = #{pk}
-    </select>
+    </update>
 
 <!-- 헤더 정보 -->
     <select id="getHeaderInfo" parameterType="String" resultType="HashMap">

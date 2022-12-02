@@ -25,11 +25,11 @@ public class UserController {
     @PostMapping("/join")
     public String join(@RequestBody User user) {
         user.setPw(bCryptPasswordEncoder.encode(user.getPw()));
-        user.setEmp_id_pk("D220100");
+        user.setEmp_id_pk("D220001");
         user.setSpeciality_ID_FK("N");
-        user.setEmp_name("배병서");
+        user.setEmp_name("강보라");
         user.setRole("ROLE_DOCTOR");
-        user.setLicense("D220100");
+        user.setLicense("D220001");
         user.setEmp_status("재직");
         user.setEmp_ssn("970721-1512368");
         user.setEmp_tel("010-2227-1396");
