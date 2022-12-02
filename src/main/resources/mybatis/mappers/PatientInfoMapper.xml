@@ -88,4 +88,16 @@
                  LEFT JOIN DIAGNOSIS_TB AS f ON c.DIAGNOSIS_CODE = f.DIAGNOSIS_CODE
         WHERE c.PATIENT_ID_FK = #{patientID} AND c.TREATMENT_DATE = #{treatmentDate} AND f.DIAGNOSIS_CODE = c.DIAGNOSIS_CODE;
     </select>
+
+    <!-- 환자 과거 병력 자세히 보기 - 등록시간추가 -->
+    <select id="getTreatmentHistoryDetail" parameterType="String" resultType="HashMap">
+        SELECT a.*, b.SPECIALITY, b.SYMPTOM, c.*, d.EMP_NAME, e.ADMISSION_DUEDATE, f.DIAGNOSIS,if(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK, if(TREATMENT_ORDER IS NULL, 'X', 'O') AS TREATMENT_CHECK, if(MEDICINE IS NULL, 'X', 'O') AS MEDICINE_CHECK, if(ADMISSION=1, 'O', 'X') AS ADMISSION_CHECK
+        FROM PATIENT_TB AS a
+                 LEFT JOIN RECEIVE_TB AS b ON a.PATIENT_ID_PK = b.PATIENT_ID_FK
+                 LEFT JOIN TREATMENT_INFO_TB AS c ON a.PATIENT_ID_PK = c.PATIENT_ID_FK
+                 LEFT JOIN EMP_INFO_TB AS d ON d.EMP_ID_PK = c.EMP_ID_FK
+                 LEFT JOIN ADMISSION_TB AS e ON c.TREATMENT_NUM_PK = e.TREATMENT_NUM_FK
+                 LEFT JOIN DIAGNOSIS_TB AS f ON c.DIAGNOSIS_CODE = f.DIAGNOSIS_CODE
+        WHERE c.PATIENT_ID_FK = #{patientID} AND b.REGISTRATION_TIME= #{regTime} AND c.TREATMENT_DATE = #{treatmentDate} AND f.DIAGNOSIS_CODE = c.DIAGNOSIS_CODE;
+    </select>
 </mapper>
