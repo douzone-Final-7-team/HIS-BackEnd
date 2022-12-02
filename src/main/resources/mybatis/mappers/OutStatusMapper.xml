@@ -77,12 +77,12 @@
     </select>
 
     <!-- 의사 개인 환자 현황 리스트 -->
-    <select id="getMyPatient" resultType="HashMap">
+    <select id="getMyPatient" parameterType="String" resultType="HashMap">
         SELECT a.*, b.PATIENT_NAME, SUBSTR(REGISTRATION_TIME,12,5) AS TIME, c.OP_CODE_NAME
         FROM RECEIVE_TB AS a
             LEFT JOIN PATIENT_TB AS b ON a.PATIENT_ID_FK = b.PATIENT_ID_PK
             LEFT JOIN OUTPATIENT_STATUS AS c ON a.OUTPATIENT_STATUS_CODE = c.OUTPATIENT_STATUS_CODE
-        WHERE EMP_ID_FK = 'D220001' AND a.OUTPATIENT_STATUS_CODE != 'OD' AND DATE_FORMAT(a.REGISTRATION_TIME, '%Y%M%D') = DATE_FORMAT(NOW(), '%Y%M%D')
+        WHERE EMP_ID_FK = #{doctorID} AND a.OUTPATIENT_STATUS_CODE != 'OD' AND DATE_FORMAT(a.REGISTRATION_TIME, '%Y%M%D') = DATE_FORMAT(NOW(), '%Y%M%D')
         ORDER BY REGISTRATION_TIME ASC;
     </select>
 

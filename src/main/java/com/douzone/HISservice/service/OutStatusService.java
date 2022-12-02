@@ -25,7 +25,7 @@ public interface OutStatusService {
 
 
     // 의사 개인 환자 현황 리스트
-    List<Map<String, Object>> getMyPatient ();
+    List<Map<String, Object>> getMyPatient (String doctorID);
 
     // 수납 대기 환자 SELECT
     List<Map<String, Object>> getWaiting4Receipt (Map<String, Object> params);
