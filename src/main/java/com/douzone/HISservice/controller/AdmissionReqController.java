@@ -25,7 +25,7 @@ public class AdmissionReqController {
     // 입원 승인 , 반려
     @PostMapping("/admissionAccept")
     public void putAdmissionAccept(@RequestBody Map<String, Object> admissionElement) {
-//        System.out.println(admissionElement);
+        System.out.println(admissionElement);
         admissionReqService.putAdmissionAccept(admissionElement);
 
     }
@@ -33,7 +33,7 @@ public class AdmissionReqController {
     // 입원 예정 리스트
     @GetMapping("/admissionDueList")
     public List<Map<String, Object>> getAdmissionDueList() {
-
+        System.out.println("dkdkkdkdkdkdkd : "+admissionReqService.getAdmissionDueList());
         return (admissionReqService.getAdmissionDueList());
     }
 

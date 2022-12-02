@@ -17,6 +17,8 @@ public class ReceiptController {
 
     @PostMapping("/AdReceiptList")
     public List<Map<String, Object>> getAdReceiptList(@RequestBody Map<String, Object> filterFlag) {
+        System.out.println("9999999"+filterFlag);
+        System.out.println("9999999"+receiptService.getAdReceiptList(filterFlag));
         return(receiptService.getAdReceiptList(filterFlag));
     }
 

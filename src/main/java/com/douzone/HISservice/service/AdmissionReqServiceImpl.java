@@ -25,6 +25,7 @@ public class AdmissionReqServiceImpl implements AdmissionReqService {
         String admissionResult = admissionElement.get("BTN_STATE").toString();
 //        System.out.println(admissionResult);
         if(admissionResult.equals("assign")){
+            System.out.println("자 드가자");
             admissionReqDAO.putAdmissionAccept(admissionElement);
             admissionReqDAO.putBedStatusIn(admissionElement);
         }else{
