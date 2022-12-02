@@ -100,10 +100,9 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     public List<Map<String, Object>> getPastTreatmentList(String patientPk) {
         return patientInfoDAO.getPastTreatmentList(patientPk);
     }
-
     @Override
-    public List<Map<String, Object>> getPastTreatmentDetail(String patientID, String treatmentDateString patientID, String treatmentDate) {
-        return patientInfoDAO.getPastTreatmentDetail(patientID, treatmentDatepatientID, treatmentDate);
+    public List<Map<String, Object>> getPastTreatmentDetail(String patientID, String treatmentDate) {
+        return patientInfoDAO.getPastTreatmentDetail(patientID, treatmentDate);
     }
 
     @Override

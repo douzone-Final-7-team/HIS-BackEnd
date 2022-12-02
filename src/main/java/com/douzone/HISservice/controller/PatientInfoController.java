@@ -66,4 +66,11 @@ public class PatientInfoController {
 
     }
 
+    // 진료환자 과겨 병력 상세 조회 - regTime 추가
+    @GetMapping("/getTreatmentHistoryDetail")
+    public List<Map<String, Object>> getTreatmentHistoryDetail(@RequestParam String patientID, @RequestParam String treatmentDate, @RequestParam String regTime) {
+        return patientInfoService.getTreatmentHistoryDetail(patientID, treatmentDate, regTime);
+
+    }
+
 }
