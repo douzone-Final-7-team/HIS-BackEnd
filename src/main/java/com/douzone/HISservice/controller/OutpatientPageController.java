@@ -18,9 +18,10 @@ public class OutpatientPageController {
         return (outpatientPageService.getTreatmentInfos(treatmentInfosElements));
     }
 
+
     // 외래진료환자 상태코드 변경 UPDATE
     @PutMapping("/changeOutpatientStatus")
     public void changeOutpatientStatus(@RequestBody Map<String, Object> updateCodeElements) {
-        System.out.println(updateCodeElements);
+        outpatientPageService.changeOutpatientStatus(updateCodeElements);
     }
 }
