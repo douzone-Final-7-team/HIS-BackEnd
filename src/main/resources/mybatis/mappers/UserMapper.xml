@@ -55,4 +55,43 @@
             LEFT JOIN SPECIALITY_TB AS b ON a.SPECIALITY_ID_FK = b.SPECIALITY_ID_PK
         WHERE EMP_ID_PK = #{pk};
     </select>
+
+    <insert id="addDoctorSchedule" parameterType="HashMap">
+        INSERT INTO DOCTOR_SCHEDULE_TB
+        (EMP_ID_FK, SCHEDULE_CATEGORY, SCHEDULE_TITLE, SCHEDULE_DATE, SCHEDULE_START_TIME, SCHEDULE_END_TIME , SCHEDULE_PLACE, SCHEDULE_CONTENT)
+        VALUES (#{empIdPk}, #{scheduleCategory}, #{scheduleTitle}, #{scheduleDate}, #{startTime}, #{endTime}, #{scheduleLocation}, #{scheduleContent});
+    </insert>
+
+    <select id="getMyScheduleList" parameterType="String" resultType="HashMap">
+        SELECT *
+        FROM DOCTOR_SCHEDULE_TB
+        WHERE EMP_ID_FK = #{empIdPk} AND SCHEDULE_DATE = #{date}
+        ORDER BY SCHEDULE_START_TIME ASC;
+    </select>
+
+    <select id="getSelectedSchedule" parameterType="String" resultType="HashMap">
+        SELECT *
+        FROM DOCTOR_SCHEDULE_TB
+        WHERE SCHEDULE_ID_PK = #{scheduleIdPk};
+    </select>
+
+    <update id="updateSchedule" parameterType="HashMap">
+        UPDATE DOCTOR_SCHEDULE_TB
+        SET SCHEDULE_CATEGORY = #{scheduleCategory}, SCHEDULE_TITLE = #{scheduleTitle}, SCHEDULE_START_TIME = #{startTime}, SCHEDULE_END_TIME = #{endTime},
+            SCHEDULE_PLACE = #{scheduleLocation}, SCHEDULE_CONTENT = #{scheduleContent}
+        WHERE SCHEDULE_ID_PK = #{scheduleIdPk};
+
+    </update>
+
+    <delete id="deleteSchedule" parameterType="String">
+        DELETE
+        FROM DOCTOR_SCHEDULE_TB
+        WHERE SCHEDULE_ID_PK = #{schedulePk}
+    </delete>
+
+    <select id="filterCategory" parameterType="String" resultType="HashMap">
+        SELECT *
+        FROM DOCTOR_SCHEDULE_TB
+        WHERE EMP_ID_FK = #{empIdPk} AND SCHEDULE_DATE = #{date} AND SCHEDULE_CATEGORY = #{category};
+    </select>
 </mapper>

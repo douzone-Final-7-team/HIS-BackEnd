@@ -17,4 +17,16 @@ public interface UserDAO {
     void changeAddr(String newAddr, String pk);
 
     List<Map<String, Object>> getHeaderInfo(String pk);
+
+    void addDoctorSchedule(Map<String, Object> data);
+
+    List<Map<String, Object>> getMyScheduleList(String date, String empIdPk);
+
+    List<Map<String, Object>> getSelectedSchedule(String scheduleIdPk);
+
+    void updateSchedule(Map<String, Object> data);
+
+    void deleteSchedule(String schedulePk);
+
+    List<Map<String, Object>> filterCategory(String category, String empIdPk, String date);
 }
