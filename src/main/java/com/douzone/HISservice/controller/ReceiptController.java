@@ -40,7 +40,7 @@ public class ReceiptController {
     public List<Map<String, Object>> getAdReceipt(@RequestBody Map<String, Object> test) {
         System.out.println("터지는 부분 : " + test);
         try {
-            if(test.get("ADMISSION_ID_PK") != "") {
+            if(test.get("ADMISSION_ID_PK") != "" && test.get("ADMISSION_ID_PK") != null) {
                 String admissionId = test.get("ADMISSION_ID_PK").toString();
                 return (receiptService.getAdReceipt(admissionId));
             }

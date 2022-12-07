@@ -88,7 +88,7 @@
             ,
                 if(MIDDLE_PAY_DATE <![CDATA[<]]> date_format(now(),'%Y-%m-%d'),
                     if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0), 0),
-                    if(INSURANCE = 1, truncate((TIMESTAMP(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000)*0.25,0), 0)
+                    if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000)*0.25,0), 0)
                 )
             ) as INSURANCE_COST ,
             <!--total_cost-->
