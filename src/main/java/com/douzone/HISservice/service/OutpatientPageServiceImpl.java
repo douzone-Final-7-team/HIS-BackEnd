@@ -19,18 +19,11 @@ public class OutpatientPageServiceImpl implements OutpatientPageService {
         return outpatientPageDAO.getTreatmentInfos(treatmentInfosElements);
     }
 
-
-    // 외래진료환자 상태코드 변경 UPDATE
-    @Override
-    public void changeOutpatientStatus(Map<String, Object> updateCodeElements) {
-        outpatientPageDAO.changeOutpatientStatus(updateCodeElements);
-    }
-
     // 대기 환자 진찰로 상태 변경시 TREATMENT_INFO_TB INSERT
     @Override
     public void addPatientStatusInfo (Map<String, Object> patientStatusInfoElements) {
         outpatientPageDAO.addPatientStatusInfo(patientStatusInfoElements);
-        outpatientPageDAO.changeOutpatientStatus(patientStatusInfoElements);
+//        outpatientPageDAO.changeOutpatientStatus(patientStatusInfoElements);
     }
 
 }

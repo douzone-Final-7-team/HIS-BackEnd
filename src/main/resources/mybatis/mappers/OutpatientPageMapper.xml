@@ -16,15 +16,6 @@
         WHERE RECEIVE_ID_PK = #{receiveId};
     </select>
 
-    <!-- 치료오더에서 완료 버튼 클릭시 환자 상태 수납으로 변경 -->
-    <update id="changeOutpatientStatus" parameterType="HashMap">
-        <!-- 수정 쿼리-->
-        UPDATE RECEIVE_TB
-        SET OUTPATIENT_STATUS_CODE = #{status}
-        WHERE RECEIVE_ID_PK = #{receiveId};
-    </update>
-
-
     <!-- 대기 환자 진찰로 상태 변경시 TREATMENT_INFO_TB INSERT-->
     <insert id="addPatientStatusInfo" parameterType="HashMap">
         INSERT INTO TREATMENT_INFO_TB (TREATMENT_NUM_PK, RECEIVE_ID_FK,  PATIENT_ID_FK, EMP_ID_FK)
