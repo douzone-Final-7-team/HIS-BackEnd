@@ -15,12 +15,12 @@ public interface AdmissionReqDAO {
     List<Map<String, Object>> getAdmissionOrder ();
 
     // 입원 승인
-    void putAdmissionAccept(Map<String, Object> admissionElement);
+    int putAdmissionAccept(Map<String, Object> admissionElement);
 
-    void putBedStatusIn(Map<String, Object> admissionElement);
+    int putBedStatusIn(Map<String, Object> admissionElement);
 
     // 입원 반려
-    void putAdmissionNotAccept(Map<String, Object> admissionElement);
+    int putAdmissionNotAccept(Map<String, Object> admissionElement);
 
 
     List<Map<String, Object>> getAdmissionDueList();

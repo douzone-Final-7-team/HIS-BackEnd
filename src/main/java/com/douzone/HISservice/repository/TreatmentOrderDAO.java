@@ -14,7 +14,11 @@ public interface TreatmentOrderDAO {
 
     void setAdmissionDueDate(Map<String, Object> data);
 
+    void setPatientStatus(String receivePk, String patientStatus);
+
     List<Map<String, Object>> getDiagnosisList(String specialityId);
 
     List<Map<String, Object>> getMedicineList(String diagnosis);
+
+    void setOutpatientStatus(Map<String, Object> data);
 }

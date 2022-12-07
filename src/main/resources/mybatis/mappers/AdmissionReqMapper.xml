@@ -22,7 +22,8 @@
         UPDATE ADMISSION_TB
         SET
             ward = #{WARD} , room_num = #{ROOM_NUM} , bed_num = #{BED_NUM} , ADMISSION_STATUS_CODE = "IB"
-        WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK};
+        WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK}
+        AND 0 = (SELECT bed_status FROM BED_TB WHERE ward = #{WARD} AND room_num = #{ROOM_NUM} AND bed_num = #{BED_NUM});
     </update>
 
     <!-- 배드상태변경 -->

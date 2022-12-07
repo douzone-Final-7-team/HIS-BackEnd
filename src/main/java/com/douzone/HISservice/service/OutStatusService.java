@@ -36,4 +36,8 @@ public interface OutStatusService {
 
     // 수납 SELECT
     List<Map<String, Object>> getAcceptance (Map<String, Object> params);
+
+    void putChangeState(Map<String, Object> speciality);
+
+    List<Map<String, Object>> getPrescription(Map<String, Object> treatmentNumPk);
 }

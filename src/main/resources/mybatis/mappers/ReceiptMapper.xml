@@ -60,7 +60,6 @@
             (DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') AND ADMISSION_STATUS_CODE = 'ID') OR ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 1250000 and ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is null) OR ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , now()))*50000 >= 1250000 and ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is not null);
     </select>
 
-    <!--이제 이쿼리 타면 찍히는 부분이  -->
     <select id="getAdReceipt"  parameterType="String" resultType="HashMap">
         select
             a.ADMISSION_ID_PK ,
@@ -89,7 +88,7 @@
             ,
                 if(MIDDLE_PAY_DATE <![CDATA[<]]> date_format(now(),'%Y-%m-%d'),
                     if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0), 0),
-                    if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000)*0.25,0), 0)
+                    if(INSURANCE = 1, truncate((TIMESTAMP(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000)*0.25,0), 0)
                 )
             ) as INSURANCE_COST ,
             <!--total_cost-->
