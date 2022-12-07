@@ -24,4 +24,10 @@ public class OutpatientPageController {
     public void changeOutpatientStatus(@RequestBody Map<String, Object> updateCodeElements) {
         outpatientPageService.changeOutpatientStatus(updateCodeElements);
     }
+
+    // 대기 환자 진찰로 상태 변경시 TREATMENT_INFO_TB INSERT
+    @PostMapping ("/addPatientStatusInfo")
+    public void addPatientStatusInfo(@RequestBody Map<String, Object> patientStatusInfoElements) {
+        outpatientPageService.addPatientStatusInfo(patientStatusInfoElements);
+    }
 }
