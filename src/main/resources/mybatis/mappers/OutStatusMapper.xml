@@ -6,7 +6,8 @@
 <mapper namespace="com.douzone.HISservice.repository.OutStatusDAO">
     <!--환자 현황 전체 SELECT -->
     <select id="getOutStatus" parameterType="HashMap" resultType="HashMap">
-        SELECT c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, a.RECEIVE_ID_PK, c.PATIENT_ID_PK, b.EMP_ID_PK, e.TREATMENT_NUM_PK
+        SELECT c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, a.RECEIVE_ID_PK, c.PATIENT_ID_PK, b.EMP_ID_PK, e.TREATMENT_NUM_PK, b.EMP_NAME, a.SPECIALITY ,e.TREATMENT_DATE,
+            a.REGISTRATION_TIME
         FROM RECEIVE_TB AS a
                  LEFT JOIN EMP_INFO_TB AS b ON b.EMP_ID_PK = a.EMP_ID_FK
                  LEFT JOIN PATIENT_TB AS c ON c.PATIENT_ID_PK = a.PATIENT_ID_FK
@@ -22,7 +23,7 @@
 
     <!--환자 현황 필터 SELECT -->
     <select id="getOutStatusCon" parameterType="HashMap" resultType="HashMap">
-        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN
+        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, b.EMP_NAME, a.SPECIALITY
         from RECEIVE_TB as a
                  left join EMP_INFO_TB as b on b.EMP_ID_PK = a.EMP_ID_FK
                  left join PATIENT_TB as c on c.PATIENT_ID_PK = a.PATIENT_ID_FK

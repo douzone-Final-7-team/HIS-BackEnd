@@ -14,4 +14,7 @@ public interface OutpatientPageDAO {
 
     // 외래진료환자 상태코드 변경 UPDATE
     void changeOutpatientStatus (Map<String, Object> updateCodeElements);
+
+    // 대기 환자 진찰로 상태 변경시 TREATMENT_INFO_TB INSERT
+    void addPatientStatusInfo (Map<String, Object> patientStatusInfoElements);
 }
