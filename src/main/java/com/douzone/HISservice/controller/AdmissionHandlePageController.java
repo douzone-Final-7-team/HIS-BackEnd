@@ -186,7 +186,6 @@ public class AdmissionHandlePageController {
     @PutMapping("/InPatientReq")
     public  List<Map<String, Object>>changeInPatientReq (@RequestBody Map<String, Object> sendPatientReqElements){
         admissionHandlePageService.changeInPatientReq(sendPatientReqElements);
-
         return admissionHandlePageService.getInPatientReq(sendPatientReqElements);
     };
 
