@@ -23,6 +23,6 @@ public interface BedInfoDAO {
     //병동 기준 입원완료 한 병상 정보 불러오기
     List<Map<String, Object>> getOccupiedWardList(Map<String, Object> roominfo);
 
-
-
+    //병동 기준 입원완료 한 병상 정보 불러오기
+    List<Map<String, Object>> getOccupiedAllList();
 }

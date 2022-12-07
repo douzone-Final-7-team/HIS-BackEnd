@@ -35,4 +35,38 @@ public class UserServiceImpl implements UserService {
     public List<Map<String, Object>> getHeaderInfo(String pk) {
         return userDAO.getHeaderInfo(pk);
     }
+
+    @Override
+    public List<Map<String, Object>> addDoctorSchedule(Map<String, Object> data) {
+        String empIdPk = data.get("empIdPk").toString();
+        String date = data.get("scheduleDate").toString();
+        userDAO.addDoctorSchedule(data);
+        return userDAO.getMyScheduleList(date, empIdPk);
+    }
+
+    @Override
+    public List<Map<String, Object>> getMyScheduleList(String date, String empIdPk) {
+        return userDAO.getMyScheduleList(date, empIdPk);
+    }
+
+    @Override
+    public List<Map<String, Object>> getSelectedSchedule(String scheduleIdPk) {
+        return userDAO.getSelectedSchedule(scheduleIdPk);
+    }
+
+    @Override
+    public void updateSchedule(Map<String, Object> data) {
+        userDAO.updateSchedule(data);
+    }
+
+    @Override
+    public List<Map<String, Object>> deleteSchedule(String date, String empIdPk, String schedulePk) {
+        userDAO.deleteSchedule(schedulePk);
+        return userDAO.getMyScheduleList(date, empIdPk);
+    }
+
+    @Override
+    public List<Map<String, Object>> filterCategory(String category, String empIdPk, String date) {
+        return userDAO.filterCategory(category, empIdPk, date);
+    }
 }

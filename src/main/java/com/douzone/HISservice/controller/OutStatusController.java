@@ -101,6 +101,7 @@ public class OutStatusController {
         outStatusService.insertReceipt(params);
     }
 
+
     // 외래 환자 처방전
     @PostMapping("/getPrescription")
     public List<Map<String, Object>> getPrescription(@RequestBody Map<String, Object> treatmentNumPk) {

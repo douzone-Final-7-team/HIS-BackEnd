@@ -32,9 +32,6 @@ public class TreatmentOrderController {
 
     @PostMapping("/treatmentDone")
     public String setMedicalCharts(@RequestBody Map<String, Object> data){
-        System.out.println("진료완료 : "+data);
-        System.out.println("진료완료입니다. : "+data.get("treatmentOrder").toString().equals(""));
-        System.out.println("진료완료입니다. : "+data.get("treatmentOrder")=="");
         treatmentOrderService.setMedicalCharts(data);
         return "진료 완료!";
     }
