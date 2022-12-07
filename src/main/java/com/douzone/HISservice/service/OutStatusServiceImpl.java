@@ -100,6 +100,7 @@ public class OutStatusServiceImpl implements OutStatusService{
         return outStatusDAO.getAcceptance(params);
     }
 
+    //기본진료 치료 처방전 시간할증 보험 총액
 
     // 수납 금액 INSERT
     @Override
@@ -108,5 +109,11 @@ public class OutStatusServiceImpl implements OutStatusService{
         System.out.println(params);
         outStatusDAO.insertReceipt(params);
         outStatusDAO.putOutStatus(params);
+    }
+
+    // 외래 환자 처방전
+    @Override
+    public List<Map<String, Object>> getPrescription(Map<String, Object> treatmentNumPk) {
+        return outStatusDAO.getPrescription(treatmentNumPk);
     }
 }

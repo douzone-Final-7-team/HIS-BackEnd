@@ -45,5 +45,8 @@ public interface OutStatusDAO {
 
     // 수납 후 환자 상태 UPDATE
     void putOutStatus(Map<String, Object> params);
+
+    // 외래 환자 처방전
+    List<Map<String, Object>> getPrescription(Map<String, Object> treatmentNumPk);
 }
 
