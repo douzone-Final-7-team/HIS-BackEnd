@@ -25,11 +25,11 @@ public class UserController {
     @PostMapping("/join")
     public String join(@RequestBody User user) {
         user.setPw(bCryptPasswordEncoder.encode(user.getPw()));
-        user.setEmp_id_pk("D220100");
+        user.setEmp_id_pk("D220001");
         user.setSpeciality_ID_FK("N");
-        user.setEmp_name("배병서");
+        user.setEmp_name("강보라");
         user.setRole("ROLE_DOCTOR");
-        user.setLicense("D220100");
+        user.setLicense("D220001");
         user.setEmp_status("재직");
         user.setEmp_ssn("970721-1512368");
         user.setEmp_tel("010-2227-1396");
@@ -79,5 +79,39 @@ public class UserController {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String pk = principal.getUser().getEmp_id_pk();
         return userService.getHeaderInfo(pk);
+    }
+
+    @PostMapping("/addSchedule")
+    public List<Map<String, Object>> addDoctorSchedule(@RequestBody Map<String, Object> data) {
+        return userService.addDoctorSchedule(data);
+    }
+
+    @GetMapping("/myScheduleList")
+    public List<Map<String, Object>> getMyScheduleList(@RequestParam String date, @RequestParam String empIdPk) {
+        return userService.getMyScheduleList(date, empIdPk);
+    }
+
+    @GetMapping("/selectedSchedule")
+    public List<Map<String, Object>> getSelectedSchedule(@RequestParam String scheduleIdPk) {
+        return userService.getSelectedSchedule(scheduleIdPk);
+    }
+
+    @PostMapping("/updateSchedule")
+    public String updateSchedule(@RequestBody Map<String, Object> data) {
+        userService.updateSchedule(data);
+        return "일정이 수정되었습니다.";
+    }
+
+    @PostMapping("/deleteSchedule")
+    public List<Map<String, Object>> deleteSchedule(@RequestBody Map<String, Object> data) {
+        String date = data.get("date").toString();
+        String empIdPk = data.get("empIdPk").toString();
+        String schedulePk = data.get("schedulePk").toString();
+        return userService.deleteSchedule(date, empIdPk, schedulePk);
+    }
+
+    @GetMapping("/filterCategory")
+    public List<Map<String, Object>> filterCategory(@RequestParam String category, @RequestParam String empIdPk, @RequestParam String date) {
+        return userService.filterCategory(category, empIdPk, date);
     }
 }
