@@ -22,6 +22,11 @@ public class OutStatusServiceImpl implements OutStatusService{
         return outStatus;
     }
 
+    @Override
+    public void putChangeState(Map<String, Object> speciality) {
+        outStatusDAO.putChangeState(speciality);
+    }
+
     // 환자 현황 필터
     @Override
     public List<Map<String, Object>> getOutStatusCon(Map<String, Object> outStatusElement) {

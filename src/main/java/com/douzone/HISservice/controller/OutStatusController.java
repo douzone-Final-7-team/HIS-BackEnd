@@ -39,16 +39,32 @@ public class OutStatusController {
         for(int i=0; i<paramsList.size(); i++) {
             paramsList.get(i).put("patInfo", outStatusService.getOutStatus(paramsList.get(i)));
         }
+        System.out.println("오오옹 : "+paramsList);
         return paramsList;
     }
+
+
+
+    @PostMapping("/putChangeState")
+    public Object putChangeState(@RequestBody Map<String, Object> speciality) {
+
+        outStatusService.putChangeState(speciality);
+        List<Map<String, Object>> paramsList = outStatusService.getDoctorList(speciality);
+        for(int i=0; i<paramsList.size(); i++) {
+            paramsList.get(i).put("patInfo", outStatusService.getOutStatus(paramsList.get(i)));
+        }
+        System.out.println("하하핳 : "+paramsList);
+        return paramsList;
+    }
+
 
     // 의사 개인 환자 현황 리스트
     @GetMapping("/MyPatient")
     public List<Map<String, Object>> getMyPatient(@RequestParam String doctorID) {
+        System.out.println("의사아이디 : "+doctorID);
         return outStatusService.getMyPatient(doctorID);
     }
 
-    // 필터
     @PostMapping("/getdocpatCon")
     public Object getDocPatCon(@RequestBody Map<String, Object> params) {
         List<Map<String, Object>> paramsList = outStatusService.getDoctorList(params);

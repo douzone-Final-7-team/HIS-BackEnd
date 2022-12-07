@@ -38,8 +38,9 @@ public class ReceiptController {
     //입원수납정보
     @PostMapping("/AdReceipt")
     public List<Map<String, Object>> getAdReceipt(@RequestBody Map<String, Object> test) {
+        System.out.println("터지는 부분 : " + test);
         try {
-            if(test.get("ADMISSION_ID_PK") != null) {
+            if(test.get("ADMISSION_ID_PK") != "") {
                 String admissionId = test.get("ADMISSION_ID_PK").toString();
                 return (receiptService.getAdReceipt(admissionId));
             }
@@ -47,6 +48,7 @@ public class ReceiptController {
             e.printStackTrace();
         }
         return null;
+
     }
 
 

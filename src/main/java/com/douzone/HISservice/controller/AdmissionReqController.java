@@ -24,10 +24,11 @@ public class AdmissionReqController {
 
     // 입원 승인 , 반려
     @PostMapping("/admissionAccept")
-    public void putAdmissionAccept(@RequestBody Map<String, Object> admissionElement) {
+    public int putAdmissionAccept(@RequestBody Map<String, Object> admissionElement) {
         System.out.println(admissionElement);
-        admissionReqService.putAdmissionAccept(admissionElement);
-
+        int a = admissionReqService.putAdmissionAccept(admissionElement);
+        System.out.println("성공여부 : " + a);
+        return a;
     }
 
     // 입원 예정 리스트
