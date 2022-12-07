@@ -102,10 +102,34 @@ public class OutStatusServiceImpl implements OutStatusService{
     // 수납 SELECT
     @Override
     public List<Map<String, Object>> getAcceptance(Map<String, Object> params) {
-        return outStatusDAO.getAcceptance(params);
+        List<Map<String, Object>> acceptanceList = outStatusDAO.getAcceptance(params);
+
+        int treatCost = (int) acceptanceList.get(0).get("PATIENT_AGE");
+        String treatmentOrder = acceptanceList.get(0).get("TREATMENT_ORDER") != null ? acceptanceList.get(0).get("TREATMENT_ORDER").toString() : null;
+        int careCost, prescriptionCost, timeCost, insuranceCost, totalCost;
+        String visit = acceptanceList.get(0).get("VISIT") != null ? acceptanceList.get(0).get("VISIT").toString() : null;
+        String prescription = acceptanceList.get(0).get("MEDICINE") != null ? acceptanceList.get(0).get("MEDICINE").toString() : null;
+        int time = Integer.parseInt(acceptanceList.get(0).get("REGISTRATION_TIME").toString().substring(0,2));
+        int insurance = (int) acceptanceList.get(0).get("INSURANCE");
+
+        treatCost = treatCost < 7 || treatCost > 64 ? 5000 : 7000;
+        careCost = treatmentOrder == null ? 0 : 10000;
+        prescriptionCost = prescription == null ? 0 : visit.equals("재진") ? 3000 : 5000;
+        timeCost = (int)(time < 9  ? treatCost * -0.1 : time > 17 ? treatCost * 0.1 : 0);
+        insuranceCost = (int)(insurance == 1 ? (treatCost + careCost + prescriptionCost + timeCost) * 0.25 : 0);
+        totalCost = (treatCost + careCost + prescriptionCost + timeCost - insuranceCost);
+
+        System.out.println(prescriptionCost);
+        acceptanceList.get(0).put("treatCost", treatCost);
+        acceptanceList.get(0).put("insuranceCost", insuranceCost);
+        acceptanceList.get(0).put("careCost", careCost);
+        acceptanceList.get(0).put("timeCost", timeCost);
+        acceptanceList.get(0).put("prescriptionCost", prescriptionCost);
+        acceptanceList.get(0).put("totalCost", totalCost);
+
+        return acceptanceList;
     }
 
-    //기본진료 치료 처방전 시간할증 보험 총액
 
     // 수납 금액 INSERT
     @Override

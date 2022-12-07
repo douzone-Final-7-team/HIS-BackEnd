@@ -75,8 +75,6 @@ public class OutStatusController {
                 paramsList.get(i).put("patInfo", outStatusService.getOutStatusCon(paramsList.get(i)));
             }
         }
-        System.out.println("아래params출력");
-        System.out.println(params);
         return paramsList;
     }
 
