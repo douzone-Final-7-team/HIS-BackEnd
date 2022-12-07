@@ -16,7 +16,7 @@ public class TreatmentOrderServiceImpl implements TreatmentOrderService {
     @Override
     public void setMedicalCharts(Map<String, Object> data) {
         treatmentOrderDAO.setMedicalCharts(data);
-
+        treatmentOrderDAO.setOutpatientStatus(data);
         if(Integer.parseInt(data.get("admissionCheck").toString()) == 1) {
             treatmentOrderDAO.setAdmissionDueDate(data); // 입원 오더가 내려지면 입원 테이블에 insert
         }

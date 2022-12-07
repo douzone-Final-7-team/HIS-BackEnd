@@ -12,8 +12,21 @@
 
     <select id="setAdmissionDueDate" parameterType="HashMap" resultType="HashMap">
         INSERT INTO ADMISSION_TB
-        VALUES ('A22000047', #{treatmentPk}, 'IA', null, null, null, #{admissionOrder}, null, null, null, null, null, null, null);
+        VALUES ((SELECT CONCAT('A',SUBSTR(NOW(),3,2)*1000000 + 1 + (SELECT COUNT(*) FROM ADMISSION_TB AS a))), #{treatmentPk}, 'IA', null, null, null, #{admissionOrder}, null, null, null, null, null, null, null);
     </select>
+    
+    <update id="setOutpatientStatus" parameterType="HashMap">
+        UPDATE RECEIVE_TB
+        SET
+        <if test="treatmentOrder == null">
+            OUTPATIENT_STATUS_CODE = 'OD'
+        </if>
+        <if test="treatmentOrder != null">
+            OUTPATIENT_STATUS_CODE = 'OB'
+        </if>
+        WHERE RECEIVE_ID_PK = #{receivePk}
+
+    </update>
 
     <select id="getDiagnosisList" parameterType="String" resultType="HashMap">
         SELECT DIAGNOSIS_CODE, DIAGNOSIS

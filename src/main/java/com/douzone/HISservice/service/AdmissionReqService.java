@@ -11,7 +11,7 @@ public interface AdmissionReqService {
     List<Map<String, Object>> getAdmissionOrder();
 
     // 입원 승인
-    void putAdmissionAccept (Map<String, Object> admissionElement);
+    int putAdmissionAccept (Map<String, Object> admissionElement);
 
     List<Map<String, Object>> getAdmissionDueList();
 

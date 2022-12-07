@@ -17,4 +17,6 @@ public interface TreatmentOrderDAO {
     List<Map<String, Object>> getDiagnosisList(String specialityId);
 
     List<Map<String, Object>> getMedicineList(String diagnosis);
+
+    void setOutpatientStatus(Map<String, Object> data);
 }

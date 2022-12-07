@@ -71,10 +71,16 @@
     <select id="getDoctorList" parameterType="HashMap" resultType="HashMap">
         SELECT EMP_NAME, EMP_ID_PK, SPECIALITY_ID_PK, #{OUTPATIENT_STATUS_CODE} OUTPATIENT_STATUS_CODE
         FROM EMP_INFO_TB AS a
-                 LEFT JOIN SPECIALITY_TB AS b ON b.SPECIALITY_ID_PK = a.SPECIALITY_ID_FK
+        LEFT JOIN SPECIALITY_TB AS b ON b.SPECIALITY_ID_PK = a.SPECIALITY_ID_FK
         WHERE SPECIALITY_ID_FK = #{SPECIALITY_ID_FK}
-          AND EMP_ID_PK LIKE 'D%';
+        AND EMP_ID_PK LIKE 'D%';
     </select>
+
+    <update id="putChangeState" parameterType="HashMap">
+        update RECEIVE_TB
+        SET  OUTPATIENT_STATUS_CODE = #{status}
+        WHERE RECEIVE_ID_PK = #{RECEIVE_ID_PK};
+    </update>
 
     <!-- 의사 개인 환자 현황 리스트 -->
     <select id="getMyPatient" parameterType="String" resultType="HashMap">
@@ -100,7 +106,7 @@
 
     <!-- 수납 SELECT -->
     <select id="getAcceptance" parameterType="HashMap" resultType="HashMap">
-        SELECT c.PATIENT_AGE, a.TREATMENT_ORDER, a.MEDICINE,
+        SELECT c.PATIENT_AGE, a.TREATMENT_ORDER, a.MEDICINE, b.SPECIALITY,
                (IF((SELECT COUNT(*) FROM TREATMENT_INFO_TB
                     WHERE PATIENT_ID_FK = #{PATIENT_ID_PK})=0, '초진', '재진')) AS 'VISIT',
                 DATE_FORMAT(b.REGISTRATION_TIME, '%H : %i') AS 'REGISTRATION_TIME', c.INSURANCE
@@ -130,6 +136,28 @@
             SET OUTPATIENT_STATUS_CODE = 'OE'
         WHERE TREATMENT_NUM_PK = #{TREATMENT_NUM_FK}
     </update>
+
+    <!-- 외래 환자 처방전  -->
+    <select id="getPrescription"  parameterType="HashMap" resultType="HashMap">
+        SELECT b.PATIENT_NAME, b.PATIENT_ID_PK, b.PATIENT_SSN, c.EMP_NAME, c.EMP_TEL, c.EMP_ID_PK,
+        d.DIAGNOSIS_CODE, DATE_FORMAT(a.TREATMENT_DATE, '%Y-%m-%d')  AS 'TREATMENT_DATE',
+        (
+        SELECT GROUP_CONCAT(b.MEDICINE SEPARATOR '\n')
+        FROM DIAGNOSIS_TB AS a
+        LEFT JOIN MEDICINE_TB AS b ON b.DIAGNOSIS_CODE = a.DIAGNOSIS_CODE
+        LEFT JOIN TREATMENT_INFO_TB AS c ON c.DIAGNOSIS_CODE = a.DIAGNOSIS_CODE
+        WHERE c.TREATMENT_NUM_PK = #{TREATMENT_NUM_PK}
+        GROUP BY a.DIAGNOSIS_CODE
+        ) as 'MEDICINE'
+        FROM TREATMENT_INFO_TB AS a
+        LEFT JOIN PATIENT_TB AS b ON b.PATIENT_ID_PK = a.PATIENT_ID_FK
+        LEFT JOIN EMP_INFO_TB AS c ON c.EMP_ID_PK = a.EMP_ID_FK
+        LEFT JOIN DIAGNOSIS_TB AS d ON d.DIAGNOSIS_CODE = a.DIAGNOSIS_CODE
+        LEFT JOIN MEDICINE_TB AS e ON e.DIAGNOSIS_CODE = d.DIAGNOSIS_CODE
+        WHERE a.TREATMENT_NUM_PK = #{TREATMENT_NUM_PK}
+        GROUP BY a.TREATMENT_NUM_PK;
+    </select>
+
 
 
 </mapper>
