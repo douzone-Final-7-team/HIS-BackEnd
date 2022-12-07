@@ -36,4 +36,7 @@ public interface OutStatusService {
 
     // 수납 SELECT
     List<Map<String, Object>> getAcceptance (Map<String, Object> params);
+
+    // 외래 환자 처방전
+    List<Map<String, Object>> getPrescription(Map<String, Object> treatmentNumPk);
 }

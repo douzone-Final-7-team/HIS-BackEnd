@@ -53,8 +53,14 @@ public class OutStatusController {
     public Object getDocPatCon(@RequestBody Map<String, Object> params) {
         List<Map<String, Object>> paramsList = outStatusService.getDoctorList(params);
         for(int i=0; i<paramsList.size(); i++) {
-            paramsList.get(i).put("patInfo", outStatusService.getOutStatusCon(paramsList.get(i)));
+            if(params.get("OUTPATIENT_STATUS_CODE") == null) {
+                paramsList.get(i).put("patInfo", outStatusService.getOutStatus(paramsList.get(i)));
+            } else {
+                paramsList.get(i).put("patInfo", outStatusService.getOutStatusCon(paramsList.get(i)));
+            }
         }
+        System.out.println("아래params출력");
+        System.out.println(params);
         return paramsList;
     }
 
@@ -77,5 +83,12 @@ public class OutStatusController {
     @PostMapping("/insertReceipt")
     public void insertReceipt(@RequestBody Map<String, Object> params) {
         outStatusService.insertReceipt(params);
+    }
+
+
+    // 외래 환자 처방전
+    @PostMapping("/getPrescription")
+    public List<Map<String, Object>> getPrescription(@RequestBody Map<String, Object> treatmentNumPk) {
+        return outStatusService.getPrescription(treatmentNumPk);
     }
 }
