@@ -25,15 +25,15 @@ public class UserController {
     @PostMapping("/join")
     public String join(@RequestBody User user) {
         user.setPw(bCryptPasswordEncoder.encode(user.getPw()));
-        user.setEmp_id_pk("D220100");
-        user.setSpeciality_ID_FK("N");
-        user.setEmp_name("배병서");
-        user.setRole("ROLE_DOCTOR");
-        user.setLicense("D220100");
+        user.setEmp_id_pk("R220001");
+        user.setSpeciality_ID_FK("R");
+        user.setEmp_name("신용기");
+        user.setRole("ROLE_INRECEIPT");
+        user.setLicense("R220001");
         user.setEmp_status("재직");
-        user.setEmp_ssn("970721-1512368");
+        user.setEmp_ssn("991207-1264598");
         user.setEmp_tel("010-2227-1396");
-        user.setEmp_email("bbs@naver.com");
+        user.setEmp_email("dydrl@naver.com");
         user.setHireDate(new Date(2022-11-22));
         user.setRetireDate(null);
         user.setEmp_addr("부산광역시 금정구");
@@ -45,7 +45,7 @@ public class UserController {
     public List<Map<String, Object>> getMyInfo(Authentication authentication) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String pk = principal.getUser().getEmp_id_pk();
-        System.out.println("Controller 에서 Pk : " + pk);
+        System.out.println("이거야" + userService.getMyInfo(pk));
         return userService.getMyInfo(pk);
     }
 

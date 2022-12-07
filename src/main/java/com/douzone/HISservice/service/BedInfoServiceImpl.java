@@ -47,4 +47,9 @@ public class BedInfoServiceImpl implements BedInfoService {
     public List<Map<String, Object>> getOccupiedWardList(Map<String, Object> roominfo){
         return bedInfoDAO.getOccupiedWardList(roominfo);
     }
+
+    @Override
+    public List<Map<String, Object>> getOccupiedAllList (){
+        return bedInfoDAO.getOccupiedAllList();
+    }
 }

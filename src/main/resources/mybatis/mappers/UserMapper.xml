@@ -6,7 +6,7 @@
 
 <!-- mypage 정보 불러오기 -->
     <select id="getMyInfo" parameterType="HashMap" resultType="HashMap">
-        SELECT a.*, b.SPECIALITY_NAME,
+        SELECT a.*, b.SPECIALITY_NAME, b.WARD,
                CASE
                    WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'D') THEN '의사'
                    WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'I') THEN '외래간호사'
