@@ -23,7 +23,7 @@
 
     <!--환자 현황 필터 SELECT -->
     <select id="getOutStatusCon" parameterType="HashMap" resultType="HashMap">
-        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OUTPATIENT_STATUS_CODE, d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, b.EMP_NAME, a.SPECIALITY
+        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OUTPATIENT_STATUS_CODE, d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, b.EMP_NAME, a.SPECIALITY, a.PATIENT_ID_FK, a.EMP_ID_FK
         from RECEIVE_TB as a
                  left join EMP_INFO_TB as b on b.EMP_ID_PK = a.EMP_ID_FK
                  left join PATIENT_TB as c on c.PATIENT_ID_PK = a.PATIENT_ID_FK
@@ -137,6 +137,7 @@
             SET OUTPATIENT_STATUS_CODE = 'OE'
         WHERE TREATMENT_NUM_PK = #{TREATMENT_NUM_FK}
     </update>
+
 
     <!-- 외래 환자 처방전  -->
     <select id="getPrescription"  parameterType="HashMap" resultType="HashMap">
