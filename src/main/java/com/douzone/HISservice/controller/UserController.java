@@ -83,7 +83,6 @@ public class UserController {
 
     @PostMapping("/addSchedule")
     public List<Map<String, Object>> addDoctorSchedule(@RequestBody Map<String, Object> data) {
-        System.out.println(data);
         return userService.addDoctorSchedule(data);
     }
 
@@ -99,14 +98,12 @@ public class UserController {
 
     @PostMapping("/updateSchedule")
     public String updateSchedule(@RequestBody Map<String, Object> data) {
-        System.out.println(data);
         userService.updateSchedule(data);
         return "일정이 수정되었습니다.";
     }
 
     @PostMapping("/deleteSchedule")
     public List<Map<String, Object>> deleteSchedule(@RequestBody Map<String, Object> data) {
-        System.out.println(data);
         String date = data.get("date").toString();
         String empIdPk = data.get("empIdPk").toString();
         String schedulePk = data.get("schedulePk").toString();
@@ -115,7 +112,6 @@ public class UserController {
 
     @GetMapping("/filterCategory")
     public List<Map<String, Object>> filterCategory(@RequestParam String category, @RequestParam String empIdPk, @RequestParam String date) {
-        System.out.println(category + empIdPk + date);
         return userService.filterCategory(category, empIdPk, date);
     }
 }
