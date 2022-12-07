@@ -97,18 +97,6 @@
     </select>
 
 
-    <select id="getOccupiedAllList" resultType="HashMap">
-        SELECT (a.WARD + a.ROOM_NUM) as WARDROOM, a.BED_NUM, d.PATIENT_NAME, e.EMP_NAME, a.WARD, a.ROOM_NUM
-        FROM BED_TB as a
-                 LEFT JOIN ADMISSION_TB AS b ON a.WARD = b.WARD  and a.ROOM_NUM = b.ROOM_NUM and a.BED_NUM = b.BED_NUM
-                 LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
-                 LEFT JOIN PATIENT_TB AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
-                 LEFT JOIN EMP_INFO_TB AS e ON c.EMP_ID_FK = e.EMP_ID_PK
-                 LEFT JOIN ADMISSION_STATUS AS f ON f.ADMISSION_STATUS_CODE = b.ADMISSION_STATUS_CODE
-        WHERE f.AD_CODE_NAME = '입원완료'
-        ORDER BY WARDROOM ASC, BED_NUM;
-    </select>
-
 
 
 </mapper>
