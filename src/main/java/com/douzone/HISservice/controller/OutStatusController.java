@@ -67,7 +67,10 @@ public class OutStatusController {
 
     @PostMapping("/getdocpatCon")
     public Object getDocPatCon(@RequestBody Map<String, Object> params) {
+        System.out.println("민욱련 : "+ params);
+
         List<Map<String, Object>> paramsList = outStatusService.getDoctorList(params);
+
         for(int i=0; i<paramsList.size(); i++) {
             if(params.get("OUTPATIENT_STATUS_CODE") == null) {
                 paramsList.get(i).put("patInfo", outStatusService.getOutStatus(paramsList.get(i)));

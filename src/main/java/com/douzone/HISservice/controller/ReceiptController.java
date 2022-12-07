@@ -40,8 +40,9 @@ public class ReceiptController {
     public List<Map<String, Object>> getAdReceipt(@RequestBody Map<String, Object> test) {
         System.out.println("터지는 부분 : " + test);
         try {
-            if(test.get("ADMISSION_ID_PK") != "") {
+            if(test.get("ADMISSION_ID_PK") != null && test.get("ADMISSION_ID_PK") != "") {
                 String admissionId = test.get("ADMISSION_ID_PK").toString();
+                System.out.println("터지는 부분2 : " + admissionId);
                 return (receiptService.getAdReceipt(admissionId));
             }
         } catch (NullPointerException e) {
