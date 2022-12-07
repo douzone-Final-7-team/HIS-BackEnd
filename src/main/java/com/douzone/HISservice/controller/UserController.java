@@ -80,4 +80,38 @@ public class UserController {
         String pk = principal.getUser().getEmp_id_pk();
         return userService.getHeaderInfo(pk);
     }
+
+    @PostMapping("/addSchedule")
+    public List<Map<String, Object>> addDoctorSchedule(@RequestBody Map<String, Object> data) {
+        return userService.addDoctorSchedule(data);
+    }
+
+    @GetMapping("/myScheduleList")
+    public List<Map<String, Object>> getMyScheduleList(@RequestParam String date, @RequestParam String empIdPk) {
+        return userService.getMyScheduleList(date, empIdPk);
+    }
+
+    @GetMapping("/selectedSchedule")
+    public List<Map<String, Object>> getSelectedSchedule(@RequestParam String scheduleIdPk) {
+        return userService.getSelectedSchedule(scheduleIdPk);
+    }
+
+    @PostMapping("/updateSchedule")
+    public String updateSchedule(@RequestBody Map<String, Object> data) {
+        userService.updateSchedule(data);
+        return "일정이 수정되었습니다.";
+    }
+
+    @PostMapping("/deleteSchedule")
+    public List<Map<String, Object>> deleteSchedule(@RequestBody Map<String, Object> data) {
+        String date = data.get("date").toString();
+        String empIdPk = data.get("empIdPk").toString();
+        String schedulePk = data.get("schedulePk").toString();
+        return userService.deleteSchedule(date, empIdPk, schedulePk);
+    }
+
+    @GetMapping("/filterCategory")
+    public List<Map<String, Object>> filterCategory(@RequestParam String category, @RequestParam String empIdPk, @RequestParam String date) {
+        return userService.filterCategory(category, empIdPk, date);
+    }
 }
