@@ -29,8 +29,7 @@ public class AdmissionReqServiceImpl implements AdmissionReqService {
 
             int a = admissionReqDAO.putAdmissionAccept(admissionElement);
             System.out.println(a);
-//            int b = admissionReqDAO.putBedStatusIn(admissionElement);
-//            if()
+            int b = admissionReqDAO.putBedStatusIn(admissionElement);
             return a;
         }else{
             int c = admissionReqDAO.putAdmissionNotAccept(admissionElement);
