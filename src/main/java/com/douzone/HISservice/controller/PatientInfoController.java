@@ -18,7 +18,7 @@ public class PatientInfoController {
     // 특정 환자 입원 정보 READ
     @PostMapping("/outInfo")
     public Map<String, Object> getInpatientInfo(@RequestBody Map<String, Object> outInfoElement) {
-        System.out.println(outInfoElement);
+        System.out.println("호호호호록 : "+outInfoElement);
         System.out.println(
                 patientInfoService.getPatientInfo(outInfoElement)
         );
