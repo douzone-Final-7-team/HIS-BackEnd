@@ -65,6 +65,16 @@ public class OutStatusController {
         return outStatusService.getMyPatient(doctorID);
     }
 
+    @GetMapping("/PatientNum")
+    public Map<String, Object> getMyPatientNum(@RequestParam String doctorID) {
+        return outStatusService.getMyPatientNum(doctorID);
+    }
+
+    @GetMapping("/filterStatus")
+    public List<Map<String, Object>> filterStatus(@RequestParam String status, @RequestParam String doctorID) {
+        return outStatusService.filterStatus(status, doctorID);
+    }
+
     @PostMapping("/getdocpatCon")
     public Object getDocPatCon(@RequestBody Map<String, Object> params) {
         System.out.println("민욱련 : "+ params);
