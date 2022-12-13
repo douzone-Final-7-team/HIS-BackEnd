@@ -43,9 +43,14 @@ public class ReceiptController {
             if(test.get("ADMISSION_ID_PK") != null && test.get("ADMISSION_ID_PK") != "") {
                 String admissionId = test.get("ADMISSION_ID_PK").toString();
                 System.out.println("터지는 부분2 : " + admissionId);
+                System.out.println(receiptService.getAdReceipt(admissionId));
                 return (receiptService.getAdReceipt(admissionId));
+            }else if(test.get("ward") != null && test.get("ward") != ""){
+                System.out.println(receiptService.getAdReceiptPay(test));
+                return (receiptService.getAdReceiptPay(test));
             }
         } catch (NullPointerException e) {
+            System.out.println("여기야여기!!!!!!!!!!!!");
             e.printStackTrace();
         }
         return null;
@@ -55,10 +60,10 @@ public class ReceiptController {
 
     //입원환자 수납완료
     @PostMapping("/AdReceiptComplete")
-    public void setAdReceipt(@RequestBody Map<String, Object> test) {
-
-        receiptService.setAdReceipt(test);
-//        return(receiptService.setAdReceipt(test));
+    public String setAdReceipt(@RequestBody Map<String, Object> test) {
+//        System.out.println("수납완료 결과 : "+receiptService.setAdReceipt(test));
+//        receiptService.setAdReceipt(test);
+        return(receiptService.setAdReceipt(test));
 
     }
 

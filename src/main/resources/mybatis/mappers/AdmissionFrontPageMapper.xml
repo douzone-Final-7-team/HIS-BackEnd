@@ -31,7 +31,7 @@
         FROM ADMISSION_TB as A
         LEFT JOIN TREATMENT_INFO_TB as B on A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
         LEFT JOIN PATIENT_TB as C on B.PATIENT_ID_FK = C.PATIENT_ID_PK
-        WHERE DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') and DISCHARGE_DATE is null
+        WHERE DISCHARGE_DUEDATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d') and DISCHARGE_DATE is null
         ORDER BY C.PATIENT_NAME ASC;
     </select>
 

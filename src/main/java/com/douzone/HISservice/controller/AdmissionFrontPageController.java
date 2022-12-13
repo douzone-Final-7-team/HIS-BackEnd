@@ -45,7 +45,7 @@ public class AdmissionFrontPageController {
 
     @GetMapping("/available_room")
     public List<Map<String, Object>> getAvailable() {
-        System.out.println("구구구구구구 : " +adFrontService.getAvailable());
+        System.out.println("구구구구구구콘맛있겠다 : " +adFrontService.getAvailable());
         return adFrontService.getAvailable();
 
     }
