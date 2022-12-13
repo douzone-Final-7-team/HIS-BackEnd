@@ -7,13 +7,13 @@
     <select id="getPatientInfo" parameterType="HashMap" resultType="HashMap">
         SELECT ADMISSION_ID_PK, ADMISSION_DATE, ADMISSION_DUEDATE, DISCHARGE_DUEDATE, PATIENT_NAME, GENDER, PATIENT_ADDR, PATIENT_TEL, DIAGNOSIS, EMP_NAME, SPECIALITY_NAME,PROTECTOR_NAME,PROTECTOR_TEL,PATIENT_AGE
         FROM ADMISSION_TB AS a
-        LEFT JOIN TREATMENT_INFO_TB AS b ON a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
-        LEFT JOIN PATIENT_TB AS c ON b.PATIENT_ID_FK = c.PATIENT_ID_PK
-        LEFT JOIN EMP_INFO_TB AS d ON b.EMP_ID_FK = d.EMP_ID_PK
-        LEFT JOIN SPECIALITY_TB AS e ON d.SPECIALITY_ID_FK= e.SPECIALITY_ID_PK
-        LEFT JOIN ADMISSION_STATUS AS f ON a.ADMISSION_STATUS_CODE = f.ADMISSION_STATUS_CODE
-        LEFT JOIN DIAGNOSIS_TB AS g ON b.DIAGNOSIS_CODE = g.DIAGNOSIS_CODE
-        WHERE c.PATIENT_NAME = #{name} AND f.AD_CODE_NAME = '입원완료' AND a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum} AND a.BED_NUM= #{bedNum};
+                 LEFT JOIN TREATMENT_INFO_TB AS b ON a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
+                 LEFT JOIN PATIENT_TB AS c ON b.PATIENT_ID_FK = c.PATIENT_ID_PK
+                 LEFT JOIN EMP_INFO_TB AS d ON b.EMP_ID_FK = d.EMP_ID_PK
+                 LEFT JOIN SPECIALITY_TB AS e ON d.SPECIALITY_ID_FK= e.SPECIALITY_ID_PK
+                 LEFT JOIN ADMISSION_STATUS AS f ON a.ADMISSION_STATUS_CODE = f.ADMISSION_STATUS_CODE
+                 LEFT JOIN DIAGNOSIS_TB AS g ON b.DIAGNOSIS_CODE = g.DIAGNOSIS_CODE
+        WHERE c.PATIENT_NAME = #{name} AND (f.AD_CODE_NAME = '입원완료' or f.AD_CODE_NAME = '수납대기') AND a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum} AND a.BED_NUM= #{bedNum};
     </select>
 
     <!--퇴원 예정일 UPDATE -->
@@ -46,9 +46,9 @@
         SELECT PATIENT_ID_PK
         FROM PATIENT_TB
         WHERE PATIENT_ID_PK
-        LIKE '${currYrMnth}%'
+                  LIKE '${currYrMnth}%'
         ORDER BY PATIENT_ID_PK
-        DESC LIMIT 1;
+                DESC LIMIT 1;
     </select>
 
 
@@ -60,7 +60,7 @@
             (#{PATIENT_ID_PK}, #{PATIENT_ADDR}, #{PATIENT_NAME}, #{GENDER}, #{PATIENT_SSN}, #{PATIENT_TEL}, #{PATIENT_AGE}, #{INSURANCE})
     </insert>
 
-<!-- 진료중의 상태의 환자 클릭시 정보 불러오기 -->
+    <!-- 진료중의 상태의 환자 클릭시 정보 불러오기 -->
     <select id="getTreatmentPatientInfo" resultType="HashMap">
         SELECT a.*, b.*, IF(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK, (SELECT if(COUNT(*) > 1, '재진', '초진') FROM TREATMENT_INFO_TB WHERE PATIENT_ID_FK = '22110151') AS VISITCOUNT, c.TREATMENT_NUM_PK
         FROM RECEIVE_TB AS a
@@ -69,7 +69,7 @@
         WHERE RECEIVE_ID_PK = #{receivePk};
     </select>
 
-<!-- 환자 과거 병력 가져오기 -->
+    <!-- 환자 과거 병력 가져오기 -->
     <select id="getPastTreatmentList" parameterType="String" resultType="HashMap">
         SELECT TREATMENT_DATE, DIAGNOSIS
         FROM TREATMENT_INFO_TB AS a
@@ -77,7 +77,7 @@
         WHERE PATIENT_ID_FK = #{patientPk} AND a.DIAGNOSIS_CODE IS NOT NULL;
     </select>
 
-<!-- 환자 과거 병력 자세히 보기 -->
+    <!-- 환자 과거 병력 자세히 보기 -->
     <select id="getPastTreatmentDetail" parameterType="String" resultType="HashMap">
         SELECT a.*, b.SPECIALITY, b.SYMPTOM, c.*, d.EMP_NAME, e.ADMISSION_DUEDATE, f.DIAGNOSIS,if(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK, if(TREATMENT_ORDER IS NULL, 'X', 'O') AS TREATMENT_CHECK, if(MEDICINE IS NULL, 'X', 'O') AS MEDICINE_CHECK, if(ADMISSION=1, 'O', 'X') AS ADMISSION_CHECK
         FROM PATIENT_TB AS a
