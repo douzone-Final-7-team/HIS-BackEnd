@@ -7,9 +7,11 @@ public interface ReceiptService {
 
     public List<Map<String, Object>> getAdReceipt(String admissionId);
 
-    public void setAdReceipt(Map<String, Object> test);
+    public String setAdReceipt(Map<String, Object> test);
 
     List<Map<String, Object>> getAdReceiptList(Map<String, Object> filterFlag);
 
     void getChangeStateList();
+
+    List<Map<String, Object>> getAdReceiptPay(Map<String, Object> test);
 }
