@@ -90,6 +90,20 @@ public class OutStatusServiceImpl implements OutStatusService{
         return outStatusDAO.getMyPatient(doctorID);
     }
 
+    @Override
+    public Map<String, Object> getMyPatientNum(String doctorID) {
+        return  outStatusDAO.getMyPatientNum(doctorID);
+    }
+
+    @Override
+    public List<Map<String, Object>> filterStatus(String status, String doctorID) {
+        if(status.equals("whole")) {
+            return outStatusDAO.getMyPatient(doctorID);
+        } else {
+            return outStatusDAO.filterStatus(status, doctorID);
+        }
+    }
+
 
     // 수납 대기 환자 SELECT
 

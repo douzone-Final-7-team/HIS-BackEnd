@@ -49,8 +49,9 @@ public class AdmissionFrontPageServiceImpl implements AdmissionFrontPageService{
     }
 
     @Override
-    public List<Map<String, Object>> getMyInPatient() {
-        return admissionFrontPageDAO.getMyInPatient();
+    public List<Map<String, Object>> getMyInPatient(String empIdPk) {
+
+        return admissionFrontPageDAO.getMyInPatient(empIdPk);
     }
 
 

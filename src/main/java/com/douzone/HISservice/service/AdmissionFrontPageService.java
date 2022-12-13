@@ -12,7 +12,7 @@ public interface AdmissionFrontPageService {
 
     void putDisCharged (Map<String, Object> admissionId);
 
-    List<Map<String, Object>> getMyInPatient();
+    List<Map<String, Object>> getMyInPatient(String empIdPk);
 
     List<Map<String, Object>> getAvailable();
 }

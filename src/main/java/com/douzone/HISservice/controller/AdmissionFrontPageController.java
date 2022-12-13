@@ -1,7 +1,9 @@
 package com.douzone.HISservice.controller;
 
+import com.douzone.HISservice.config.auth.PrincipalDetails;
 import com.douzone.HISservice.service.AdmissionFrontPageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,15 +39,16 @@ public class AdmissionFrontPageController {
 
     // 내 입원환자 정보
     @GetMapping("/myInPatient")
-    public List<Map<String, Object>> getMyInPatient() {
-
-        return adFrontService.getMyInPatient();
+    public List<Map<String, Object>> getMyInPatient(Authentication authentication) {
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        String empIdPk = principal.getUser().getEmp_id_pk();
+        return adFrontService.getMyInPatient(empIdPk);
 
     }
 
     @GetMapping("/available_room")
     public List<Map<String, Object>> getAvailable() {
-        System.out.println("구구구구구구 : " +adFrontService.getAvailable());
+        System.out.println("구구구구구구콘맛있겠다 : " +adFrontService.getAvailable());
         return adFrontService.getAvailable();
 
     }
