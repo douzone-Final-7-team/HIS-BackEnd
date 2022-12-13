@@ -26,24 +26,42 @@ public class AdmissionHandlePageController {
     // 특정 환자 간호기록 READ
     @PostMapping("/careInfos")
     public List<Map<String, Object>> getCareInfo(@RequestBody Map<String, Object> careInfosElements) {
-
         return (admissionHandlePageService.getCareInfos(careInfosElements));
-
     }
 
     // 특정 환자 간호기록 CREATE
     @PostMapping("/createdCareInfo")
     public List<Map<String, Object>> setCareInfo(@RequestBody Map<String, Object> careInfoElements) {
-
-        admissionHandlePageService.setCareInfo(careInfoElements);
-        return (admissionHandlePageService.getCareInfos(careInfoElements));
+        try {
+            admissionHandlePageService.setCareInfo(careInfoElements);
+            return (admissionHandlePageService.getCareInfos(careInfoElements));
+        }catch (DataIntegrityViolationException e){
+            Map<String, Object> map1 = new HashMap<String, Object>();
+            map1.put("CARE_DATE", "");
+            map1.put("CARE_CONTENT", "등록이 잘못 되었습니다 다시 입력 부탁드립니다");
+            map1.put("NURSE_NAME", "");
+            List faultCareInfo = new ArrayList<Object>();
+            faultCareInfo.add(map1);
+            return faultCareInfo;
+        }
     }
     // 특정 환자 간호기록 UPADTE
     @PutMapping("/changedCareInfo")
-    public List<Map<String, Object>> changeCareInfo (@RequestBody Map<String, Object> upDateCareInfoElements){
+    public List<Map<String, Object>> changeCareInfo (@RequestBody Map<String, Object> upDateCareInfoElements) {
         admissionHandlePageService.changeCareInfo(upDateCareInfoElements);
+        String updateResult = admissionHandlePageService.changeCareInfo(upDateCareInfoElements);
 
-        return (admissionHandlePageService.getCareInfos(upDateCareInfoElements));
+        if (updateResult == "성공") {
+            return admissionHandlePageService.getCareInfos(upDateCareInfoElements);
+        } else{
+            Map<String, Object> map1 = new HashMap<String, Object>();
+            map1.put("CARE_DATE", "");
+            map1.put("CARE_CONTENT", "수정이 잘못 되었습니다 다시 입력 부탁드립니다");
+            map1.put("NURSE_NAME", "");
+            List faultCareInfo = new ArrayList<Object>();
+            faultCareInfo.add(map1);
+            return faultCareInfo;
+        }
     };
 
 // 처방기록
@@ -51,24 +69,48 @@ public class AdmissionHandlePageController {
     //특정 환자별 처방기록 READ
     @PostMapping("/mediRecords")
     public List<Map<String, Object>> getMediRecords(@RequestBody Map<String, Object> mediRecordsElements) {
-
         return (admissionHandlePageService.getMediRecords(mediRecordsElements));
-
-
     }
 
     //특정 환자별 처방기록 CREATE
     @PostMapping("/createdMediRecord")
     public List<Map<String, Object>> setMediRecord(@RequestBody Map<String, Object> mediRecordElements) {
-
-        admissionHandlePageService.setMediRecord(mediRecordElements);
-        return (admissionHandlePageService.getMediRecords(mediRecordElements));
+        try {
+            admissionHandlePageService.setMediRecord(mediRecordElements);
+            return (admissionHandlePageService.getMediRecords(mediRecordElements));
+        }catch (DataIntegrityViolationException e){
+            Map<String,Object> map1 = new HashMap<String, Object>();
+            map1.put("RECORD_ID_PK","");
+            map1.put("ORDER_CONTENT","등록이 잘못 되었습니다 다시 입력 부탁드립니다");
+            map1.put("MEDICINE_NAME","");
+            map1.put("ORDERER","");
+            map1.put("TAKE_MEDICINE_STATUS",false);
+            map1.put("ORDER_DATE","");
+            List faultMediRecords = new ArrayList<Object>();
+            faultMediRecords.add(map1);
+            return faultMediRecords;
+        }
     }
     // 특정 환자별 처방기록 UPDATE
     @PutMapping("/changedMediRecord")
     public List<Map<String, Object>> changeMediRecord (@RequestBody Map<String, Object> upDateMediRecordElements){
         admissionHandlePageService.changeMediRecord(upDateMediRecordElements);
-        return  admissionHandlePageService.getMediRecords(upDateMediRecordElements);
+        String updateResult =  admissionHandlePageService.changeMediRecord(upDateMediRecordElements);
+
+        if (updateResult == "성공") {
+            return admissionHandlePageService.getMediRecords(upDateMediRecordElements);
+        } else{
+            Map<String,Object> map1 = new HashMap<String, Object>();
+            map1.put("RECORD_ID_PK","");
+            map1.put("ORDER_CONTENT","수정이 잘못 되었습니다 다시 입력 부탁드립니다");
+            map1.put("MEDICINE_NAME","");
+            map1.put("ORDERER","");
+            map1.put("TAKE_MEDICINE_STATUS",false);
+            map1.put("ORDER_DATE","");
+            List faultMediRecords = new ArrayList<Object>();
+            faultMediRecords.add(map1);
+            return faultMediRecords;
+        }
     };
 
     // 복약 체크 시 상태 업데이트 UPDATE
@@ -84,7 +126,6 @@ public class AdmissionHandlePageController {
     // 해당 병동 전체 환자 일정 READ
     @PostMapping("/schedules")
     public List<Map<String, Object>> getInpatientSchedules(@RequestBody Map<String, Object> inpatientSchedulesElements){
-
         return admissionHandlePageService.getInpatientSchedules(inpatientSchedulesElements);
     }
     // 해당 병동 전체 환자 일정 CREATE
@@ -92,29 +133,45 @@ public class AdmissionHandlePageController {
     public List<Map<String, Object>> setInpatientSchedule(@RequestBody Map<String, Object> inpatientScheduleElements) {
         try {
             admissionHandlePageService.setInpatientSchedule(inpatientScheduleElements);
-            System.out.println(admissionHandlePageService.getInpatientSchedules(inpatientScheduleElements));
             return admissionHandlePageService.getInpatientSchedules(inpatientScheduleElements);
         }catch (DataIntegrityViolationException e){
-
             Map<String,Object> map1 = new HashMap<String, Object>();
-            map1.put("errorCode","잘못된 일정 등록입니다. 인계자를 확인하세요");
-            List list = new ArrayList<Object>();
-            list.add(map1);
-            return list;
+            map1.put("SCHEDULE_ID_PK","");
+            map1.put("SCHEDULE_CONTENT","등록이 잘못 되었습니다 다시 입력 부탁드립니다");
+            map1.put("SCHEDULE_PLACE","");
+            map1.put("SCHEDULE_DATE","");
+            map1.put("PS_CODE_NAME","");
+            map1.put("PATIENT_NAME","");
+            List faultSchedules = new ArrayList<Object>();
+            faultSchedules.add(map1);
+            return faultSchedules;
         }
     }
     // 해당 병동 전체 환자 일정 UPDATE
     @PutMapping("/changedSchedule")
     public List<Map<String, Object>> changeSchedule (@RequestBody Map<String, Object> upDateScheduleElements){
         admissionHandlePageService.changeSchedule(upDateScheduleElements);
-        return admissionHandlePageService.getInpatientSchedules(upDateScheduleElements);
+        String updateResult = admissionHandlePageService.changeSchedule(upDateScheduleElements);
+        if (updateResult == "성공") {
+            return admissionHandlePageService.getInpatientSchedules(upDateScheduleElements);
+        } else{
+            Map<String,Object> map1 = new HashMap<String, Object>();
+            map1.put("SCHEDULE_ID_PK","");
+            map1.put("SCHEDULE_CONTENT","수정이 잘못 되었습니다 다시 입력 부탁드립니다");
+            map1.put("SCHEDULE_PLACE","");
+            map1.put("SCHEDULE_DATE","");
+            map1.put("PS_CODE_NAME","");
+            map1.put("PATIENT_NAME","");
+            List faultSchedules = new ArrayList<Object>();
+            faultSchedules.add(map1);
+            return faultSchedules;
+        }
     };
 
     // 해당 병동 전체 환자 일정 상태 UPDATE
     @PutMapping("/changedSchedule/status")
     public List<Map<String, Object>> changeScheduleStatus (@RequestBody Map<String, Object> upDateScheduleStatusElements){
         admissionHandlePageService.changeScheduleStatus(upDateScheduleStatusElements);
-        System.out.println(upDateScheduleStatusElements);
         return admissionHandlePageService.getInpatientSchedules(upDateScheduleStatusElements);
     };
 
@@ -133,6 +190,7 @@ public class AdmissionHandlePageController {
         return admissionHandlePageService.getSendHandOver(userName);
     };
 
+    // 병동 간호사 직원목록 검색
     @PostMapping("/inNurseList")
     public List<Map<String, Object>> getInNurseList(){
         return admissionHandlePageService.getInNurseList();
@@ -142,33 +200,38 @@ public class AdmissionHandlePageController {
     // 인계 사항 CREATE
     @PostMapping("/handOver")
     public List<Map<String, Object>> setHandOver(@RequestBody Map<String, Object> handOverElements){
-
             try {
                 admissionHandlePageService.setHandOver(handOverElements);
                 return admissionHandlePageService.getSendHandOver(handOverElements);
-
             }catch (DataIntegrityViolationException e){
                 Map<String,Object> map1 = new HashMap<String, Object>();
-                map1.put("errorCode","잘못된 직원명 입니다. 인계자를 확인하세요");
-                List list = new ArrayList<Object>();
-                list.add(map1);
-                return list;
+                map1.put("HANDOVER_ID_PK","");
+                map1.put("HANDOVER_CONTENT","등록이 잘못 되었습니다 다시 입력 부탁드립니다");
+                map1.put("HANDOVER_TARGET","");
+                map1.put("EMP_NAME","");
+                map1.put("HANDOVER_DATE","");
+                List faultHandover = new ArrayList<Object>();
+                faultHandover.add(map1);
+                return faultHandover;
             }
     };
     // 내가 작성한 인계사항 UPDATE
     @PutMapping("/myHandOver")
     public List<Map<String, Object>> changeHandover(@RequestBody Map<String, Object> upDateHandOverElements){
-
-        try {
-            admissionHandlePageService.changeHandover(upDateHandOverElements);
+        admissionHandlePageService.changeHandover(upDateHandOverElements);
+        String updateResult =  admissionHandlePageService.changeHandover(upDateHandOverElements);
+        if (updateResult == "성공") {
             return admissionHandlePageService.getSendHandOver(upDateHandOverElements);
-
-        }catch (DataIntegrityViolationException e){
+        } else{
             Map<String,Object> map1 = new HashMap<String, Object>();
-            map1.put("errorCode","잘못된 직원명 입니다. 인계자를 확인하세요");
-            List list = new ArrayList<Object>();
-            list.add(map1);
-            return list;
+            map1.put("HANDOVER_ID_PK","");
+            map1.put("HANDOVER_CONTENT","수정이 잘못 되었습니다 다시 입력 부탁드립니다");
+            map1.put("HANDOVER_TARGET","");
+            map1.put("EMP_NAME","");
+            map1.put("HANDOVER_DATE","");
+            List faultHandover = new ArrayList<Object>();
+            faultHandover.add(map1);
+            return faultHandover;
         }
 
     };

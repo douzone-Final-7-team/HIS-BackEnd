@@ -19,7 +19,7 @@ public interface AdmissionHandlePageDAO {
     void setCareInfo (Map<String, Object> careInfoElements);
 
     // 특정 환자 간호기록  UPDATE
-    void changeCareInfo (Map<String, Object> upDateCareInfoElements);
+    int changeCareInfo (Map<String, Object> upDateCareInfoElements);
 
 // 처방 기록
 
@@ -30,7 +30,7 @@ public interface AdmissionHandlePageDAO {
     void setMediRecord (Map<String, Object> mediRecordElements);
 
     // 특정 환자별 처방기록 UPDATE
-    void changeMediRecord (Map<String, Object> upDateMediRecordElements);
+    int changeMediRecord (Map<String, Object> upDateMediRecordElements);
 
     // 복약 체크 시 상태 업데이트 UPDATE
     void changeTakeMediStatus (Map<String, Object> upDateTakeMediStatusElements);
@@ -44,7 +44,7 @@ public interface AdmissionHandlePageDAO {
     void setInpatientSchedule (Map<String, Object> inpatientScheduleElements);
 
     // 해당 병동 전체 환자 일정 UPDATE
-    void changeSchedule (Map<String, Object> upDateScheduleElements);
+    int changeSchedule (Map<String, Object> upDateScheduleElements);
 
     // 해당 병동 전체 환자 일정 상태 UPDATE
     void changeScheduleStatus (Map<String, Object> upDateScheduleStatusElements);
@@ -64,7 +64,7 @@ public interface AdmissionHandlePageDAO {
     void setHandOver (Map<String, Object> handOverElements);
 
     // 내가 작성한 인계사항 UPDATE
-    void changeHandover (Map<String, Object> upDateHandOverElements);
+    int changeHandover (Map<String, Object> upDateHandOverElements);
 
 
     // 로딩 시 요청 사항 READ
