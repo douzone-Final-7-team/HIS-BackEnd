@@ -93,7 +93,6 @@
         ORDER BY OUTPATIENT_STATUS_CODE, REGISTRATION_TIME;
     </select>
 
-
     <!-- 수납 대기 환자 SELECT -->
     <select id="getWaiting4Receipt" parameterType="HashMap" resultType="HashMap">
         SELECT c.PATIENT_NAME, DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'REGISTRATION_TIME', b.OP_CODE_NAME, c.PATIENT_ID_PK, d.TREATMENT_NUM_PK

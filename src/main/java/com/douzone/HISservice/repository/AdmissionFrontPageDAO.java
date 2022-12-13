@@ -16,7 +16,7 @@ public interface AdmissionFrontPageDAO {
 
     void putDisCharged(Map<String, Object> admissionId);
 
-    List<Map<String, Object>> getMyInPatient();
+    List<Map<String, Object>> getMyInPatient(String empIdPk);
 
     void putChangeBedState(Map<String, Object> admissionId);
 
