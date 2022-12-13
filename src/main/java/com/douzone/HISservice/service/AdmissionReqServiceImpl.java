@@ -24,18 +24,26 @@ public class AdmissionReqServiceImpl implements AdmissionReqService {
     public int putAdmissionAccept (Map<String, Object> admissionElement){
         String admissionResult = admissionElement.get("BTN_STATE").toString();
 //        System.out.println(admissionResult);
+        int a;
         if(admissionResult.equals("assign")){
             System.out.println("자 드가자");
 
-            int a = admissionReqDAO.putAdmissionAccept(admissionElement);
-            System.out.println(a);
-//            int b = admissionReqDAO.putBedStatusIn(admissionElement);
-//            if()
-            return a;
+            a = admissionReqDAO.putAdmissionAccept(admissionElement);
+            System.out.println("자 드가자 : "+a);
+            if(a == 1){
+                int b = admissionReqDAO.putBedStatusIn(admissionElement);
+                if(b == 0){
+                    a = 0;
+                }
+            }
+
         }else{
-            int c = admissionReqDAO.putAdmissionNotAccept(admissionElement);
-            return c;
+            System.out.println("밥먹자");
+            a = admissionReqDAO.putAdmissionNotAccept(admissionElement);
+            System.out.println("밥먹자 : "+a);
+
         }
+        return a;
     }
 
     // 입원 오더 리스트

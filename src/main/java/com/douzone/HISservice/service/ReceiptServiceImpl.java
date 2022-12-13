@@ -20,18 +20,8 @@ public class ReceiptServiceImpl implements ReceiptService{
     public List<Map<String, Object>> getAdReceiptList(Map<String, Object> filterFlag) {
         String flag = filterFlag.get("filter").toString();
         System.out.println("여기까지왔다");
-        System.out.println(flag);
-        if(flag.equals("[today]")) {
-            System.out.println("fffff");
-            return receiptDAO.getAdReceiptListToday();
-        }else if(flag.equals("[middlePayment]")){
-            System.out.println("qqqqqq");
-            return receiptDAO.getMiddlePaymentList();
-        }else{
-            System.out.println("pppppp");
-            System.out.println("lsitCount : "+receiptDAO.getAdReceiptListAll().size());
-            return receiptDAO.getAdReceiptListAll();
-        }
+        System.out.println(flag.length());
+            return receiptDAO.getAdReceiptList(flag);
     }
 
 
@@ -58,11 +48,32 @@ public class ReceiptServiceImpl implements ReceiptService{
         return receiptDAO.getAdReceipt(admissionId);
     }
 
+    public List<Map<String, Object>> getAdReceiptPay(Map<String, Object> test) {
+        return receiptDAO.getAdReceiptPay(test);
+    }
+
     @Override
-    public void setAdReceipt(Map<String, Object> test) {
-        receiptDAO.putReceiptComplete(test); //상태값 변경
-        System.out.println("update완료");
-        receiptDAO.setAdReceipt(test); // 입원수납정보
-        System.out.println("insert완료");
+    public String setAdReceipt(Map<String, Object> test) {
+
+        int complete = 0;
+        int changeState = 0;
+        changeState = receiptDAO.putReceiptComplete(test); //상태값 변경
+
+        if(changeState == 1) {
+            System.out.println("update완료");
+            complete = receiptDAO.setAdReceipt(test); // 입원수납정보
+            if(complete == 1){
+                System.out.println("insert완료");
+                return "success";
+            }else{
+                return "completeFail";
+            }
+        }else{
+            return "changeStateFail";
+        }
+
+
+
+
     }
 }

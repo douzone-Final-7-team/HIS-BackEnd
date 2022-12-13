@@ -21,7 +21,7 @@
     <update id="putAdmissionAccept" parameterType="HashMap">
         UPDATE ADMISSION_TB
         SET
-            ward = #{WARD} , room_num = #{ROOM_NUM} , bed_num = #{BED_NUM} , ADMISSION_STATUS_CODE = "IB"
+            ward = #{WARD} , room_num = #{ROOM_NUM} , bed_num = #{BED_NUM} ,ADMISSION_DATE = now() , ADMISSION_STATUS_CODE = "IC"
         WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK}
         AND 0 = (SELECT bed_status FROM BED_TB WHERE ward = #{WARD} AND room_num = #{ROOM_NUM} AND bed_num = #{BED_NUM});
     </update>
@@ -40,8 +40,8 @@
         UPDATE ADMISSION_TB
         SET
             ADMISSION_STATUS_CODE = 'IF',
-            REJECT_REASON = #{rejectReason}
-        WHERE ADMISSION_ID_PK = #{admissionIdPk};
+            REJECT_REASON = #{REJECT_REASON}
+        WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK};
     </update>
 
     <!--입원예정리스트-->

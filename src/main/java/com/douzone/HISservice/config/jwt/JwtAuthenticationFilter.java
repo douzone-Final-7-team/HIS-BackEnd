@@ -72,6 +72,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         System.out.println("인증이 완료됨");
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
+        System.out.println(principalDetails.getUser().getRole());
+
         // RSA방식X Hash 암호 방식
         String jwtToken = JWT.create()
                 .withSubject("cos 토큰")
@@ -81,5 +83,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("role", principalDetails.getUser().getRole())
                 .sign(Algorithm.HMAC512("cos"));
         response.setHeader("Authorization", "Bearer "+jwtToken);
+
     }
 }
