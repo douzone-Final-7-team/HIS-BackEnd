@@ -111,8 +111,8 @@ public class PatientInfoServiceImpl implements PatientInfoService {
     }
 
     @Override
-    public List<Map<String, Object>> getTreatmentPatientInfo(String receivePk) {
-        return patientInfoDAO.getTreatmentPatientInfo(receivePk);
+    public List<Map<String, Object>> getTreatmentPatientInfo(String receivePk, String patientFk) {
+        return patientInfoDAO.getTreatmentPatientInfo(receivePk, patientFk);
     }
 }
 
