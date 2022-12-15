@@ -34,6 +34,6 @@ public class TreatmentOrderController {
     public String setMedicalCharts(@RequestBody Map<String, Object> data){
         System.out.println(data);
         treatmentOrderService.setMedicalCharts(data);
-        return "진료 완료!";
+        return "진료 완료";
     }
 }

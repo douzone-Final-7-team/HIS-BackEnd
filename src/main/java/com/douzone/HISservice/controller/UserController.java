@@ -57,12 +57,12 @@ public class UserController {
         String newPwd = bCryptPasswordEncoder.encode((String) pwd.get("newPwd"));
 
         if(bCryptPasswordEncoder.matches((CharSequence) pwd.get("presentPwd"), userPwd) == false) {
-            return "현재 비밀번호와 일치하지 않습니다.";
+            return "fail";
         } else {
-            System.out.println("비밀번호가 일치합니다!");
+            System.out.println("비밀번호가 일치합니다");
+            userService.changePwd(newPwd, pk);
+            return "success";
         }
-
-        return userService.changePwd(newPwd, pk);
     }
 
     @PostMapping("/changeAddr")
@@ -70,7 +70,6 @@ public class UserController {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         String pk = principal.getUser().getEmp_id_pk();
         String newAddr = (String) addr.get("newAddr");
-        System.out.println(newAddr);
         return userService.changeAddr(newAddr, pk);
     }
 
