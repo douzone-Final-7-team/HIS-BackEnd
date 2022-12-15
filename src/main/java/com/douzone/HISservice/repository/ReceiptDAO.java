@@ -29,4 +29,5 @@ public interface ReceiptDAO {
     List<Map<String, Object>> getAdReceiptList(String filterFlag);
 
 
+    List<Map<String, Object>> getBillData(String ADMISSION_ID_PK);
 }

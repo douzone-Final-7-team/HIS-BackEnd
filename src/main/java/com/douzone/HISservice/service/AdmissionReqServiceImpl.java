@@ -36,9 +36,8 @@ public class AdmissionReqServiceImpl implements AdmissionReqService {
                     a = 0;
                 }
             }
-
         }else{
-            System.out.println("밥먹자");
+            System.out.println("밥먹자 : "+ admissionElement);
             a = admissionReqDAO.putAdmissionNotAccept(admissionElement);
             System.out.println("밥먹자 : "+a);
 

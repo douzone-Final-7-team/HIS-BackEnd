@@ -19,9 +19,11 @@
     </select>
 
     <select id="getAvailable" resultType="HashMap">
-        select distinct(concat(ward+room_num)) as available_room
+        select distinct(concat(ward+room_num)) as available_room , count(bed_num) AS unusing_bed_count
         from BED_TB
-        where bed_status = 0 order by available_room;
+        where bed_status = 0
+        group by available_room
+        order by available_room;
     </select>
 
 
@@ -31,7 +33,7 @@
         FROM ADMISSION_TB as A
         LEFT JOIN TREATMENT_INFO_TB as B on A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
         LEFT JOIN PATIENT_TB as C on B.PATIENT_ID_FK = C.PATIENT_ID_PK
-        WHERE DISCHARGE_DUEDATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d') and DISCHARGE_DATE is null
+        WHERE DISCHARGE_DUEDATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d') and A.ADMISSION_STATUS_CODE != "IH"
         ORDER BY C.PATIENT_NAME ASC;
     </select>
 
@@ -43,7 +45,7 @@
 
     <update id="putDisCharged" parameterType="HashMap">
         UPDATE ADMISSION_TB
-        SET DISCHARGE_DATE = now()
+        SET ADMISSION_STATUS_CODE = "IH"
         WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK};
     </update>
 

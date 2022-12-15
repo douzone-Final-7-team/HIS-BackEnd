@@ -28,9 +28,9 @@ public class BedInfoServiceImpl implements BedInfoService {
         //
         if (paramCount == 3) {
             return bedInfoDAO.getOccupiedBedInfoList(roominfo);
-        } else if (paramCount == 2 && empno.indexOf("O") != -1) {
+        } else if (paramCount == 2 && (empno.indexOf("R") != -1 || empno.indexOf("I") != -1)) {
             return bedInfoDAO.getAllWardList(roominfo);
-        } else if (paramCount == 1 && empno.indexOf("O") != -1){
+        } else if (paramCount == 1 && (empno.indexOf("R") != -1 || empno.indexOf("I") != -1)){
             return bedInfoDAO.getAllBedList(roominfo);
         }else{
             List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
