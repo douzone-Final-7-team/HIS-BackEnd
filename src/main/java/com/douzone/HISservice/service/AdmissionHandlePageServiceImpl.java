@@ -25,7 +25,7 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
         if(admissionHandlePageDAO.getCareInfos(careInfosElements).isEmpty()){
             Map<String,Object> map1 = new HashMap<String, Object>();
             map1.put("CARE_DATE","");
-            map1.put("CARE_CONTENT","빈 데이터 입니다 환자를 클릭 하세요");
+            map1.put("CARE_CONTENT","간호 기록이 없습니다");
             map1.put("NURSE_NAME","");
             List list = new ArrayList<Object>();
             list.add(map1);
@@ -60,7 +60,7 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
         if(admissionHandlePageDAO.getMediRecords(mediRecordsElements).isEmpty()){
             Map<String,Object> map1 = new HashMap<String, Object>();
             map1.put("RECORD_ID_PK","");
-            map1.put("ORDER_CONTENT","빈 데이터 입니다 환자를 클릭 하세요");
+            map1.put("ORDER_CONTENT","처방 기록이 없습니다");
             map1.put("MEDICINE_NAME","");
             map1.put("ORDERER","");
             map1.put("TAKE_MEDICINE_STATUS",false);
