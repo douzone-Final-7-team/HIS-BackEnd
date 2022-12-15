@@ -27,7 +27,7 @@
                                                LEFT JOIN ADMISSION_STATUS AS c ON b.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
                                                LEFT JOIN TREATMENT_INFO_TB AS d ON b.TREATMENT_NUM_FK = d.TREATMENT_NUM_PK
                                                LEFT JOIN PATIENT_TB AS e ON d.PATIENT_ID_FK = e.PATIENT_ID_PK
-               WHERE e.PATIENT_NAME = #{name} AND (c.AD_CODE_NAME = '입원완료' OR e.AD_CODE_NAME = '수납대기') AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
+               WHERE e.PATIENT_NAME = #{name} AND (c.AD_CODE_NAME = '입원완료' OR c.AD_CODE_NAME = '수납대기') AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
               now(),#{nurseName}, #{careContent});
     </insert>
 
