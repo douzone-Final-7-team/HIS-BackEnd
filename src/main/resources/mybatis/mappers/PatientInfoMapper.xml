@@ -61,8 +61,8 @@
     </insert>
 
     <!-- 진료중의 상태의 환자 클릭시 정보 불러오기 -->
-    <select id="getTreatmentPatientInfo" resultType="HashMap">
-        SELECT a.*, b.*, IF(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK, (SELECT if(COUNT(*) > 1, '재진', '초진') FROM TREATMENT_INFO_TB WHERE PATIENT_ID_FK = '22110151') AS VISITCOUNT, c.TREATMENT_NUM_PK
+    <select id="getTreatmentPatientInfo" parameterType="String" resultType="HashMap">
+        SELECT a.*, b.*, IF(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK, (SELECT if(COUNT(*) > 1, '재진', '초진') FROM TREATMENT_INFO_TB WHERE PATIENT_ID_FK = #{patientFk}) AS VISITCOUNT, c.TREATMENT_NUM_PK
         FROM RECEIVE_TB AS a
                  LEFT JOIN PATIENT_TB AS b ON a.PATIENT_ID_FK = b.PATIENT_ID_PK
                  LEFT JOIN TREATMENT_INFO_TB AS c ON a.RECEIVE_ID_PK = c.RECEIVE_ID_FK
@@ -80,13 +80,13 @@
     <!-- 환자 과거 병력 자세히 보기 -->
     <select id="getPastTreatmentDetail" parameterType="String" resultType="HashMap">
         SELECT a.*, b.SPECIALITY, b.SYMPTOM, c.*, d.EMP_NAME, e.ADMISSION_DUEDATE, f.DIAGNOSIS,if(INSURANCE=1, 'O', 'X') AS INSURANCE_CHECK, if(TREATMENT_ORDER IS NULL, 'X', 'O') AS TREATMENT_CHECK, if(MEDICINE IS NULL, 'X', 'O') AS MEDICINE_CHECK, if(ADMISSION=1, 'O', 'X') AS ADMISSION_CHECK
-        FROM PATIENT_TB AS a
-                 LEFT JOIN RECEIVE_TB AS b ON a.PATIENT_ID_PK = b.PATIENT_ID_FK
-                 LEFT JOIN TREATMENT_INFO_TB AS c ON a.PATIENT_ID_PK = c.PATIENT_ID_FK
-                 LEFT JOIN EMP_INFO_TB AS d ON d.EMP_ID_PK = c.EMP_ID_FK
-                 LEFT JOIN ADMISSION_TB AS e ON c.TREATMENT_NUM_PK = e.TREATMENT_NUM_FK
-                 LEFT JOIN DIAGNOSIS_TB AS f ON c.DIAGNOSIS_CODE = f.DIAGNOSIS_CODE
-        WHERE c.PATIENT_ID_FK = #{patientID} AND c.TREATMENT_DATE = #{treatmentDate} AND f.DIAGNOSIS_CODE = c.DIAGNOSIS_CODE;
+        FROM TREATMENT_INFO_TB AS a
+                 LEFT JOIN RECEIVE_TB AS b ON a.RECEIVE_ID_FK = b.RECEIVE_ID_PK
+                 LEFT JOIN PATIENT_TB AS c ON a.PATIENT_ID_FK = c.PATIENT_ID_PK
+                 LEFT JOIN EMP_INFO_TB AS d ON d.EMP_ID_PK = a.EMP_ID_FK
+                 LEFT JOIN ADMISSION_TB AS e ON a.TREATMENT_NUM_PK = e.TREATMENT_NUM_FK
+                 LEFT JOIN DIAGNOSIS_TB AS f ON a.DIAGNOSIS_CODE = f.DIAGNOSIS_CODE
+        WHERE a.PATIENT_ID_FK = #{patientID} AND a.TREATMENT_DATE = #{treatmentDate} AND f.DIAGNOSIS_CODE = a.DIAGNOSIS_CODE;
     </select>
 
     <!-- 환자 과거 병력 자세히 보기 - 등록시간추가 -->
