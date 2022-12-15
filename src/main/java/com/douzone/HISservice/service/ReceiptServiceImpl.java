@@ -71,9 +71,12 @@ public class ReceiptServiceImpl implements ReceiptService{
         }else{
             return "changeStateFail";
         }
-
-
-
-
     }
+
+    public List<Map<String, Object>> getBillData(String ADMISSION_ID_PK) {
+        System.out.println(ADMISSION_ID_PK);
+        System.out.println("임플결과 : "+receiptDAO.getBillData(ADMISSION_ID_PK));
+        return receiptDAO.getBillData(ADMISSION_ID_PK);
+    }
+
 }

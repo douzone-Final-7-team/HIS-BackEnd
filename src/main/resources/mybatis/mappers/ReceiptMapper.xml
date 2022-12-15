@@ -129,61 +129,70 @@
 
     <select id="getAdReceipt"  parameterType="String" resultType="HashMap">
         select
-            a.ADMISSION_ID_PK ,
-            ADMISSION_DATE ,
-            ADMISSION_STATUS_CODE,
-            MIDDLE_PAY_DATE,
-            DISCHARGE_DUEDATE ,
-            if(MIDDLE_PAY_DATE is null,
-                if(DISCHARGE_DUEDATE is null ,
-                    TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d')),
-                    TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)
-                )
-            ,
-                if(MIDDLE_PAY_DATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d'),
-                    TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d')),
-                    TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)
-                )
-            ) as ADMISSION_TOTAL_DAY,
-            a.TREATMENT_NUM_FK,
-            <!--insurance_cost-->
-            if(MIDDLE_PAY_DATE is null,
-                if(DISCHARGE_DUEDATE is null ,
-                    if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0), 0) ,
-                    if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*50000)*0.25,0), 0)
-                )
-            ,
-                if(MIDDLE_PAY_DATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d'),
-                    if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0), 0),
-                    if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000)*0.25,0), 0)
-                )
-            ) as INSURANCE_COST ,
-            <!--total_cost-->
-            if(MIDDLE_PAY_DATE is null,
-                if(DISCHARGE_DUEDATE is null ,
-                    if(INSURANCE = 1
-                        , ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d')))*50000) - truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0)
-                        , (TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d'))*50000))
-                ,
-                    if(INSURANCE = 1
-                        , ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE))*50000) - truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*50000)*0.25,0)
-                        , (TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*50000))
-                    )
-            ,
-                if(MIDDLE_PAY_DATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d'),
-                    if(INSURANCE = 1
-                        , ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d')))*50000) - truncate((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0)
-                       , (TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d'))*50000))
-            ,
-                    if(INSURANCE = 1
-                        , ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE))*50000) - truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000)*0.25,0)
-                        , (TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000))
-                    )
-            ) as TOTAL_COST
+        a.ADMISSION_ID_PK ,
+        ADMISSION_DATE ,
+        ADMISSION_STATUS_CODE,
+        MIDDLE_PAY_DATE,
+        DISCHARGE_DUEDATE ,
+        c.PATIENT_ID_PK,
+        c.PATIENT_NAME,
+        d.SPECIALITY,
+        e.DIAGNOSIS,
+        a.ward,
+        a.room_num,
+        a.bed_num,
+        if(MIDDLE_PAY_DATE is null,
+        if(DISCHARGE_DUEDATE is null ,
+        TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d')),
+        TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)
+        )
+        ,
+        if(MIDDLE_PAY_DATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d'),
+        TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d')),
+        TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)
+        )
+        ) as ADMISSION_TOTAL_DAY,
+        a.TREATMENT_NUM_FK,
+
+        if(MIDDLE_PAY_DATE is null,
+        if(DISCHARGE_DUEDATE is null ,
+        if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0), 0) ,
+        if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*50000)*0.25,0), 0)
+        )
+        ,
+        if(MIDDLE_PAY_DATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d'),
+        if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0), 0),
+        if(INSURANCE = 1, truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000)*0.25,0), 0)
+        )
+        ) as INSURANCE_COST ,
+
+        if(MIDDLE_PAY_DATE is null,
+        if(DISCHARGE_DUEDATE is null ,
+        if(INSURANCE = 1
+        , ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d')))*50000) - truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0)
+        , (TIMESTAMPDIFF(DAY, ADMISSION_DATE , date_format(now(),'%Y-%m-%d'))*50000))
+        ,
+        if(INSURANCE = 1
+        , ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE))*50000) - truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*50000)*0.25,0)
+        , (TIMESTAMPDIFF(DAY, ADMISSION_DATE , DISCHARGE_DUEDATE)*50000))
+        )
+        ,
+        if(MIDDLE_PAY_DATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d'),
+        if(INSURANCE = 1
+        , ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d')))*50000) - truncate((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d'))*50000)*0.25,0)
+        , (TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , date_format(now(),'%Y-%m-%d'))*50000))
+        ,
+        if(INSURANCE = 1
+        , ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE))*50000) - truncate((TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000)*0.25,0)
+        , (TIMESTAMPDIFF(DAY, ADMISSION_DATE , MIDDLE_PAY_DATE)*50000))
+        )
+        ) as TOTAL_COST
         from
-            ADMISSION_TB as a
-                left join TREATMENT_INFO_TB as b on a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
-                left join PATIENT_TB as c on b.PATIENT_ID_FK = c.PATIENT_ID_PK
+        ADMISSION_TB as a
+        left join TREATMENT_INFO_TB as b on a.TREATMENT_NUM_FK = b.TREATMENT_NUM_PK
+        left join PATIENT_TB as c on b.PATIENT_ID_FK = c.PATIENT_ID_PK
+        left join RECEIVE_TB as d on b.RECEIVE_ID_FK = d.RECEIVE_ID_PK
+        left join DIAGNOSIS_TB as e on b.DIAGNOSIS_CODE = e.DIAGNOSIS_CODE
         where
              ADMISSION_ID_PK = #{admissionId};
     </select>
@@ -217,10 +226,10 @@
     <update id="putReceiptComplete" parameterType="HashMap">
         UPDATE ADMISSION_TB
         <if test="MIDDLE_PAY_DATE == null and DISCHARGE_DUEDATE != null">
-            SET ADMISSION_STATUS_CODE = 'IE'
+            SET ADMISSION_STATUS_CODE = 'IE', DISCHARGE_DATE = now()
         </if>
         <if test="MIDDLE_PAY_DATE != null and DISCHARGE_DUEDATE != null">
-            SET ADMISSION_STATUS_CODE = 'IE'
+            SET ADMISSION_STATUS_CODE = 'IE', DISCHARGE_DATE = now()
         </if>
         <if test="MIDDLE_PAY_DATE == null and DISCHARGE_DUEDATE == null">
             SET MIDDLE_PAY_DATE = date_format(now(),'%Y-%m-%d')
@@ -230,5 +239,14 @@
         </if>
         WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK};
     </update>
+
+
+    <select id="getBillData" parameterType="String" resultType="HashMap">
+        select a.INRECEIPT_ID_PK,b.MIDDLE_PAY_DATE,b.DISCHARGE_DATE , a.PAYMENT_DATE
+        from
+            INPATIENT_RECEIPT_TB as a left join ADMISSION_TB as b on a.ADMISSION_ID_FK = b.ADMISSION_ID_PK
+        where a.ADMISSION_ID_FK = #{ADMISSION_ID_PK};
+
+    </select>
 
 </mapper>

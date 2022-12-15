@@ -67,5 +67,15 @@ public class ReceiptController {
 
     }
 
+    @PostMapping("/getBillData")
+    public List<Map<String, Object>> getBillData(@RequestBody Map<String, Object> data) {
+        String ADMISSION_ID_PK = data.get("ADMISSION_ID_PK").toString();
+        System.out.println(ADMISSION_ID_PK);
+        System.out.println("수납완료 결과 : "+receiptService.getBillData(ADMISSION_ID_PK));
+//        receiptService.setAdReceipt(test);
+        return (receiptService.getBillData(ADMISSION_ID_PK));
+
+    }
+
 
 }

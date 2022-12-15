@@ -14,4 +14,6 @@ public interface ReceiptService {
     void getChangeStateList();
 
     List<Map<String, Object>> getAdReceiptPay(Map<String, Object> test);
+
+    List<Map<String, Object>> getBillData(String ADMISSION_ID_PK);
 }
