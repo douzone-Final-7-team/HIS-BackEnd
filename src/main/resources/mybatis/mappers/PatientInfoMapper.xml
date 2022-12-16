@@ -13,7 +13,7 @@
                  LEFT JOIN SPECIALITY_TB AS e ON d.SPECIALITY_ID_FK= e.SPECIALITY_ID_PK
                  LEFT JOIN ADMISSION_STATUS AS f ON a.ADMISSION_STATUS_CODE = f.ADMISSION_STATUS_CODE
                  LEFT JOIN DIAGNOSIS_TB AS g ON b.DIAGNOSIS_CODE = g.DIAGNOSIS_CODE
-        WHERE c.PATIENT_NAME = #{name} AND (f.AD_CODE_NAME = '입원완료' or f.AD_CODE_NAME = '수납대기') AND a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum} AND a.BED_NUM= #{bedNum};
+        WHERE c.PATIENT_NAME = #{name} AND (f.AD_CODE_NAME = '입원완료' or f.AD_CODE_NAME = '수납대기' or f.AD_CODE_NAME = '수납완료') AND a.WARD = #{ward} AND a.ROOM_NUM = #{roomNum} AND a.BED_NUM= #{bedNum};
     </select>
 
     <!--퇴원 예정일 UPDATE -->

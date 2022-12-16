@@ -14,11 +14,11 @@ public interface AdmissionFrontPageDAO {
 
     List<Map<String, Object>> getDisChargeList();
 
-    void putDisCharged(Map<String, Object> admissionId);
+    int putDisCharged(Map<String, Object> admissionId);
 
     List<Map<String, Object>> getMyInPatient(String empIdPk);
 
-    void putChangeBedState(Map<String, Object> admissionId);
+    int putChangeBedState(Map<String, Object> admissionId);
 
     Map<String, Object> getDisChargeCount();
 
