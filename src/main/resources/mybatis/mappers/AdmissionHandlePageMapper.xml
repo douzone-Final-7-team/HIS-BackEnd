@@ -13,7 +13,7 @@
                  LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
                  LEFT JOIN PATIENT_TB AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
                  LEFT JOIN ADMISSION_STATUS AS e ON b.ADMISSION_STATUS_CODE = e.ADMISSION_STATUS_CODE
-        WHERE d.PATIENT_NAME = #{name} AND (e.AD_CODE_NAME = '입원완료' OR e.AD_CODE_NAME = '수납대기') AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}
+        WHERE d.PATIENT_NAME = #{name} AND (e.AD_CODE_NAME = '입원완료' OR e.AD_CODE_NAME = '수납대기' OR e.AD_CODE_NAME = '수납완료') AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}
         ORDER BY CARE_ID_PK DESC;
     </select>
 
@@ -27,7 +27,7 @@
                                                LEFT JOIN ADMISSION_STATUS AS c ON b.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
                                                LEFT JOIN TREATMENT_INFO_TB AS d ON b.TREATMENT_NUM_FK = d.TREATMENT_NUM_PK
                                                LEFT JOIN PATIENT_TB AS e ON d.PATIENT_ID_FK = e.PATIENT_ID_PK
-               WHERE e.PATIENT_NAME = #{name} AND (c.AD_CODE_NAME = '입원완료' OR c.AD_CODE_NAME = '수납대기') AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
+               WHERE e.PATIENT_NAME = #{name} AND (c.AD_CODE_NAME = '입원완료' OR c.AD_CODE_NAME = '수납대기' OR c.AD_CODE_NAME = '수납완료') AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
               now(),#{nurseName}, #{careContent});
     </insert>
 
@@ -51,7 +51,7 @@
                  LEFT JOIN TREATMENT_INFO_TB AS c ON b.TREATMENT_NUM_FK = c.TREATMENT_NUM_PK
                  LEFT JOIN PATIENT_TB AS d ON c.PATIENT_ID_FK = d.PATIENT_ID_PK
                  LEFT JOIN ADMISSION_STATUS AS e ON b.ADMISSION_STATUS_CODE = e.ADMISSION_STATUS_CODE
-        WHERE d.PATIENT_NAME = #{name} AND (e.AD_CODE_NAME = '입원완료' OR e.AD_CODE_NAME = '수납대기') AND b.WARD = #{ward}  AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}
+        WHERE d.PATIENT_NAME = #{name} AND (e.AD_CODE_NAME = '입원완료' OR e.AD_CODE_NAME = '수납대기' OR e.AD_CODE_NAME = '수납완료') AND b.WARD = #{ward}  AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}
         ORDER BY RECORD_ID_PK DESC;
     </select>
 
@@ -65,7 +65,7 @@
                                                LEFT JOIN ADMISSION_STATUS AS c ON b.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
                                                LEFT JOIN TREATMENT_INFO_TB AS d ON b.TREATMENT_NUM_FK = d.TREATMENT_NUM_PK
                                                LEFT JOIN PATIENT_TB AS e ON d.PATIENT_ID_FK = e.PATIENT_ID_PK
-               WHERE e.PATIENT_NAME = #{name} AND (c.AD_CODE_NAME = '입원완료' OR c.AD_CODE_NAME = '수납대기') AND b.WARD = #{ward}  AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
+               WHERE e.PATIENT_NAME = #{name} AND (c.AD_CODE_NAME = '입원완료' OR c.AD_CODE_NAME = '수납대기' OR c.AD_CODE_NAME = '수납완료') AND b.WARD = #{ward}  AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
               NOW(),#{oderer}, #{oderContent}, #{medicineName},0);
     </insert>
 
@@ -97,7 +97,7 @@
                  LEFT JOIN PATIENT_TB AS d ON d.PATIENT_ID_PK = c.PATIENT_ID_FK
                  LEFT JOIN ADMISSION_STATUS AS e on b.ADMISSION_STATUS_CODE = e.ADMISSION_STATUS_CODE
                  LEFT JOIN PATIENT_SCHEDULE_STATUS AS f ON a.SCHEDULE_STATUS = f.SCHEDULE_STATUS
-        WHERE b.WARD = (SELECT WARD FROM SPECIALITY_TB AS g WHERE g.SPECIALITY_NAME = #{specialityName}) AND (e.AD_CODE_NAME = '입원완료' or e.AD_CODE_NAME = '수납대기') AND substr(a.SCHEDULE_DATE,1,10) = substr(#{scheduleDate},1,10)
+        WHERE b.WARD = (SELECT WARD FROM SPECIALITY_TB AS g WHERE g.SPECIALITY_NAME = #{specialityName}) AND (e.AD_CODE_NAME = '입원완료' or e.AD_CODE_NAME = '수납대기' OR e.AD_CODE_NAME = '수납완료') AND substr(a.SCHEDULE_DATE,1,10) = substr(#{scheduleDate},1,10)
         ORDER BY SCHEDULE_DATE DESC;
     </select>
 
@@ -110,7 +110,7 @@
                                                LEFT JOIN ADMISSION_STATUS AS c ON b.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
                                                LEFT JOIN TREATMENT_INFO_TB AS d ON b.TREATMENT_NUM_FK = d.TREATMENT_NUM_PK
                                                LEFT JOIN PATIENT_TB AS e ON d.PATIENT_ID_FK = e.PATIENT_ID_PK
-               WHERE e.PATIENT_NAME = #{name} AND (c.AD_CODE_NAME = '입원완료' or c.AD_CODE_NAME = '수납대기') AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
+               WHERE e.PATIENT_NAME = #{name} AND (c.AD_CODE_NAME = '입원완료' or c.AD_CODE_NAME = '수납대기' OR c.AD_CODE_NAME = '수납완료') AND b.WARD = #{ward} AND b.ROOM_NUM = #{roomNum} AND b.BED_NUM= #{bedNum}),
               'SA' ,#{scheduleDate},#{schedulePlace}, #{scheduleContent} , #{LastModifier});
     </insert>
 
@@ -193,7 +193,7 @@
          LEFT JOIN ADMISSION_STATUS AS d ON d.ADMISSION_STATUS_CODE = c.ADMISSION_STATUS_CODE
          LEFT JOIN TREATMENT_INFO_TB AS e ON e.TREATMENT_NUM_PK = c.TREATMENT_NUM_FK
          LEFT JOIN PATIENT_TB AS f ON f.PATIENT_ID_PK = e.PATIENT_ID_FK
-        WHERE (AD_CODE_NAME = "입원완료" or AD_CODE_NAME = "수납대기") AND (PR_CODE_NAME = "호출" OR PR_CODE_NAME = "확인") AND a.WARD = (SELECT WARD from SPECIALITY_TB where SPECIALITY_NAME = #{specialityName})
+        WHERE (AD_CODE_NAME = "입원완료" or AD_CODE_NAME = "수납대기"  OR AD_CODE_NAME = '수납완료') AND (PR_CODE_NAME = "호출" OR PR_CODE_NAME = "확인") AND a.WARD = (SELECT WARD from SPECIALITY_TB where SPECIALITY_NAME = #{specialityName})
         ORDER BY REQUEST_TIME DESC;
     </select>
     <!--환자, 간호사 소켓 요청 시 UPDATE-->
