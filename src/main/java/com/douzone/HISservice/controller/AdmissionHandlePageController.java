@@ -169,10 +169,11 @@ public class AdmissionHandlePageController {
         }
     };
 
-    // 해당 병동 전체 환자 일정 상태 UPDATE
     @PutMapping("/changedSchedule/status")
     public List<Map<String, Object>> changeScheduleStatus (@RequestBody Map<String, Object> upDateScheduleStatusElements){
         admissionHandlePageService.changeScheduleStatus(upDateScheduleStatusElements);
+        System.out.println("들어 오는것" + upDateScheduleStatusElements);
+        System.out.println("나오는것 "+ admissionHandlePageService.getInpatientSchedules(upDateScheduleStatusElements));
         return admissionHandlePageService.getInpatientSchedules(upDateScheduleStatusElements);
     };
 
@@ -219,6 +220,7 @@ public class AdmissionHandlePageController {
     // 내가 작성한 인계사항 UPDATE
     @PutMapping("/myHandOver")
     public List<Map<String, Object>> changeHandover(@RequestBody Map<String, Object> upDateHandOverElements){
+        System.out.println("황동하 : "+upDateHandOverElements);
         admissionHandlePageService.changeHandover(upDateHandOverElements);
         String updateResult =  admissionHandlePageService.changeHandover(upDateHandOverElements);
         if (updateResult == "성공") {
