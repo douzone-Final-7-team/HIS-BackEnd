@@ -127,7 +127,7 @@ public class OutStatusServiceImpl implements OutStatusService{
         int insurance = (int) acceptanceList.get(0).get("INSURANCE");
 
         treatCost = treatCost < 7 || treatCost > 64 ? 5000 : 7000;
-        careCost = treatmentOrder == null ? 0 : 10000;
+        careCost = treatmentOrder == null || treatmentOrder.length() == 0 ? 0 : 10000;
         prescriptionCost = prescription == null ? 0 : visit.equals("재진") ? 3000 : 5000;
         timeCost = (int)(time < 9  ? treatCost * -0.1 : time > 17 ? treatCost * 0.1 : 0);
         insuranceCost = (int)(insurance == 1 ? (treatCost + careCost + prescriptionCost + timeCost) * 0.25 : 0);
