@@ -28,7 +28,6 @@ public class PatientInfoController {
     // 환자 등록 정보 READ
     @PostMapping("/regInfo")
     public Map<String, Object> getPatientRegistrationInfo(@RequestBody Map<String, Object> regInfoElement) {
-        System.out.println(regInfoElement);
         return (patientInfoService.getPatientRegistrationInfo(regInfoElement));
     }
 
@@ -70,9 +69,6 @@ public class PatientInfoController {
     // 진료환자 과겨 병력 상세 조회 - regTime 추가
     @GetMapping("/getTreatmentHistoryDetail")
     public List<Map<String, Object>> getTreatmentHistoryDetail(@RequestParam String patientID, @RequestParam String treatmentDate, @RequestParam String regTime) {
-        System.out.println("====================================================================="+patientID);
-
-        System.out.println(patientInfoService.getTreatmentHistoryDetail(patientID, treatmentDate, regTime));
         return patientInfoService.getTreatmentHistoryDetail(patientID, treatmentDate, regTime);
 
     }
