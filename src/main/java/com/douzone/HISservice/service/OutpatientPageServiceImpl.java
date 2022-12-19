@@ -15,7 +15,6 @@ public class OutpatientPageServiceImpl implements OutpatientPageService {
     // 진료메모 / 치료오더 SELECT
     @Override
     public Map<String, Object> getTreatmentInfos (Map<String, Object> treatmentInfosElements){
-        System.out.println(treatmentInfosElements);
         return outpatientPageDAO.getTreatmentInfos(treatmentInfosElements);
     }
 
