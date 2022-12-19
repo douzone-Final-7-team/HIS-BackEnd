@@ -39,21 +39,54 @@ public class OutStatusController {
         for(int i=0; i<paramsList.size(); i++) {
             paramsList.get(i).put("patInfo", outStatusService.getOutStatus(paramsList.get(i)));
         }
+        System.out.println("오오옹 : "+paramsList);
         return paramsList;
     }
 
-    // 의사 개인 환자 현황 리스트
-    @GetMapping("/MyPatient")
-    public List<Map<String, Object>> getMyPatient() {
-        return outStatusService.getMyPatient();
+
+
+    @PostMapping("/putChangeState")
+    public Object putChangeState(@RequestBody Map<String, Object> speciality) {
+
+        outStatusService.putChangeState(speciality);
+        List<Map<String, Object>> paramsList = outStatusService.getDoctorList(speciality);
+        for(int i=0; i<paramsList.size(); i++) {
+            paramsList.get(i).put("patInfo", outStatusService.getOutStatus(paramsList.get(i)));
+        }
+        System.out.println("하하핳 : "+paramsList);
+        return paramsList;
     }
 
-    // 필터
+
+    // 의사 개인 환자 현황 리스트
+    @GetMapping("/MyPatient")
+    public List<Map<String, Object>> getMyPatient(@RequestParam String doctorID) {
+        System.out.println("의사아이디 : "+doctorID);
+        return outStatusService.getMyPatient(doctorID);
+    }
+
+    @GetMapping("/PatientNum")
+    public Map<String, Object> getMyPatientNum(@RequestParam String doctorID) {
+        return outStatusService.getMyPatientNum(doctorID);
+    }
+
+    @GetMapping("/filterStatus")
+    public List<Map<String, Object>> filterStatus(@RequestParam String status, @RequestParam String doctorID) {
+        return outStatusService.filterStatus(status, doctorID);
+    }
+
     @PostMapping("/getdocpatCon")
     public Object getDocPatCon(@RequestBody Map<String, Object> params) {
+        System.out.println("민욱련 : "+ params);
+
         List<Map<String, Object>> paramsList = outStatusService.getDoctorList(params);
+
         for(int i=0; i<paramsList.size(); i++) {
-            paramsList.get(i).put("patInfo", outStatusService.getOutStatusCon(paramsList.get(i)));
+            if(params.get("OUTPATIENT_STATUS_CODE") == null) {
+                paramsList.get(i).put("patInfo", outStatusService.getOutStatus(paramsList.get(i)));
+            } else {
+                paramsList.get(i).put("patInfo", outStatusService.getOutStatusCon(paramsList.get(i)));
+            }
         }
         return paramsList;
     }
@@ -77,5 +110,12 @@ public class OutStatusController {
     @PostMapping("/insertReceipt")
     public void insertReceipt(@RequestBody Map<String, Object> params) {
         outStatusService.insertReceipt(params);
+    }
+
+
+    // 외래 환자 처방전
+    @PostMapping("/getPrescription")
+    public List<Map<String, Object>> getPrescription(@RequestBody Map<String, Object> treatmentNumPk) {
+        return outStatusService.getPrescription(treatmentNumPk);
     }
 }

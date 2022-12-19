@@ -18,6 +18,10 @@ public class PatientInfoController {
     // 특정 환자 입원 정보 READ
     @PostMapping("/outInfo")
     public Map<String, Object> getInpatientInfo(@RequestBody Map<String, Object> outInfoElement) {
+        System.out.println("호호호호록 : "+outInfoElement);
+        System.out.println(
+                patientInfoService.getPatientInfo(outInfoElement)
+        );
         return (patientInfoService.getPatientInfo(outInfoElement));
     }
 
@@ -45,8 +49,8 @@ public class PatientInfoController {
 
     // 진료중 상태의 환자 클릭시 정보 조회
     @GetMapping("/treatmentPatientInfo")
-    public List<Map<String, Object>> getTreatmentPatientInfo(@RequestParam String receivePk) {
-        return patientInfoService.getTreatmentPatientInfo(receivePk);
+    public List<Map<String, Object>> getTreatmentPatientInfo(@RequestParam String receivePk, @RequestParam String patientFk) {
+        return patientInfoService.getTreatmentPatientInfo(receivePk, patientFk);
     }
 
     // 진료환자 과거 병력 리스트 조회
@@ -57,8 +61,20 @@ public class PatientInfoController {
 
     // 진료환자 과거 병력 상세 조회
     @GetMapping("/pastTreatmentDetail")
-    public List<Map<String, Object>> getPastTreatmentDetail() {
-        return patientInfoService.getPastTreatmentDetail();
+    public List<Map<String, Object>> getPastTreatmentDetail(@RequestParam String patientID, @RequestParam String treatmentDate) {
+        System.out.println((patientID + "," + treatmentDate));
+        return patientInfoService.getPastTreatmentDetail(patientID, treatmentDate);
+
+    }
+
+    // 진료환자 과겨 병력 상세 조회 - regTime 추가
+    @GetMapping("/getTreatmentHistoryDetail")
+    public List<Map<String, Object>> getTreatmentHistoryDetail(@RequestParam String patientID, @RequestParam String treatmentDate, @RequestParam String regTime) {
+        System.out.println("====================================================================="+patientID);
+
+        System.out.println(patientInfoService.getTreatmentHistoryDetail(patientID, treatmentDate, regTime));
+        return patientInfoService.getTreatmentHistoryDetail(patientID, treatmentDate, regTime);
+
     }
 
 }

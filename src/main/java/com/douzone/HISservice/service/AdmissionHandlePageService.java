@@ -16,7 +16,7 @@ public interface AdmissionHandlePageService {
     public void setCareInfo (Map<String, Object> careInfoElements);
 
     // 특정 환자 간호기록 UPADTE
-    public void changeCareInfo (Map<String, Object> upDateCareInfoElements);
+    public String changeCareInfo (Map<String, Object> upDateCareInfoElements);
 
 // 처방기록
 
@@ -27,7 +27,7 @@ public interface AdmissionHandlePageService {
     public void setMediRecord (Map<String, Object> mediRecordElements);
 
     // 특정 환자별 처방기록 UPDATE
-    public void changeMediRecord (Map<String, Object> upDateMediRecordElements);
+    public String changeMediRecord (Map<String, Object> upDateMediRecordElements);
 
     // 복약 체크 시 상태 업데이트 UPDATE
     public void changeTakeMediStatus (Map<String, Object> upDateTakeMediStatusElements);
@@ -41,7 +41,7 @@ public interface AdmissionHandlePageService {
     public void setInpatientSchedule (Map<String, Object> inpatientScheduleElements);
 
     // 해당 병동 전체 환자 일정 UPDATE
-    public void changeSchedule (Map<String, Object> upDateScheduleElements);
+    public String changeSchedule (Map<String, Object> upDateScheduleElements);
 
     // 해당 병동 전체 환자 일정 상태 UPDATE
     public void changeScheduleStatus (Map<String, Object> upDateScheduleStatusElements);
@@ -62,7 +62,7 @@ public interface AdmissionHandlePageService {
 
     // 내가 작성한 인계사항 UPDATE
 
-    public void changeHandover (Map<String, Object> upDateHandOverElements);
+    public String changeHandover (Map<String, Object> upDateHandOverElements);
 
     // 로딩 시 호출 현황 READ
     public List<Map<String, Object>>  getInPatientReq (Map<String, Object> inPatientReqElements);

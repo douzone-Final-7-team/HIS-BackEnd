@@ -6,12 +6,13 @@
 
 <!-- mypage 정보 불러오기 -->
     <select id="getMyInfo" parameterType="HashMap" resultType="HashMap">
-        SELECT a.*, b.SPECIALITY_NAME,
+        SELECT a.*, b.SPECIALITY_NAME, b.WARD,
                CASE
                    WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'D') THEN '의사'
                    WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'I') THEN '외래간호사'
                    WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'O') THEN '병동간호사'
                    WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'R') THEN '원무'
+
                    END AS JOB_NAME
         FROM EMP_INFO_TB AS a
                  LEFT JOIN SPECIALITY_TB AS b ON a.SPECIALITY_ID_FK = b.SPECIALITY_ID_PK
@@ -19,18 +20,18 @@
     </select>
 
 <!-- 비밀번호 변경-->
-    <select id="changePwd">
+    <update id="changePwd">
         UPDATE EMP_INFO_TB
         SET PW = #{newPwd}
         WHERE EMP_ID_PK = #{pk}
-    </select>
+    </update>
 
 <!-- 주소 변경-->
-    <select id="changeAddr">
+    <update id="changeAddr">
         UPDATE EMP_INFO_TB
         SET EMP_ADDR = #{newAddr}
         WHERE EMP_ID_PK = #{pk}
-    </select>
+    </update>
 
 <!-- 헤더 정보 -->
     <select id="getHeaderInfo" parameterType="String" resultType="HashMap">
@@ -53,5 +54,44 @@
         FROM EMP_INFO_TB AS a
             LEFT JOIN SPECIALITY_TB AS b ON a.SPECIALITY_ID_FK = b.SPECIALITY_ID_PK
         WHERE EMP_ID_PK = #{pk};
+    </select>
+
+    <insert id="addDoctorSchedule" parameterType="HashMap">
+        INSERT INTO DOCTOR_SCHEDULE_TB
+        (EMP_ID_FK, SCHEDULE_CATEGORY, SCHEDULE_TITLE, SCHEDULE_DATE, SCHEDULE_START_TIME, SCHEDULE_END_TIME , SCHEDULE_PLACE, SCHEDULE_CONTENT)
+        VALUES (#{empIdPk}, #{scheduleCategory}, #{scheduleTitle}, #{scheduleDate}, #{startTime}, #{endTime}, #{scheduleLocation}, #{scheduleContent});
+    </insert>
+
+    <select id="getMyScheduleList" parameterType="String" resultType="HashMap">
+        SELECT *
+        FROM DOCTOR_SCHEDULE_TB
+        WHERE EMP_ID_FK = #{empIdPk} AND SCHEDULE_DATE = #{date}
+        ORDER BY SCHEDULE_START_TIME ASC;
+    </select>
+
+    <select id="getSelectedSchedule" parameterType="String" resultType="HashMap">
+        SELECT *
+        FROM DOCTOR_SCHEDULE_TB
+        WHERE SCHEDULE_ID_PK = #{scheduleIdPk};
+    </select>
+
+    <update id="updateSchedule" parameterType="HashMap">
+        UPDATE DOCTOR_SCHEDULE_TB
+        SET SCHEDULE_CATEGORY = #{scheduleCategory}, SCHEDULE_TITLE = #{scheduleTitle}, SCHEDULE_START_TIME = #{startTime}, SCHEDULE_END_TIME = #{endTime},
+            SCHEDULE_PLACE = #{scheduleLocation}, SCHEDULE_CONTENT = #{scheduleContent}
+        WHERE SCHEDULE_ID_PK = #{scheduleIdPk};
+
+    </update>
+
+    <delete id="deleteSchedule" parameterType="String">
+        DELETE
+        FROM DOCTOR_SCHEDULE_TB
+        WHERE SCHEDULE_ID_PK = #{schedulePk}
+    </delete>
+
+    <select id="filterCategory" parameterType="String" resultType="HashMap">
+        SELECT *
+        FROM DOCTOR_SCHEDULE_TB
+        WHERE EMP_ID_FK = #{empIdPk} AND SCHEDULE_DATE = #{date} AND SCHEDULE_CATEGORY = #{category};
     </select>
 </mapper>

@@ -36,28 +36,33 @@ public class AdmissionFrontPageServiceImpl implements AdmissionFrontPageService{
 
         return admissionFrontPageDAO.getDisChargeList();
     }
-
-
-//    @Override
-//    public List<Map<String, Object>> putDisChargeList(Map<String, Object> admissionId) {
-//
-//        return adFrontDAO.putDisChargeList(admissionId);
-//    }
     @Override
-    public void putDisCharged(Map<String, Object> admissionId) {
+    public String putDisCharged(Map<String, Object> admissionId) {
 
         System.out.println("아아아아아아 : "+admissionId);
         System.out.println(admissionId.get("WARD").toString());
         System.out.println(admissionId.get("ROOM_NUM").toString());
         System.out.println(admissionId.get("BED_NUM").toString());
-        admissionFrontPageDAO.putDisCharged(admissionId);
-        admissionFrontPageDAO.putChangeBedState(admissionId);
+        int a = admissionFrontPageDAO.putDisCharged(admissionId);
+        if(a == 1){
+            int b = admissionFrontPageDAO.putChangeBedState(admissionId);
+            if(b == 1){
+                return "success";
+            }else{
+                return "bedStateFail";
+            }
+        }else{
+            return "adStateFail";
+        }
+
+
 
     }
 
     @Override
-    public List<Map<String, Object>> getMyInPatient() {
-        return admissionFrontPageDAO.getMyInPatient();
+    public List<Map<String, Object>> getMyInPatient(String empIdPk) {
+
+        return admissionFrontPageDAO.getMyInPatient(empIdPk);
     }
 
 

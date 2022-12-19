@@ -24,16 +24,17 @@ public class AdmissionReqController {
 
     // 입원 승인 , 반려
     @PostMapping("/admissionAccept")
-    public void putAdmissionAccept(@RequestBody Map<String, Object> admissionElement) {
-//        System.out.println(admissionElement);
-        admissionReqService.putAdmissionAccept(admissionElement);
+    public int putAdmissionAccept(@RequestBody Map<String, Object> admissionElement) {
+        int a = admissionReqService.putAdmissionAccept(admissionElement);
 
+        System.out.println("성공여부 : " + a);
+        return a;
     }
 
     // 입원 예정 리스트
     @GetMapping("/admissionDueList")
     public List<Map<String, Object>> getAdmissionDueList() {
-
+        System.out.println("dkdkkdkdkdkdkd : "+admissionReqService.getAdmissionDueList());
         return (admissionReqService.getAdmissionDueList());
     }
 

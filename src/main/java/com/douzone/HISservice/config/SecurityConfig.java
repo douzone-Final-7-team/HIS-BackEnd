@@ -36,10 +36,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 //                .antMatchers("/doctor/**")
 //                .access("hasRole('ROLE_DOCTOR')")
-//                .antMatchers("/inNurse/ward")
-//                .access("hasRole('INNURSE')")
-//                .antMatchers("/receipt/receiption")
-//                .access("hasRole('RECEIPT')")
+//                .antMatchers("/reception/**")
+//                .access("hasRole('ROLE_OUTRECEIPT')")
+//                .antMatchers("/outpatient/**")
+//                .access("hasRole('ROLE_OUTNURSE')")
+//                .antMatchers("/ward-management/**")
+//                .access("hasRole('ROLE_INRECEIPT')")
+//                .antMatchers("/ward-management2/**")
+//                .access("hasRole('ROLE_INNURSE')")
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest().permitAll();
     }

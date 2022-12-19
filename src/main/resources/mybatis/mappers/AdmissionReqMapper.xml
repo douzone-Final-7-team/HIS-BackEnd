@@ -7,7 +7,7 @@
 
     <!--입원오더리스트-->
     <select id="getAdmissionOrder" resultType="HashMap">
-        SELECT A.ADMISSION_ID_PK , C.PATIENT_NAME , E.SPECIALITY_NAME, E.WARD, D.EMP_NAME , date_format(B.TREATMENT_DATE,'%H%I') as T_TIME ,B.TREATMENT_MEMO
+        SELECT A.ADMISSION_ID_PK , A.ADMISSION_DUEDATE, C.PATIENT_NAME ,C.GENDER, C.PATIENT_AGE , C.PATIENT_SSN , E.SPECIALITY_NAME, E.WARD, D.EMP_NAME , date_format(B.TREATMENT_DATE,'%H%I') as T_TIME ,B.TREATMENT_MEMO
         FROM ADMISSION_TB AS A
             LEFT JOIN TREATMENT_INFO_TB AS B ON A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
             LEFT JOIN PATIENT_TB AS C ON B.PATIENT_ID_FK = C.PATIENT_ID_PK
@@ -21,8 +21,9 @@
     <update id="putAdmissionAccept" parameterType="HashMap">
         UPDATE ADMISSION_TB
         SET
-            ward = #{ward} , room_num = #{roomNum} , bed_num = #{bedNum} , ADMISSION_STATUS_CODE = "IB"
-        WHERE ADMISSION_ID_PK = #{admissionIdPk};
+            ward = #{WARD} , room_num = #{ROOM_NUM} , bed_num = #{BED_NUM} ,ADMISSION_DATE = now() , ADMISSION_STATUS_CODE = "IC"
+        WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK}
+        AND 0 = (SELECT bed_status FROM BED_TB WHERE ward = #{WARD} AND room_num = #{ROOM_NUM} AND bed_num = #{BED_NUM});
     </update>
 
     <!-- 배드상태변경 -->
@@ -30,7 +31,7 @@
         UPDATE BED_TB
         SET
             BED_STATUS = 1
-        WHERE ward = #{ward} AND room_num = #{roomNum} AND bed_num = #{bedNum};
+        WHERE ward = #{WARD} AND room_num = #{ROOM_NUM} AND bed_num = #{BED_NUM};
     </update>
 
 
@@ -39,13 +40,13 @@
         UPDATE ADMISSION_TB
         SET
             ADMISSION_STATUS_CODE = 'IF',
-            REJECT_REASON = #{rejectReason}
-        WHERE ADMISSION_ID_PK = #{admissionIdPk};
+            REJECT_REASON = #{REJECT_REASON}
+        WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK};
     </update>
 
     <!--입원예정리스트-->
     <select id="getAdmissionDueList" resultType="HashMap">
-        SELECT A.ADMISSION_ID_PK ,PATIENT_NAME , if(substr(PATIENT_SSN,8,1)=1 or substr(PATIENT_SSN,8,1)=3 , 'M' ,'W') as GENDER , (date_format(now(),'%Y')- concat('19',substr(PATIENT_SSN,1,2)))+1 as AGE, PATIENT_SSN, A.WARD+A.ROOM_NUM as WARDROOM, A.BED_NUM
+        SELECT A.ADMISSION_ID_PK , A.ADMISSION_DUEDATE,PATIENT_NAME , if(substr(PATIENT_SSN,8,1)=1 or substr(PATIENT_SSN,8,1)=3 , 'M' ,'W') as GENDER , (date_format(now(),'%Y')- concat('19',substr(PATIENT_SSN,1,2)))+1 as AGE, PATIENT_SSN, A.WARD+A.ROOM_NUM as WARDROOM, A.BED_NUM
         FROM ADMISSION_TB AS A
             LEFT JOIN TREATMENT_INFO_TB AS B ON A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
             LEFT JOIN PATIENT_TB AS C ON B.PATIENT_ID_FK = C.PATIENT_ID_PK

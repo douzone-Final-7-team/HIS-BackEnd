@@ -6,22 +6,24 @@
 <mapper namespace="com.douzone.HISservice.repository.OutStatusDAO">
     <!--환자 현황 전체 SELECT -->
     <select id="getOutStatus" parameterType="HashMap" resultType="HashMap">
-        SELECT c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN
+        SELECT c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, a.RECEIVE_ID_PK, c.PATIENT_ID_PK, b.EMP_ID_PK, e.TREATMENT_NUM_PK, b.EMP_NAME, a.SPECIALITY ,e.TREATMENT_DATE,
+               a.REGISTRATION_TIME , d.OUTPATIENT_STATUS_CODE
         FROM RECEIVE_TB AS a
                  LEFT JOIN EMP_INFO_TB AS b ON b.EMP_ID_PK = a.EMP_ID_FK
                  LEFT JOIN PATIENT_TB AS c ON c.PATIENT_ID_PK = a.PATIENT_ID_FK
                  LEFT JOIN OUTPATIENT_STATUS AS d ON d.OUTPATIENT_STATUS_CODE = a.OUTPATIENT_STATUS_CODE
+                 LEFT JOIN TREATMENT_INFO_TB AS e ON e.RECEIVE_ID_FK = a.RECEIVE_ID_PK
         WHERE b.EMP_ID_PK = #{EMP_ID_PK}
 
           AND (d.OUTPATIENT_STATUS_CODE = 'OA' OR d.OUTPATIENT_STATUS_CODE = 'OB' OR d.OUTPATIENT_STATUS_CODE = 'OC' OR d.OUTPATIENT_STATUS_CODE = 'OE')
           AND DATE_FORMAT(a.REGISTRATION_TIME, '%Y%m%d') = DATE_FORMAT(NOW(), '%Y%m%d')
-        ORDER BY d.OUTPATIENT_STATUS_CODE;
+        ORDER BY d.OUTPATIENT_STATUS_CODE, a.REGISTRATION_TIME;
     </select>
 
 
     <!--환자 현황 필터 SELECT -->
     <select id="getOutStatusCon" parameterType="HashMap" resultType="HashMap">
-        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN
+        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OUTPATIENT_STATUS_CODE, d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, b.EMP_NAME, a.SPECIALITY, a.PATIENT_ID_FK, a.EMP_ID_FK
         from RECEIVE_TB as a
                  left join EMP_INFO_TB as b on b.EMP_ID_PK = a.EMP_ID_FK
                  left join PATIENT_TB as c on c.PATIENT_ID_PK = a.PATIENT_ID_FK
@@ -75,16 +77,36 @@
           AND EMP_ID_PK LIKE 'D%';
     </select>
 
+    <update id="putChangeState" parameterType="HashMap">
+        update RECEIVE_TB
+        SET  OUTPATIENT_STATUS_CODE = #{status}
+        WHERE RECEIVE_ID_PK = #{RECEIVE_ID_PK};
+    </update>
+
     <!-- 의사 개인 환자 현황 리스트 -->
-    <select id="getMyPatient" resultType="HashMap">
+    <select id="getMyPatient" parameterType="String" resultType="HashMap">
         SELECT a.*, b.PATIENT_NAME, SUBSTR(REGISTRATION_TIME,12,5) AS TIME, c.OP_CODE_NAME
         FROM RECEIVE_TB AS a
             LEFT JOIN PATIENT_TB AS b ON a.PATIENT_ID_FK = b.PATIENT_ID_PK
             LEFT JOIN OUTPATIENT_STATUS AS c ON a.OUTPATIENT_STATUS_CODE = c.OUTPATIENT_STATUS_CODE
-        WHERE EMP_ID_FK = 'D220001' AND a.OUTPATIENT_STATUS_CODE != 'OD' AND DATE_FORMAT(a.REGISTRATION_TIME, '%Y%M%D') = DATE_FORMAT(NOW(), '%Y%M%D')
-        ORDER BY REGISTRATION_TIME ASC;
+        WHERE EMP_ID_FK = #{doctorID} AND a.OUTPATIENT_STATUS_CODE != 'OD' AND DATE_FORMAT(a.REGISTRATION_TIME, '%Y%M%D') = DATE_FORMAT(NOW(), '%Y%M%D')
+        ORDER BY OUTPATIENT_STATUS_CODE, REGISTRATION_TIME;
     </select>
 
+    <select id="getMyPatientNum" parameterType="String" resultType="HashMap">
+        SELECT COUNT(*) AS WHOLE, COUNT(IF(OUTPATIENT_STATUS_CODE = 'OC',OUTPATIENT_STATUS_CODE, null)) AS WAITING, COUNT(IF(OUTPATIENT_STATUS_CODE = 'OB',OUTPATIENT_STATUS_CODE, null)) AS CURE, COUNT(IF(OUTPATIENT_STATUS_CODE = 'OE',OUTPATIENT_STATUS_CODE, null)) AS DONE
+        FROM RECEIVE_TB
+        WHERE EMP_ID_FK = #{doctorID} AND OUTPATIENT_STATUS_CODE != 'OD' AND DATE_FORMAT(REGISTRATION_TIME, '%Y%M%D') = DATE_FORMAT(NOW(), '%Y%M%D');
+    </select>
+
+    <select id="filterStatus" parameterType="String" resultType="HashMap">
+        SELECT a.*, b.PATIENT_NAME, SUBSTR(REGISTRATION_TIME,12,5) AS TIME, c.OP_CODE_NAME
+        FROM RECEIVE_TB AS a
+            LEFT JOIN PATIENT_TB AS b ON a.PATIENT_ID_FK = b.PATIENT_ID_PK
+            LEFT JOIN OUTPATIENT_STATUS AS c ON a.OUTPATIENT_STATUS_CODE = c.OUTPATIENT_STATUS_CODE
+        WHERE EMP_ID_FK = #{doctorID} AND a.OUTPATIENT_STATUS_CODE = #{status} AND DATE_FORMAT(a.REGISTRATION_TIME, '%Y%M%D') = DATE_FORMAT(NOW(), '%Y%M%D')
+        ORDER BY OUTPATIENT_STATUS_CODE, REGISTRATION_TIME;
+    </select>
 
     <!-- 수납 대기 환자 SELECT -->
     <select id="getWaiting4Receipt" parameterType="HashMap" resultType="HashMap">
@@ -99,7 +121,7 @@
 
     <!-- 수납 SELECT -->
     <select id="getAcceptance" parameterType="HashMap" resultType="HashMap">
-        SELECT c.PATIENT_AGE, a.TREATMENT_ORDER, a.MEDICINE,
+        SELECT c.PATIENT_AGE, a.TREATMENT_ORDER, a.MEDICINE, b.SPECIALITY,
                (IF((SELECT COUNT(*) FROM TREATMENT_INFO_TB
                     WHERE PATIENT_ID_FK = #{PATIENT_ID_PK})=0, '초진', '재진')) AS 'VISIT',
                 DATE_FORMAT(b.REGISTRATION_TIME, '%H : %i') AS 'REGISTRATION_TIME', c.INSURANCE
@@ -130,5 +152,18 @@
         WHERE TREATMENT_NUM_PK = #{TREATMENT_NUM_FK}
     </update>
 
+
+    <!-- 외래 환자 처방전  -->
+    <select id="getPrescription"  parameterType="HashMap" resultType="HashMap">
+        SELECT b.PATIENT_NAME, b.PATIENT_ID_PK, b.PATIENT_SSN, c.EMP_NAME, c.EMP_TEL, c.EMP_ID_PK,
+               d.DIAGNOSIS_CODE, DATE_FORMAT(a.TREATMENT_DATE, '%Y-%m-%d')  AS 'TREATMENT_DATE', a.MEDICINE
+        FROM TREATMENT_INFO_TB AS a
+                 LEFT JOIN PATIENT_TB AS b ON b.PATIENT_ID_PK = a.PATIENT_ID_FK
+                 LEFT JOIN EMP_INFO_TB AS c ON c.EMP_ID_PK = a.EMP_ID_FK
+                 LEFT JOIN DIAGNOSIS_TB AS d ON d.DIAGNOSIS_CODE = a.DIAGNOSIS_CODE
+                 LEFT JOIN MEDICINE_TB AS e ON e.DIAGNOSIS_CODE = d.DIAGNOSIS_CODE
+        WHERE a.TREATMENT_NUM_PK = #{TREATMENT_NUM_PK}
+        GROUP BY a.TREATMENT_NUM_PK;
+    </select>
 
 </mapper>

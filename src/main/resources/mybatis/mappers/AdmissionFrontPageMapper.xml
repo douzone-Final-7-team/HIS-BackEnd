@@ -19,9 +19,11 @@
     </select>
 
     <select id="getAvailable" resultType="HashMap">
-        select distinct(concat(ward+room_num)) as available_room
+        select distinct(concat(ward+room_num)) as available_room , count(bed_num) AS unusing_bed_count
         from BED_TB
-        where bed_status = 0 order by available_room;
+        where bed_status = 0
+        group by available_room
+        order by available_room;
     </select>
 
 
@@ -31,7 +33,7 @@
         FROM ADMISSION_TB as A
         LEFT JOIN TREATMENT_INFO_TB as B on A.TREATMENT_NUM_FK = B.TREATMENT_NUM_PK
         LEFT JOIN PATIENT_TB as C on B.PATIENT_ID_FK = C.PATIENT_ID_PK
-        WHERE DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') and DISCHARGE_DATE is null
+        WHERE DISCHARGE_DUEDATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d') and A.ADMISSION_STATUS_CODE != "IH"
         ORDER BY C.PATIENT_NAME ASC;
     </select>
 
@@ -43,17 +45,17 @@
 
     <update id="putDisCharged" parameterType="HashMap">
         UPDATE ADMISSION_TB
-        SET DISCHARGE_DATE = now()
+        SET ADMISSION_STATUS_CODE = "IH"
         WHERE ADMISSION_ID_PK = #{ADMISSION_ID_PK};
     </update>
 
 <!-- 내 입원환자 리스트 가져오기 -->
-    <select id="getMyInPatient" resultType="HashMap">
-        SELECT a.PATIENT_ID_FK, b.ADMISSION_DATE, b.ROOM_NUM, c.PATIENT_NAME,  c.PATIENT_AGE, if(SUBSTR(PATIENT_SSN,8,1)=1 or substr(PATIENT_SSN,8,1)=3 , 'M' ,'W') AS GENDER , d.EMP_NAME
+    <select id="getMyInPatient" parameterType="String" resultType="HashMap">
+        SELECT a.PATIENT_ID_FK, b.ADMISSION_DATE, b.WARD,b.ROOM_NUM, b.BED_NUM,c.PATIENT_NAME,  c.PATIENT_AGE, c.GENDER , d.EMP_NAME
         FROM TREATMENT_INFO_TB AS a
             LEFT JOIN ADMISSION_TB AS b ON a.TREATMENT_NUM_PK = b.TREATMENT_NUM_FK
             LEFT JOIN PATIENT_TB AS c ON a.PATIENT_ID_FK = c.PATIENT_ID_PK
             LEFT JOIN EMP_INFO_TB AS d ON a.EMP_ID_FK = d.EMP_ID_PK
-        WHERE a.EMP_ID_FK = 'D220001' AND a.ADMISSION = 1 AND b.ADMISSION_DATE IS NOT NULL AND b.DISCHARGE_DATE IS NULL;
+        WHERE a.EMP_ID_FK = #{empIdPk} AND a.ADMISSION = 1 AND b.ADMISSION_DATE IS NOT NULL AND b.DISCHARGE_DATE IS NULL;
    </select>
 </mapper>

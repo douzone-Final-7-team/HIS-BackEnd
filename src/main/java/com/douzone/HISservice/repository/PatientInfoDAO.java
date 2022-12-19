@@ -32,8 +32,10 @@ public interface PatientInfoDAO {
 
     List<Map<String, Object>> getPastTreatmentList(String patientPk);
 
-    List<Map<String, Object>> getPastTreatmentDetail();
+    List<Map<String, Object>> getPastTreatmentDetail(String patientID, String treatmentDate);
 
-    List<Map<String, Object>> getTreatmentPatientInfo(String receivePk);
+    List<Map<String, Object>> getTreatmentHistoryDetail(String patientID, String treatmentDate, String regTime);
+
+    List<Map<String, Object>> getTreatmentPatientInfo(String receivePk, String patientFk);
 
 }

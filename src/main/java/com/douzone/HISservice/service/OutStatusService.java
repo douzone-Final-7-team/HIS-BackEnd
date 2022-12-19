@@ -25,7 +25,11 @@ public interface OutStatusService {
 
 
     // 의사 개인 환자 현황 리스트
-    List<Map<String, Object>> getMyPatient ();
+    List<Map<String, Object>> getMyPatient (String doctorID);
+
+    Map<String, Object> getMyPatientNum (String doctorID);
+
+    List<Map<String, Object>> filterStatus (String status, String doctorID);
 
     // 수납 대기 환자 SELECT
     List<Map<String, Object>> getWaiting4Receipt (Map<String, Object> params);
@@ -36,4 +40,8 @@ public interface OutStatusService {
 
     // 수납 SELECT
     List<Map<String, Object>> getAcceptance (Map<String, Object> params);
+
+    void putChangeState(Map<String, Object> speciality);
+
+    List<Map<String, Object>> getPrescription(Map<String, Object> treatmentNumPk);
 }

@@ -16,16 +16,18 @@ public interface ReceiptDAO {
     List<Map<String, Object>> getChangeMiddleList();
     void putChangeMiddle(Map<String, Object> a);
 
-    List<Map<String, Object>> getAdReceiptListToday();
-    List<Map<String, Object>> getMiddlePaymentList();
-    List<Map<String, Object>> getAdReceiptListAll();
+
 
     List<Map<String, Object>> getAdReceipt(String admissionId);
 
-    void putReceiptComplete(Map<String, Object> test);
+    int putReceiptComplete(Map<String, Object> test);
 
-    void setAdReceipt(Map<String, Object> test);
+    int setAdReceipt(Map<String, Object> test);
+
+    List<Map<String, Object>> getAdReceiptPay(Map<String, Object> test);
+
+    List<Map<String, Object>> getAdReceiptList(String filterFlag);
 
 
-
+    List<Map<String, Object>> getBillData(String ADMISSION_ID_PK);
 }

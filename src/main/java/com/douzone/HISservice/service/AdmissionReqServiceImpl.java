@@ -21,15 +21,28 @@ public class AdmissionReqServiceImpl implements AdmissionReqService {
 
     // 입원 승인
     @Override
-    public void putAdmissionAccept (Map<String, Object> admissionElement){
+    public int putAdmissionAccept (Map<String, Object> admissionElement){
         String admissionResult = admissionElement.get("BTN_STATE").toString();
 //        System.out.println(admissionResult);
+        int a;
         if(admissionResult.equals("assign")){
-            admissionReqDAO.putAdmissionAccept(admissionElement);
-            admissionReqDAO.putBedStatusIn(admissionElement);
+            System.out.println("자 드가자");
+
+            a = admissionReqDAO.putAdmissionAccept(admissionElement);
+            System.out.println("자 드가자 : "+a);
+            if(a == 1){
+                int b = admissionReqDAO.putBedStatusIn(admissionElement);
+                if(b == 0){
+                    a = 0;
+                }
+            }
         }else{
-            admissionReqDAO.putAdmissionNotAccept(admissionElement);
+            System.out.println("밥먹자 : "+ admissionElement);
+            a = admissionReqDAO.putAdmissionNotAccept(admissionElement);
+            System.out.println("밥먹자 : "+a);
+
         }
+        return a;
     }
 
     // 입원 오더 리스트
