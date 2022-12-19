@@ -26,6 +26,7 @@ public class AdmissionHandlePageController {
     // 특정 환자 간호기록 READ
     @PostMapping("/careInfos")
     public List<Map<String, Object>> getCareInfo(@RequestBody Map<String, Object> careInfosElements) {
+
         return (admissionHandlePageService.getCareInfos(careInfosElements));
     }
 
@@ -200,20 +201,20 @@ public class AdmissionHandlePageController {
     // 인계 사항 CREATE
     @PostMapping("/handOver")
     public List<Map<String, Object>> setHandOver(@RequestBody Map<String, Object> handOverElements){
-            try {
-                admissionHandlePageService.setHandOver(handOverElements);
-                return admissionHandlePageService.getSendHandOver(handOverElements);
-            }catch (DataIntegrityViolationException e){
-                Map<String,Object> map1 = new HashMap<String, Object>();
-                map1.put("HANDOVER_ID_PK","");
-                map1.put("HANDOVER_CONTENT","등록이 잘못 되었습니다 다시 입력 부탁드립니다");
-                map1.put("HANDOVER_TARGET","");
-                map1.put("EMP_NAME","");
-                map1.put("HANDOVER_DATE","");
-                List faultHandover = new ArrayList<Object>();
-                faultHandover.add(map1);
-                return faultHandover;
-            }
+        try {
+            admissionHandlePageService.setHandOver(handOverElements);
+            return admissionHandlePageService.getSendHandOver(handOverElements);
+        }catch (DataIntegrityViolationException e){
+            Map<String,Object> map1 = new HashMap<String, Object>();
+            map1.put("HANDOVER_ID_PK","");
+            map1.put("HANDOVER_CONTENT","등록이 잘못 되었습니다 다시 입력 부탁드립니다");
+            map1.put("HANDOVER_TARGET","");
+            map1.put("EMP_NAME","");
+            map1.put("HANDOVER_DATE","");
+            List faultHandover = new ArrayList<Object>();
+            faultHandover.add(map1);
+            return faultHandover;
+        }
     };
     // 내가 작성한 인계사항 UPDATE
     @PutMapping("/myHandOver")

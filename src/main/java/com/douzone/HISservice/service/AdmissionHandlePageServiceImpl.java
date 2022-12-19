@@ -22,15 +22,20 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
     // 특정 환자 간호기록 READ
     @Override
     public List<Map<String, Object>>  getCareInfos (Map<String, Object> careInfosElements){
-        if(admissionHandlePageDAO.getCareInfos(careInfosElements).isEmpty()){
-            Map<String,Object> map1 = new HashMap<String, Object>();
-            map1.put("CARE_DATE","");
-            map1.put("CARE_CONTENT","간호 기록이 없습니다");
-            map1.put("NURSE_NAME","");
-            List list = new ArrayList<Object>();
-            list.add(map1);
+        Map<String,Object> map1 = new HashMap<String, Object>();
+        map1.put("CARE_DATE","");
+        map1.put("CARE_CONTENT","간호 기록이 없습니다");
+        map1.put("NURSE_NAME","");
+        List list = new ArrayList<Object>();
+        list.add(map1);
+
+        if(admissionHandlePageDAO.getCareInfos(careInfosElements).isEmpty() && careInfosElements.get("name") != null){
             return list;
-        }else{
+        }else if(careInfosElements.get("name") == null){
+            map1.put("CARE_CONTENT","빈 데이터 입니다 환자를 클릭 하세요");
+            return list;
+        }
+        else {
             return admissionHandlePageDAO.getCareInfos(careInfosElements);
         }
     }
@@ -57,18 +62,22 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
     //특정 환자별 처방기록 READ
     @Override
     public List<Map<String, Object>>  getMediRecords (Map<String, Object> mediRecordsElements){
-        if(admissionHandlePageDAO.getMediRecords(mediRecordsElements).isEmpty()){
-            Map<String,Object> map1 = new HashMap<String, Object>();
-            map1.put("RECORD_ID_PK","");
-            map1.put("ORDER_CONTENT","처방 기록이 없습니다");
-            map1.put("MEDICINE_NAME","");
-            map1.put("ORDERER","");
-            map1.put("TAKE_MEDICINE_STATUS",false);
-            map1.put("ORDER_DATE","");
-            List list = new ArrayList<Object>();
-            list.add(map1);
+        Map<String,Object> map1 = new HashMap<String, Object>();
+        map1.put("RECORD_ID_PK","");
+        map1.put("ORDER_CONTENT","처방 기록이 없습니다");
+        map1.put("MEDICINE_NAME","");
+        map1.put("ORDERER","");
+        map1.put("TAKE_MEDICINE_STATUS",false);
+        map1.put("ORDER_DATE","");
+        List list = new ArrayList<Object>();
+        list.add(map1);
+        if(admissionHandlePageDAO.getMediRecords(mediRecordsElements).isEmpty() && mediRecordsElements.get("name") != null){
             return list;
-        }else{
+        }else if(mediRecordsElements.get("name") == null){
+            map1.put("ORDER_CONTENT","빈 데이터 입니다 환자를 클릭 해 주세요");
+            return list;
+        }
+        else{
             return admissionHandlePageDAO.getMediRecords(mediRecordsElements);
         }
     }
@@ -110,7 +119,7 @@ public class AdmissionHandlePageServiceImpl implements  AdmissionHandlePageServi
     // 해당 병동 전체 환자 일정 CREATE
     @Override
     public void setInpatientSchedule (Map<String, Object> inpatientScheduleElements){
-         admissionHandlePageDAO.setInpatientSchedule(inpatientScheduleElements);
+        admissionHandlePageDAO.setInpatientSchedule(inpatientScheduleElements);
     }
 
     // 해당 병동 전체 환자 일정 UPDATE
