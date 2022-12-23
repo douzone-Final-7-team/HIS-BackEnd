@@ -86,7 +86,7 @@
                  LEFT JOIN EMP_INFO_TB AS d ON d.EMP_ID_PK = a.EMP_ID_FK
                  LEFT JOIN ADMISSION_TB AS e ON a.TREATMENT_NUM_PK = e.TREATMENT_NUM_FK
                  LEFT JOIN DIAGNOSIS_TB AS f ON a.DIAGNOSIS_CODE = f.DIAGNOSIS_CODE
-        WHERE a.PATIENT_ID_FK = #{patientID} AND a.TREATMENT_DATE = #{treatmentDate} AND f.DIAGNOSIS_CODE = a.DIAGNOSIS_CODE;
+        WHERE a.PATIENT_ID_FK = #{patientID} AND SUBSTR(a.TREATMENT_DATE, 1, 10) = #{treatmentDate} AND f.DIAGNOSIS_CODE = a.DIAGNOSIS_CODE;
     </select>
 
     <!-- 환자 과거 병력 자세히 보기 - 등록시간추가 -->
