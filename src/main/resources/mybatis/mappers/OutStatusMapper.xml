@@ -23,11 +23,13 @@
 
     <!--환자 현황 필터 SELECT -->
     <select id="getOutStatusCon" parameterType="HashMap" resultType="HashMap">
-        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OUTPATIENT_STATUS_CODE, d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, b.EMP_NAME, a.SPECIALITY, a.PATIENT_ID_FK, a.EMP_ID_FK
+        select c.PATIENT_NAME 'patName', DATE_FORMAT(a.REGISTRATION_TIME,'%H : %i') 'regTime', d.OUTPATIENT_STATUS_CODE, d.OP_CODE_NAME 'status', a.RECEIVE_ID_PK 'receiveId', c.PATIENT_SSN, b.EMP_NAME, a.SPECIALITY, a.PATIENT_ID_FK, a.EMP_ID_FK, e.TREATMENT_DATE
+
         from RECEIVE_TB as a
                  left join EMP_INFO_TB as b on b.EMP_ID_PK = a.EMP_ID_FK
                  left join PATIENT_TB as c on c.PATIENT_ID_PK = a.PATIENT_ID_FK
                  left join OUTPATIENT_STATUS as d on d.OUTPATIENT_STATUS_CODE = a.OUTPATIENT_STATUS_CODE
+                 LEFT JOIN TREATMENT_INFO_TB AS e ON e.RECEIVE_ID_FK = a.RECEIVE_ID_PK
         where b.EMP_ID_PK = #{EMP_ID_PK}
 
           and d.OUTPATIENT_STATUS_CODE = #{OUTPATIENT_STATUS_CODE}

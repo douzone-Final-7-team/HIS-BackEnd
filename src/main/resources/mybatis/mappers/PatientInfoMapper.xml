@@ -71,7 +71,7 @@
 
     <!-- 환자 과거 병력 가져오기 -->
     <select id="getPastTreatmentList" parameterType="String" resultType="HashMap">
-        SELECT TREATMENT_DATE, DIAGNOSIS
+        SELECT SUBSTR(TREATMENT_DATE, 1, 10) AS TREATMENT_DATE, DIAGNOSIS
         FROM TREATMENT_INFO_TB AS a
                  LEFT JOIN DIAGNOSIS_TB AS b ON a.DIAGNOSIS_CODE = b.DIAGNOSIS_CODE
         WHERE PATIENT_ID_FK = #{patientPk} AND a.DIAGNOSIS_CODE IS NOT NULL;

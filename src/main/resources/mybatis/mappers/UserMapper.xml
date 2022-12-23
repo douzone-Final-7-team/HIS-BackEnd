@@ -47,11 +47,11 @@
                    WHEN(WEEKDAY(NOW()) = 6) THEN '일'
                    END AS WORKING_DAY,
                CASE
-                   WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'D') THEN ' 의사님'
+                   WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'D') THEN ' 의사님 '
                    WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'O') THEN ' 간호사님'
                    WHEN(SUBSTR(EMP_ID_PK, 1, 1) = 'I') THEN ' 간호사님'
-                   WHEN(SUBSTR(ROLE, 6, 4) = 'OUTR') THEN '님'
-                   WHEN(SUBSTR(ROLE, 6, 4) = 'INRE') THEN '님'
+                   WHEN(SUBSTR(ROLE, 6, 4) = 'OUTR') THEN '님   '
+                   WHEN(SUBSTR(ROLE, 6, 4) = 'INRE') THEN '님   '
                    END AS WORK
         FROM EMP_INFO_TB AS a
             LEFT JOIN SPECIALITY_TB AS b ON a.SPECIALITY_ID_FK = b.SPECIALITY_ID_PK
