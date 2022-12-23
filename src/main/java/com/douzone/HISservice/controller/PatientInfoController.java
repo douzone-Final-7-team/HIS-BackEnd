@@ -18,10 +18,6 @@ public class PatientInfoController {
     // 특정 환자 입원 정보 READ
     @PostMapping("/outInfo")
     public Map<String, Object> getInpatientInfo(@RequestBody Map<String, Object> outInfoElement) {
-        System.out.println("호호호호록 : "+outInfoElement);
-        System.out.println(
-                patientInfoService.getPatientInfo(outInfoElement)
-        );
         return (patientInfoService.getPatientInfo(outInfoElement));
     }
 
@@ -61,7 +57,6 @@ public class PatientInfoController {
     // 진료환자 과거 병력 상세 조회
     @GetMapping("/pastTreatmentDetail")
     public List<Map<String, Object>> getPastTreatmentDetail(@RequestParam String patientID, @RequestParam String treatmentDate) {
-        System.out.println((patientID + "," + treatmentDate));
         return patientInfoService.getPastTreatmentDetail(patientID, treatmentDate);
 
     }
