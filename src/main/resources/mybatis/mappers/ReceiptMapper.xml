@@ -57,7 +57,7 @@
             (DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') AND A.ADMISSION_STATUS_CODE = 'ID') OR ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 1250000 and A.ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is null) OR ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , now()))*50000 >= 1250000 and A.ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is not null)
         </if>
         <if test="filter == '[middlePayment, notPayment]' or filter == '[notPayment, middlePayment]'">
-            (DISCHARGE_DUEDATE = date_format(now(),'%Y-%m-%d') AND A.ADMISSION_STATUS_CODE = 'ID') OR ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 1250000 and A.ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is null) OR ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , now()))*50000 >= 1250000 and A.ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is not null)
+            (DISCHARGE_DUEDATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d') AND A.ADMISSION_STATUS_CODE = 'IG') OR ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 1250000 and A.ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is null) OR ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , now()))*50000 >= 1250000 and A.ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is not null)
         </if>
         <if test="filter.length() > 28 or filter.length() == 2 ">
             (DISCHARGE_DUEDATE <![CDATA[<=]]> date_format(now(),'%Y-%m-%d') AND A.ADMISSION_STATUS_CODE = 'ID' OR A.ADMISSION_STATUS_CODE = 'IG') OR ((TIMESTAMPDIFF(DAY, ADMISSION_DATE , now()))*50000 >= 1250000 and A.ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is null) OR ((TIMESTAMPDIFF(DAY, MIDDLE_PAY_DATE , now()))*50000 >= 1250000 and A.ADMISSION_STATUS_CODE = 'IC' and MIDDLE_PAY_DATE is not null)
